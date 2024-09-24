@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
+const path = require('path')
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
@@ -20,6 +21,8 @@ initialisePassport(
 const users = []
 
 app.set('view-engine', 'ejs')
+app.set('views', path.join(__dirname, '/Boundary Classes'));
+
 app.use(express.urlencoded({extended: false}))
 app.use(flash())
 app.use(session({
