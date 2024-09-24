@@ -1,3 +1,21 @@
+/*
+// server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/userRoutes');
+const carParkRoutes = require('./routes/carParkRoutes');
+const passport = require('passport');
+require('./config/passport-config')(passport);
+
+const app = express();
+
+// Set up middleware
+app.use(express.json());
+app.use(express
+*/
+
+
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
