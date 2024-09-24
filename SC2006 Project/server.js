@@ -52,6 +52,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
+// gets page to service user as response
 app.get('/', checkAuthenticated,(req, res) => {
     res.render('index.ejs', {name: req.user.name})
 })
@@ -64,15 +65,20 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
     res.render('login.ejs')
 })
 
+app.get('/forgetPassword', checkNotAuthenticated, (req, res) => {
+    res.render('forgetPassword.ejs')
+})
+
+app.get('/Register',checkNotAuthenticated, (req, res) => {
+    res.render('register.ejs')
+})
+
+//  Post to new page based on which button user clicks
 app.post('/login', checkNotAuthenticated,passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: 'login',
     failureFlash: true
 }))
-
-app.get('/Register',checkNotAuthenticated, (req, res) => {
-    res.render('register.ejs')
-})
 
 app.post('/Register', checkNotAuthenticated, async (req, res) => {
     try {
@@ -90,6 +96,7 @@ app.post('/Register', checkNotAuthenticated, async (req, res) => {
     console.log(users)
 })
 
+// Clear user login details for the session and go back to loginPage
 app.delete('/logout',(req, res) => {
     req.logOut(function(err) {
         if (err) { 
@@ -99,6 +106,7 @@ app.delete('/logout',(req, res) => {
     })
 })
 
+// If login details are present continue on, else go back to login page
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()){
         return next()
@@ -106,6 +114,7 @@ function checkAuthenticated(req, res, next) {
     res.redirect('/login')
 }
 
+// If not logged in redirect continue on, else proceed to main dashboard 
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()){
         return res.redirect('/')
