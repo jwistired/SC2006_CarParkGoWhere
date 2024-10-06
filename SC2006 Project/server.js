@@ -34,11 +34,12 @@ const Login = require('./BoundaryClasses/Login.js')
 const Guest = require('./BoundaryClasses/Guest.js')
 const ForgetPassword = require('./BoundaryClasses/ForgetPassword.js')
 const Index = require('./BoundaryClasses/Index.js')
+const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
 const {checkAuthenticated, checkNotAuthenticated} = require('./BoundaryClasses/Authenticator.js')
 const initialisePassport = require("./passport-config")
 initialisePassport(
     passport, 
-    email => users.find(user => user.email === email),
+    email => users.find(user => user.email ===  email),
     id => users.find(user => user.id === id)
 )
 const users = []
@@ -63,8 +64,7 @@ app.use('/', Index)
 app.use('/guest', checkNotAuthenticated, Guest)
 app.use('/login', checkNotAuthenticated, Login)
 app.use('/register', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, Register)
-app.use('/forgetPassword', checkNotAuthenticated, ForgetPassword)
-
-
+app.use('/forgetPassword', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, ForgetPassword)
+app.use('/resetPassword', ResetPassword)
 
 app.listen(3000)

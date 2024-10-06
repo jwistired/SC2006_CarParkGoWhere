@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 });
 
 //Validate registration
-router.post('/',passport.authenticate('local', {
+router.post('/',passport.authenticate('local-login', {
     successRedirect: '/',
     failureRedirect: 'login',
     failureFlash: true
