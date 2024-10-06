@@ -21,6 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
+=======
 const path = require('path');
 const express = require('express');
 const bcrypt = require('bcrypt');
@@ -81,12 +82,13 @@ app.use(methodOverride('_method'));
 // Serve static files (CSS, images, etc.) from the "public" directory (optional)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes for different pages
-app.use('/', Index);
-app.use('/guest', checkNotAuthenticated, Guest);
-app.use('/login', checkNotAuthenticated, Login);
-app.use('/register', checkNotAuthenticated, (req, res, next) => { req.users = users; next(); }, Register);
-app.use('/forgetPassword', checkNotAuthenticated, ForgetPassword);
+// gets page to service user as response
+app.use('/', Index)
+app.use('/guest', checkNotAuthenticated, Guest)
+app.use('/login', checkNotAuthenticated, Login)
+app.use('/register', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, Register)
+app.use('/forgetPassword', (req, res, next) => {req.users = users, next()}, ForgetPassword)
+app.use('/resetPassword', ResetPassword)
 
 // Start the server on port 3000
 app.listen(3000, () => {
