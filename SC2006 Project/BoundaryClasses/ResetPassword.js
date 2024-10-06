@@ -9,14 +9,13 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    console.log("Resetpassword otp: " + req.session.generatedOTP)
     var userOTP = req.body.OTP
-    console.log("Entered otp: " + userOTP)
-    const hashedPassword = await bcrypt.hash(req.body.newPassword, 10)
+    console.log(req.body.password)
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
     if(userOTP == req.session.generatedOTP){
         req.user.password = hashedPassword
-        console.log(user)
+        res.redirect('/login')
     } else {
         res.status(400).send("Invalid OTP")
         res.redirect('/resetPassword')
