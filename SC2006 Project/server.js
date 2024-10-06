@@ -64,7 +64,7 @@ app.use('/', Index)
 app.use('/guest', checkNotAuthenticated, Guest)
 app.use('/login', checkNotAuthenticated, Login)
 app.use('/register', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, Register)
-app.use('/forgetPassword', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, ForgetPassword)
+app.use('/forgetPassword', (req, res, next) => {req.users = users, next()}, ForgetPassword)
 app.use('/resetPassword', ResetPassword)
 
 app.listen(3000)
