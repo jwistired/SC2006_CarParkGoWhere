@@ -1,8 +1,99 @@
-/* public/css/styles.css */
+/* Full page background */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
-  }
-  
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: url('/css/images/parking-lot.jpg') no-repeat center center fixed; /* Make sure the background image path is correct */
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Main login container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Login box styling */
+.login-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 350px;
+  width: 100%;
+}
+
+/* Logo styling */
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+/* Form input styles */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Button styles */
+.btn-login,
+.btn-register,
+.btn-guest,
+.btn-forgot {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-login {
+  background-color: #ccc;
+  color: black;
+}
+
+.btn-register {
+  background-color: #6A1B9A;
+  color: white;
+}
+
+.btn-guest {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+.btn-forgot {
+  background-color: #6A1B9A;
+  color: white;
+}
+
+.btn-login:hover,
+.btn-register:hover,
+.btn-guest:hover,
+.btn-forgot:hover {
+  opacity: 0.9;
+}
