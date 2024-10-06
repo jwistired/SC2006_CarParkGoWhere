@@ -21,7 +21,6 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
-=======
 const path = require('path');
 const express = require('express');
 const bcrypt = require('bcrypt');
@@ -35,6 +34,7 @@ const Login = require('./BoundaryClasses/Login.js');
 const Guest = require('./BoundaryClasses/Guest.js');
 const ForgetPassword = require('./BoundaryClasses/ForgetPassword.js');
 const Index = require('./BoundaryClasses/Index.js');
+const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
 const { checkAuthenticated, checkNotAuthenticated } = require('./BoundaryClasses/Authenticator.js');
 const initialisePassport = require("./passport-config");
 
@@ -87,8 +87,10 @@ app.use('/', Index)
 app.use('/guest', checkNotAuthenticated, Guest)
 app.use('/login', checkNotAuthenticated, Login)
 app.use('/register', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, Register)
-app.use('/forgetPassword', (req, res, next) => {req.users = users, next()}, ForgetPassword)
-app.use('/resetPassword', ResetPassword)
+app.use('/forgetPassword', checkNotAuthenticated, 
+    (req, res, next) => {req.users = users, next()}, 
+    ForgetPassword)
+app.use('/resetPassword', checkAuthenticated, ResetPassword)
 
 // Start the server on port 3000
 app.listen(3000, () => {
