@@ -79,7 +79,7 @@ app.use(passport.session());
 app.use(methodOverride('_method'));
 
 // Serve static files (CSS, images, etc.) from the "public" directory (optional)
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes for different pages
 app.use('/', Index);
