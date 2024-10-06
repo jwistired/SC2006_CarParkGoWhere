@@ -26,26 +26,24 @@ router.post('/', (req, res, next) => {
     })(req, res, next);
     }, (req, res) => {
     console.log("Authentication successful, sending OTP...");
-    generatedOTP = otp.generate(6,{digits:true, alphabets:false, upperCase:false, specialChars:false})
-    console.log("generated otp:" + generatedOTP)
-    req.session.generatedOTP = generatedOTP;
-    console.log("session otp:" + req.session.generatedOTP)
+    generatedOTP = otp.generate(6,{digits: true, alphabets:false, upperCase:false, specialChars:false})
+    req.session.generatedOTP = generatedOTP
 
     const message = {
         from: "CarparkGoWhere <carparkgowhere@gmail.com>",
-        to: req.user.email,  // Use authenticated user's email
+        to: req.user.email,
         subject: "CarparkGoWhere reset password",
         text: `Your OTP is: ${generatedOTP}`
     };
 
     transporter.sendMail(message, (error, info) => {
         if (error) {
-            console.error("Error sending OTP:", error);
-            return res.status(500).send("Error sending OTP");
+            console.error("Error sending OTP:", error)
+            return res.status(500).send("Error sending OTP")
         }
-        console.log('Email sent: ' + info.response);
-        res.redirect('/resetPassword');
-    });
-});
+        console.log('Email sent: ' + info.response)
+        res.redirect('/resetPassword')
+    })
+})
 
 module.exports = router
