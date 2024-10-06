@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
+        console.log(req.body) // Log the body to see form data
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         const newUser = new User(req.body.name, req.body.email, hashedPassword)
         req.users.push(newUser)
