@@ -1,22 +1,22 @@
 const User = require('./User')
 const express = require('express')
 const router = express.Router()
+const bcrypt = require('bcrypt')
 
-//Load register page
 router.get('/', (req, res) => {
     res.render('register.ejs')
-});
+})
 
-//Validate registration
 router.post('/', async (req, res) => {
     try {
-        const hashedPassword = await User.hashPassword(req.body.password)
-        const newUser = new User(req.body.name, req.body.email, hashedPassword, req.body.securityQuestion, req.body.securityAnswer)
+        console.log(req.body) // Log the body to see form data
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        const newUser = new User(req.body.name, req.body.email, hashedPassword)
         req.users.push(newUser)
         res.redirect('/login')
     } catch (error) {
         console.error(error)
-        res.redirect('/Register')
+        res.redirect('/register')
     } 
     console.log(req.users)
 })

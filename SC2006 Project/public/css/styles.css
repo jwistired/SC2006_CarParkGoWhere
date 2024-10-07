@@ -1,9 +1,9 @@
-/* Full page background */
+/* Full page background for login/signup pages */
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background: url('/css/images/parking-lot.jpg') no-repeat center center fixed; /* Make sure the background image path is correct */
+  background: url('/css/images/parking-lot.jpg') no-repeat center center fixed;
   background-size: cover;
   display: flex;
   justify-content: center;
@@ -11,12 +11,14 @@ body {
   height: 100vh;
 }
 
-/* Main login container */
+/* Login container */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  max-width: 400px; /* Set a max-width for better layout */
+  margin: 20px;
 }
 
 /* Login box styling */
@@ -26,19 +28,25 @@ body {
   border-radius: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
-  max-width: 350px;
   width: 100%;
 }
 
 /* Logo styling */
 .logo {
-  width: 120px;
+  width: 150px;
   margin-bottom: 20px;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 /* Form input styles */
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   text-align: left;
 }
 
@@ -46,6 +54,7 @@ body {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
+  font-size: 14px;
 }
 
 .input-group input {
@@ -54,13 +63,11 @@ body {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 /* Button styles */
-.btn-login,
-.btn-register,
-.btn-guest,
-.btn-forgot {
+button, .btn-login, .btn-register, .btn-guest, .btn-forgot {
   display: block;
   width: 100%;
   padding: 10px;
@@ -69,14 +76,16 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+/* Specific button color styles */
 .btn-login {
-  background-color: #ccc;
-  color: black;
+  background-color: #6A1B9A; /* Set the same purple color for the login button */
+  color: white;
 }
 
-.btn-register {
+.btn-register, .btn-forgot {
   background-color: #6A1B9A;
   color: white;
 }
@@ -84,16 +93,83 @@ body {
 .btn-guest {
   background-color: #f1f1f1;
   color: black;
+  border: 1px solid #ccc;
 }
 
-.btn-forgot {
-  background-color: #6A1B9A;
+/* Hover effect */
+button:hover, .btn-login:hover, .btn-register:hover, .btn-guest:hover, .btn-forgot:hover {
+  opacity: 0.9;
+}
+
+/* Map container */
+#map {
+  height: 100vh; /* Make sure the map takes the full viewport height */
+  width: calc(100% - 600px); /* Adjust width based on sidebar */
+  position: absolute;
+  left: 300px; /* Adjust to account for sidebar */
+  right: 300px; /* Adjust to account for the other sidebar */
+  z-index: 1;
+}
+
+/* Sidebar styling for parking lots */
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh; /* Full viewport height */
+  background-color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+/* Sidebar styling for parking history */
+.history-sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh; /* Full viewport height */
+  background-color: white;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+/* Filter options */
+.filter-options {
+  position: absolute;
+  bottom: 20px;
+  right: 320px; /* Adjust to fit within the content area */
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+/* Parking lot info styling */
+.parking-lot, .parking-history {
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Button styling */
+button {
+  background-color: #6a1b9a;
   color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.btn-login:hover,
-.btn-register:hover,
-.btn-guest:hover,
-.btn-forgot:hover {
+button:hover {
   opacity: 0.9;
 }

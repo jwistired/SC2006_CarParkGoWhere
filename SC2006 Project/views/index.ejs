@@ -1,5 +1,130 @@
-<h1>Hi <%= name %> </h1> 
-<form action="/logout?_method=DELETE" method="POST">
-    <button type = "submit">Log Out</button>
-</form>
+<html>
+   <head>
+      <title>OneMap: Default Map (TileJSON)</title>
+      <link rel="stylesheet" href="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet.css" />
+      <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/onemap-leaflet.js"></script>
+      <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet-tilejson.js"></script>
+      <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   </head>
 
+   <body>
+      <h1>Parking Lots and History</h1>
+      <div id='mapdiv' style='height:800px;'></div>
+
+      <!-- Left sidebar for available parking lots -->
+      <div class="sidebar">
+         <h2>Parking Lots Found</h2>
+         <div id="parking-lots">
+            <!-- Parking lot info will be dynamically added here -->
+         </div>
+      </div>
+
+      <!-- Right sidebar for parking history -->
+      <div class="history-sidebar">
+         <h2>Parking History</h2>
+         <div id="parking-history">
+            <!-- Parking history info will be dynamically added here -->
+         </div>
+      </div>
+
+      <!-- Filter options -->
+      <div class="filter-options">
+         <h3>Filter Options</h3>
+         <label>
+            <input type="checkbox" id="shortest-distance-filter"> Shortest Distance
+         </label>
+         <label>
+            <input type="checkbox" id="cheapest-parking-filter"> Cheapest Car Park
+         </label>
+         <label>
+            <input type="checkbox" id="availability-filter"> Parking Lots Availability
+         </label>
+      </div>
+
+      <script>
+         // Define Singapore boundary
+         let sw = L.latLng(1.144, 103.535);
+         let ne = L.latLng(1.494, 104.502);
+         let bounds = L.latLngBounds(sw, ne);
+         let map;
+
+         // Fetch OneMap TileJSON and initialize map
+         $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function(data, status) {
+            map = L.TileJSON.createMap('mapdiv', data);
+            map.setMaxBounds(bounds);
+            map.setView(L.latLng(1.2868108, 103.8545349), 16);
+
+            // Add attribution
+            map.attributionControl.setPrefix('<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>');
+         });
+
+         // Simulated data for car parks (you would fetch this from OneMap API)
+         const parkingLots = [
+            { id: 1, lat: 1.3521, lng: 103.8198, title: 'Car Park 1', price: 0.50, distance: 200, availability: 37 },
+            { id: 2, lat: 1.3531, lng: 103.8190, title: 'Car Park 2', price: 0.60, distance: 300, availability: 25 },
+            { id: 3, lat: 1.3541, lng: 103.8185, title: 'Car Park 3', price: 0.55, distance: 400, availability: 23 }
+         ];
+
+         // Function to display parking lots
+         function displayParkingLots(parkingLots) {
+            parkingLots.forEach(lot => {
+               // Add marker to the map
+               const marker = L.marker([lot.lat, lot.lng]).addTo(map)
+                  .bindPopup(`<strong>${lot.title}</strong><br>Price: $${lot.price}/hour<br>Distance: ${lot.distance}m<br>Availability: ${lot.availability}/50`);
+
+               // Append parking lot info to the sidebar
+               const parkingLotDiv = document.createElement('div');
+               parkingLotDiv.classList.add('parking-lot');
+               parkingLotDiv.innerHTML = `
+                  <h3>${lot.title}</h3>
+                  <p>Price: $${lot.price} / hour</p>
+                  <p>Distance: ${lot.distance}m</p>
+                  <p>Availability: ${lot.availability}/50 spots</p>
+                  <button>Select</button>
+               `;
+               document.getElementById('parking-lots').appendChild(parkingLotDiv);
+            });
+         }
+
+         // Function to simulate parking history
+         function displayParkingHistory() {
+            const history = [
+               { id: 5, title: 'Car Park 5', price: 0.55, distance: 400, availability: 23 }
+            ];
+
+            history.forEach(lot => {
+               const historyDiv = document.createElement('div');
+               historyDiv.classList.add('parking-history');
+               historyDiv.innerHTML = `
+                  <h3>${lot.title}</h3>
+                  <p>Price: $${lot.price} / hour</p>
+                  <p>Distance: ${lot.distance}m</p>
+                  <p>Availability: ${lot.availability}/50 spots</p>
+                  <button>Select</button>
+               `;
+               document.getElementById('parking-history').appendChild(historyDiv);
+            });
+         }
+
+         // Display initial data
+         displayParkingLots(parkingLots);
+         displayParkingHistory();
+
+         // Optional: Implement filter functionality
+         document.getElementById('shortest-distance-filter').addEventListener('change', function () {
+            console.log('Shortest distance filter toggled');
+            // You can implement sorting logic here
+         });
+
+         document.getElementById('cheapest-parking-filter').addEventListener('change', function () {
+            console.log('Cheapest parking filter toggled');
+            // You can implement sorting logic here
+         });
+
+         document.getElementById('availability-filter').addEventListener('change', function () {
+            console.log('Availability filter toggled');
+            // You can implement sorting logic here
+         });
+      </script>
+   </body>
+</html>
