@@ -109,6 +109,10 @@ button:hover, .btn-login:hover, .btn-register:hover, .btn-guest:hover, .btn-forg
   left: 300px; /* Adjust to account for sidebar */
   right: 300px; /* Adjust to account for the other sidebar */
   z-index: 1;
+  display: flex; /* Use grid layout to position the map and sidebar */
+  grid-template-columns: 5fr 300px; /* Set the sidebar width */
+  grid-template-rows: 5fr 300px; /* Set the sidebar height */
+  place-items: center; /* Center the map*/
 }
 
 /* Sidebar styling for parking lots */
@@ -172,4 +176,15 @@ button {
 
 button:hover {
   opacity: 0.9;
+}
+
+.search-bar {
+  position: absolute;
+  top: 20px;
+  left: 320px; /* Adjust to fit within the content area */
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
