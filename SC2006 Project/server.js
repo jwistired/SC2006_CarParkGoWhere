@@ -28,12 +28,14 @@ const passport = require('passport');
 const flash = require('express-flash');
 const session = require("express-session");
 const methodOverride = require("method-override");
+const ResetPassword = require('./BoundaryClasses/ResetPassword.js');
 
 const Register = require('./BoundaryClasses/Register.js');
 const Login = require('./BoundaryClasses/Login.js');
 const Guest = require('./BoundaryClasses/Guest.js');
 const ForgetPassword = require('./BoundaryClasses/ForgetPassword.js');
 const Index = require('./BoundaryClasses/Index.js');
+const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
 const { checkAuthenticated, checkNotAuthenticated } = require('./BoundaryClasses/Authenticator.js');
 const initialisePassport = require("./passport-config");
 
@@ -81,12 +83,15 @@ app.use(methodOverride('_method'));
 // Serve static files (CSS, images, etc.) from the "public" directory (optional)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes for different pages
-app.use('/', Index);
-app.use('/guest', checkNotAuthenticated, Guest);
-app.use('/login', checkNotAuthenticated, Login);
-app.use('/register', checkNotAuthenticated, (req, res, next) => { req.users = users; next(); }, Register);
-app.use('/forgetPassword', checkNotAuthenticated, ForgetPassword);
+// gets page to service user as response
+app.use('/', Index)
+app.use('/guest', checkNotAuthenticated, Guest)
+app.use('/login', checkNotAuthenticated, Login)
+app.use('/register', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, Register)
+app.use('/forgetPassword', checkNotAuthenticated, 
+    (req, res, next) => {req.users = users, next()}, 
+    ForgetPassword)
+app.use('/resetPassword', checkAuthenticated, ResetPassword)
 
 // Start the server on port 3000
 app.listen(3000, () => {
