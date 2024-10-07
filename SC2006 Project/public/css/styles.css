@@ -12,7 +12,7 @@ body {
 }
 
 /* Login container */
-.login-container {
+.login-container, .signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,8 +22,8 @@ body {
 }
 
 /* Login box styling */
-.login-box {
-  background-color: rgba(255, 255, 255, 0.9);
+.login-box, .signup-box {
+  background-color: rgba(188, 188, 188);
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -54,7 +54,7 @@ body {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .input-group input {
@@ -66,8 +66,48 @@ body {
   box-sizing: border-box;
 }
 
+.or-container {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.line {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #707070;
+  margin: 0 3px;
+}
+
+.or-text {
+  font-weight: bold;
+  color: #343434;
+  padding: 0 5px;
+}
+
 /* Button styles */
-button, .btn-login, .btn-register, .btn-guest, .btn-forgot {
+button, .btn-login {
+  display: block;
+  width: 100%;
+  margin-top: 35px;
+  font-size: 16px;
+} 
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btn-login, .btn-register {
+  flex: 1;
+  width: 50%;
+  padding: 10px;
+  margin-top: 30px;
+  box-sizing: border-box;
+}
+
+.btn-guest, .btn-forgot {
   display: block;
   width: 100%;
   padding: 10px;
@@ -81,24 +121,47 @@ button, .btn-login, .btn-register, .btn-guest, .btn-forgot {
 
 /* Specific button color styles */
 .btn-login {
-  background-color: #6A1B9A; /* Set the same purple color for the login button */
-  color: white;
-}
-
-.btn-register, .btn-forgot {
   background-color: #6A1B9A;
   color: white;
+  margin-right: 2%;
+}
+
+.btn-register {
+  background-color: white;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-forgot {
+  text-align: left;
+  padding: 0px 0px;
+  font-size: 14px;
 }
 
 .btn-guest {
-  background-color: #f1f1f1;
-  color: black;
-  border: 1px solid #ccc;
+  background-color:  #6A1B9A;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 20px);
 }
 
 /* Hover effect */
-button:hover, .btn-login:hover, .btn-register:hover, .btn-guest:hover, .btn-forgot:hover {
+button:hover, .btn-login:hover, .btn-forgot:hover, .btn-guest:hover {
   opacity: 0.9;
+}
+
+.btn-register:hover {
+  background-color: #f0dafe;
 }
 
 /* Map container */
