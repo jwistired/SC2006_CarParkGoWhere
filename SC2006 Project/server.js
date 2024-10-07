@@ -35,7 +35,7 @@ const Login = require('./BoundaryClasses/Login.js');
 const Guest = require('./BoundaryClasses/Guest.js');
 const ForgetPassword = require('./BoundaryClasses/ForgetPassword.js');
 const Index = require('./BoundaryClasses/Index.js');
-const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
+//const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
 const { checkAuthenticated, checkNotAuthenticated } = require('./BoundaryClasses/Authenticator.js');
 const initialisePassport = require("./passport-config");
 
