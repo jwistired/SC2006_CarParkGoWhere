@@ -1,18 +1,45 @@
-<h1>Login</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarPark Login</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Ensure correct path to your CSS -->
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <img src="/css/images/logo.jpg" alt="CarPark Logo" class="logo"> <!-- Adjusted logo path -->
+            
+            <!-- Display error messages (if any) -->
+            <% if (messages.error) { %>
+                <div class="error-message">
+                    <%= messages.error %>
+                </div>
+            <% } %>
 
-<% if(messages.error) { %>
-    <%= messages.error %>
-<% } %>
-<form action = "/login" method = "POST">
-    <div>
-        <label for = "email">Email</label>
-        <input type ="text" id ="email" name = "email" required>
+            <!-- Display success messages (if any) -->
+            <% if (messages.success) { %>
+                <div class="success-message">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+
+            <form action="/login" method="POST" class="login-form">
+                <div class="input-group">
+                    <label for="email">Username / Email</label>
+                    <input type="text" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-login">Sign in</button>
+                <a href="/register" class="btn-register">Register</a>
+                <a href="/guest" class="btn-guest">Continue as Guest</a>
+                <a href="/forgetPassword" class="btn-forgot">Forgot Password</a>
+            </form>
+        </div>
     </div>
-    <div>
-        <label for = "password">Password</label>
-        <input type ="password" id ="password" name = "password" required>
-    </div>
-    <button type = "submit">Login</button>
-</form>
-<a href="/register" style="display: block; margin-bottom: 10px;">Register</a>
-<a href="/guest" style="display: block;">Guest</a>
+</body>
+</html>
