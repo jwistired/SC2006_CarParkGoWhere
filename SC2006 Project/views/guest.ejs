@@ -1,3 +1,270 @@
-<h1>Guest mode</h1> 
-<a href = "/register" style="display: block; margin-bottom: 10px;">Register</a>
-<a href = "/login">Login</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneMap: Default Map (TileJSON)</title>
+    <link rel="stylesheet" href="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet.css" />
+    <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/onemap-leaflet.js"></script>
+    <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet-tilejson.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <style>
+        /* Set the body and html to take up full height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* Styling for the header */
+        .header {
+            position: fixed; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(241, 241, 241, 1);
+            border-bottom: 1px solid #ccc;
+            width: 100%;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Logo */
+        .logo {
+            width: 80px;
+            height: auto;
+        }
+
+        /* Search bar and button styling */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            width: 70%;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 40px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-icon {
+            width: 24px;
+            height: 24px;
+            position: absolute; 
+            right: 80px;
+            top: 50%; 
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        /* Filter button */
+        .filter-button {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px; /* Space between search bar and filter icon */
+            cursor: pointer; /* Pointer on hover */
+        }
+
+        /* Content layout */
+        .content {
+            display: flex;
+            position: relative; /* Allow overlapping with sidebars */
+            top: 50px; /* Height of the header */
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 5; /* Lower than header but higher than map */
+        }
+
+        .sidebar, .history-sidebar {
+            width: 250px; /* Fixed width for sidebars */
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            padding: 10px;
+            z-index: 10; /* Higher z-index to float above map */
+            position: absolute; /* Position absolute to avoid overlap with header */
+            top: 50px; /* Below the header */
+            height: calc(100% - 50px); /* Full height minus header */
+            overflow-y: auto; /* Allow scrolling */
+        }
+
+        .sidebar {
+            left: 0; /* Position the sidebar on the left */
+            min-height: fit-content;
+        }
+
+        .history-sidebar {
+            right: 0; /* Position the history sidebar on the right */
+            min-height: fit-content;
+        }
+
+        .map-container {
+            flex-grow: 1;
+            position: relative;
+            z-index: 1; /* Lower z-index for the map */
+        }
+
+        /* Login/Register Icon */
+        .login-register {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+            margin: auto; /* Center the login/register icon */
+        }
+
+        .login-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+        }
+
+        .login-caption {
+            font-size: 14px;
+            text-align: center;
+            color: black;
+        }
+
+        /* Map Container */
+        #mapdiv {
+            height: calc(100vh - 50px); /* Full height minus header */
+            width: 100%; /* Full width */
+            position: absolute; /* Position absolute to cover the entire viewport */
+            top: 0;
+            left: 0;
+            z-index: 0; /* Lowest z-index */
+        }
+
+        /* Filter Dropdown */
+        .filter-dropdown {
+            display: none; /* Hidden by default */
+            position: absolute; /* Position it below the filter button */
+            top: 70px; /* Align with the header */
+            right: 90px; /* Align right with filter button */
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 15; /* Higher than other elements */
+            padding: 10px;
+            width: 150px; /* Width of the dropdown */
+        }
+
+        .filter-option {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .filter-option:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with logo, search bar, filter, and login/register -->
+    <div class="header">
+        <!-- Logo -->
+        <img src="\css\images\logo.jpg" alt="Logo" class="logo">
+
+        <!-- Search bar with search icon -->
+        <div class="search-bar">
+            <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
+            <img src="\css\images\icons\search.png" alt="Search" class="search-icon">
+            <img src="\css\images\icons\filter.png" alt="Filter" class="filter-button" onclick="toggleFilterDropdown()">
+        </div>
+
+        <!-- Login/Register Icon -->
+        <a href="/login" class="login-register">
+            <img src="\css\images\icons\login-register.png" alt="Login" class="login-icon">
+            <span class="login-caption">Login/Register</span>
+        </a>
+    </div>
+
+    <div class="content">
+        <!-- Sidebar for parking lots -->
+        <div class="sidebar">
+            <h2>Parking Lots Found</h2>
+            <div id="parking-lots">
+                <!-- Parking lot info will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id='mapdiv'></div>
+        </div>
+
+        <!-- Right sidebar for parking history -->
+        <div class="history-sidebar">
+            <h2>Parking History</h2>
+            <div id="parking-history">
+                <!-- Parking history info will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Dropdown -->
+    <div class="filter-dropdown" id="filterDropdown">
+        <div class="filter-option">Shortest Distance</div>
+        <div class="filter-option">Cheapest Carpark</div>
+        <div class="filter-option">Parking Lots</div>
+    </div>
+
+    <script>
+        // Function to toggle filter dropdown
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('filterDropdown');
+            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Define Singapore boundary
+        let sw = L.latLng(1.144, 103.535);
+        let ne = L.latLng(1.494, 104.502);
+        let bounds = L.latLngBounds(sw, ne);
+        let map;
+
+        // Fetch OneMap TileJSON and initialize map
+        $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function(data) {
+            // Initialize the map
+            map = L.map('mapdiv', {
+                maxBounds: bounds,
+                minZoom: 11,
+                zoom: 12,
+                center: [1.3521, 103.8198],
+                zoomControl: false // Disable default zoom control
+            });
+
+            // Create and add the tile layer
+            let layer = L.tileLayer(data.tiles[0], {
+                maxZoom: data.maxzoom,
+                minZoom: data.minzoom,
+                attribution: data.attribution
+            });
+            layer.addTo(map);
+
+            // Add custom zoom control at the bottom right
+            L.control.zoom({
+                position: 'bottomright' // Set position to bottom right
+            }).addTo(map);
+        });
+
+    </script>
+</body>
+</html>
