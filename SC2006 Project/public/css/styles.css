@@ -12,7 +12,7 @@ body {
 }
 
 /* Login container */
-.login-container, .signup-container {
+.login-container, .signup-container, .forgetpwd-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +22,7 @@ body {
 }
 
 /* Login box styling */
-.login-box, .signup-box {
+.login-box, .signup-box, .forgetpwd-box {
   background-color: rgba(188, 188, 188);
   padding: 30px;
   border-radius: 15px;
@@ -83,6 +83,27 @@ body {
   font-weight: bold;
   color: #343434;
   padding: 0 5px;
+}
+
+/* Buttons styling in Forget password page */
+.link-container {
+  display: flex;           
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.link-container a {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  width: calc(100% - 20px);
 }
 
 /* Button styles */
@@ -160,7 +181,7 @@ button:hover, .btn-login:hover, .btn-forgot:hover, .btn-guest:hover {
   opacity: 0.9;
 }
 
-.btn-register:hover {
+.btn-register:hover, .link-container a:hover {
   background-color: #f0dafe;
 }
 
