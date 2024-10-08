@@ -1,0 +1,284 @@
+/* Body for guest/user map interface */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex; 
+  flex-direction: column; 
+}
+
+/* Styling for the header */
+.header {
+  position: fixed; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: rgba(241, 241, 241, 1);
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* Logo */
+.logo {
+  width: 80px;
+  height: auto;
+}
+
+/* Search bar and button styling */
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 70%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute; 
+  right: 80px;
+  top: 50%; 
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Filter button */
+.filter-button {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px; /* Space between search bar and filter icon */
+  cursor: pointer; /* Pointer on hover */
+}
+
+/* Content layout */
+.content {
+  display: flex;
+  position: relative; /* Allow overlapping with sidebars */
+  top: 50px; /* Height of the header */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5; /* Lower than header but higher than map */
+}
+
+.sidebar, .history-sidebar {
+  width: 250px; /* Fixed width for sidebars */
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+  padding: 10px;
+  z-index: 10; /* Higher z-index to float above map */
+  position: absolute; /* Position absolute to avoid overlap with header */
+  top: 50px; /* Below the header */
+  height: calc(100% - 50px); /* Full height minus header */
+  overflow-y: auto; /* Allow scrolling */
+}
+
+.sidebar {
+  left: 0; /* Position the sidebar on the left */
+  min-height: fit-content;
+}
+
+.history-sidebar {
+  right: 0; /* Position the history sidebar on the right */
+  min-height: fit-content;
+}
+
+.map-container {
+  flex-grow: 1;
+  position: relative;
+  z-index: 1; /* Lower z-index for the map */
+}
+
+/* Login/Register Icon */
+.login-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  margin: auto; /* Center the login/register icon */
+}
+
+.login-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 5px;
+}
+
+.login-caption {
+  font-size: 14px;
+  text-align: center;
+  color: black;
+}
+
+/* Map Container */
+#mapdiv {
+  height: calc(100vh - 50px); /* Full height minus header */
+  width: 100%; /* Full width */
+  position: absolute; /* Position absolute to cover the entire viewport */
+  top: 0;
+  left: 0;
+  z-index: 0; /* Lowest z-index */
+}
+
+/* Filter Dropdown */
+.filter-dropdown {
+  display: none; /* Hidden by default */
+  position: absolute; /* Position it below the filter button */
+  top: 70px; /* Align with the header */
+  right: 90px; /* Align right with filter button */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 15; /* Higher than other elements */
+  padding: 10px;
+  width: 150px; /* Width of the dropdown */
+}
+
+.filter-option {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.filter-option:hover {
+  background-color: #f0f0f0;
+}
+
+/* Map container */
+#map {
+  height: 100vh; /* Make sure the map takes the full viewport height */
+  width: calc(100% - 600px); /* Adjust width based on sidebar */
+  position: absolute;
+  left: 300px; /* Adjust to account for sidebar */
+  right: 300px; /* Adjust to account for the other sidebar */
+  z-index: 1;
+  display: grid; /* Use grid layout to position the map and sidebar */
+  grid-template-columns: 5fr 300px;
+  grid-template-rows: 5fr 300px; 
+  place-items: center; /* Center the map*/
+}
+
+/* Sidebar styling for parking lots */
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh; /* Full viewport height */
+  background-color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+/* Sidebar styling for parking history */
+.history-sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh; /* Full viewport height */
+  background-color: white;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+/* Filter options */
+.filter-options {
+  position: absolute;
+  bottom: 20px;
+  right: 320px; /* Adjust to fit within the content area */
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+/* Parking lot info styling */
+.parking-lot, .parking-history {
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Button styling */
+button {
+  background-color: #6a1b9a;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.search {
+  --padding: 14px;
+  position: absolute;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border-radius: 28px;
+  background-color: rgb(156, 156, 156);
+  padding: var(--padding);
+  border-radius: 10px;
+  transition: box-shadow 0.25s;;
+  /*grid-area: 2/25;
+  z-index: 1000;*/
+
+}
+
+.search-input{
+  font-size: 16px;
+  font-family: 'Courier New', Courier, sans-serif;
+  color: #333333;
+  margin-left:var(--padding);
+  border: none;
+  outline: none;
+  background: transparent;
+  /*flex: 1;
+  grid-area: 2/25;*/
+}
+
+.search:focus-within{
+  background: #f1f1f1;
+  box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.search-input::placeholder{
+  color:rgba(0, 0, 0, 0.25);
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+#parent{
+  position:relative;
+}
