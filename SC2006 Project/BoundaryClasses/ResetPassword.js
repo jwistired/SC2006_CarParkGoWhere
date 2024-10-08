@@ -21,5 +21,6 @@ router.post('/', async (req, res) => {
         res.redirect('/resetPassword')
     }
 })
+//logout and deauthenticate user once password has been reset
 
 module.exports = router
