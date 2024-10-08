@@ -12,7 +12,7 @@ body {
 }
 
 /* Login container */
-.login-container {
+.login-container, .signup-container, .forgetpwd-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,8 +22,8 @@ body {
 }
 
 /* Login box styling */
-.login-box {
-  background-color: rgba(255, 255, 255, 0.9);
+.login-box, .signup-box, .forgetpwd-box {
+  background-color: rgba(188, 188, 188);
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -54,7 +54,7 @@ body {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .input-group input {
@@ -66,8 +66,69 @@ body {
   box-sizing: border-box;
 }
 
+.or-container {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.line {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #707070;
+  margin: 0 3px;
+}
+
+.or-text {
+  font-weight: bold;
+  color: #343434;
+  padding: 0 5px;
+}
+
+/* Buttons styling in Forget password page */
+.link-container {
+  display: flex;           
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.link-container a {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  width: calc(100% - 20px);
+}
+
 /* Button styles */
-button, .btn-login, .btn-register, .btn-guest, .btn-forgot {
+button, .btn-login {
+  display: block;
+  width: 100%;
+  margin-top: 35px;
+  font-size: 16px;
+} 
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btn-login, .btn-register {
+  flex: 1;
+  width: 50%;
+  padding: 10px;
+  margin-top: 30px;
+  box-sizing: border-box;
+}
+
+.btn-guest, .btn-forgot {
   display: block;
   width: 100%;
   padding: 10px;
@@ -81,24 +142,47 @@ button, .btn-login, .btn-register, .btn-guest, .btn-forgot {
 
 /* Specific button color styles */
 .btn-login {
-  background-color: #6A1B9A; /* Set the same purple color for the login button */
-  color: white;
-}
-
-.btn-register, .btn-forgot {
   background-color: #6A1B9A;
   color: white;
+  margin-right: 2%;
+}
+
+.btn-register {
+  background-color: white;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-forgot {
+  text-align: left;
+  padding: 0px 0px;
+  font-size: 14px;
 }
 
 .btn-guest {
-  background-color: #f1f1f1;
-  color: black;
-  border: 1px solid #ccc;
+  background-color:  #6A1B9A;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 20px);
 }
 
 /* Hover effect */
-button:hover, .btn-login:hover, .btn-register:hover, .btn-guest:hover, .btn-forgot:hover {
+button:hover, .btn-login:hover, .btn-forgot:hover, .btn-guest:hover {
   opacity: 0.9;
+}
+
+.btn-register:hover, .link-container a:hover {
+  background-color: #f0dafe;
 }
 
 /* Map container */
@@ -109,6 +193,10 @@ button:hover, .btn-login:hover, .btn-register:hover, .btn-guest:hover, .btn-forg
   left: 300px; /* Adjust to account for sidebar */
   right: 300px; /* Adjust to account for the other sidebar */
   z-index: 1;
+  display: grid; /* Use grid layout to position the map and sidebar */
+  grid-template-columns: 5fr 300px;
+  grid-template-rows: 5fr 300px; 
+  place-items: center; /* Center the map*/
 }
 
 /* Sidebar styling for parking lots */
@@ -172,4 +260,54 @@ button {
 
 button:hover {
   opacity: 0.9;
+}
+
+.search {
+  --padding: 14px;
+  position: absolute;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border-radius: 28px;
+  background-color: rgb(156, 156, 156);
+  padding: var(--padding);
+  border-radius: 10px;
+  transition: box-shadow 0.25s;;
+  /*grid-area: 2/25;
+  z-index: 1000;*/
+
+}
+
+.search-input{
+  font-size: 16px;
+  font-family: 'Courier New', Courier, sans-serif;
+  color: #333333;
+  margin-left:var(--padding);
+  border: none;
+  outline: none;
+  background: transparent;
+  /*flex: 1;
+  grid-area: 2/25;*/
+}
+
+.search:focus-within{
+  background: #f1f1f1;
+  box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.search-input::placeholder{
+  color:rgba(0, 0, 0, 0.25);
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+#parent{
+  position:relative;
 }

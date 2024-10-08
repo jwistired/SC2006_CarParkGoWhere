@@ -5,28 +5,57 @@
       <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/onemap-leaflet.js"></script>
       <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet-tilejson.js"></script>
       <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+      <link rel="stylesheet" href="\css\styles_2.css">
    </head>
 
    <body>
-      <h1>Parking Lots and History</h1>
-      <div id='mapdiv' style='height:800px;'></div>
+      <!-- Header with logo, search bar, filter, and login/register -->
+      <div class="header">
+         <!-- Logo -->
+         <img src="\css\images\logo.jpg" alt="Logo" class="logo">
 
-      <!-- Left sidebar for available parking lots -->
-      <div class="sidebar">
-         <h2>Parking Lots Found</h2>
-         <div id="parking-lots">
-            <!-- Parking lot info will be dynamically added here -->
+         <!-- Search bar with search icon -->
+         <div class="search-bar">
+            <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
+            <img src="\css\images\icons\search.png" alt="Search" class="search-icon">
+            <img src="\css\images\icons\filter.png" alt="Filter" class="filter-button" onclick="toggleFilterDropdown()">
          </div>
+
+         <!-- Login/Register Icon -->
+         <a href="/login" class="login-register">
+            <img src="\css\images\icons\login-register.png" alt="Login" class="login-icon">
+            <span class="login-caption">Login/Register</span>
+         </a>
       </div>
 
+      <div class="content">
+         <!-- Sidebar for parking lots -->
+         <div class="sidebar">
+            <h2>Parking Lots Found</h2>
+            <div id="parking-lots">
+               <!-- Parking lot info will be dynamically added here -->
+            </div>
+         </div>
+
+      <!-- MAP -->
+      <div id='mapdiv' style='height:800px;'></div>
+          
       <!-- Right sidebar for parking history -->
       <div class="history-sidebar">
-         <h2>Parking History</h2>
+      <h2>Parking History</h2>
          <div id="parking-history">
-            <!-- Parking history info will be dynamically added here -->
+         <!-- Parking history info will be dynamically added here -->
          </div>
       </div>
 
+    <!-- Filter Dropdown -->
+    <div class="filter-dropdown" id="filterDropdown">
+        <div class="filter-option">Shortest Distance</div>
+        <div class="filter-option">Cheapest Carpark</div>
+        <div class="filter-option">Parking Lots</div>
+    </div>
+   
       <!-- Filter options -->
       <div class="filter-options">
          <h3>Filter Options</h3>
@@ -42,6 +71,19 @@
       </div>
 
       <script>
+         // Function to toggle filter dropdown
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('filterDropdown');
+            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
+                dropdown.style.display = 'none';
+            }
+        });
          // Define Singapore boundary
          let sw = L.latLng(1.144, 103.535);
          let ne = L.latLng(1.494, 104.502);

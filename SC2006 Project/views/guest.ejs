@@ -1,60 +1,112 @@
-<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>
-<h1>Guest mode</h1> 
-<a href = "/register" style="display: block; margin-bottom: 10px;">Register</a>
-<a href = "/login">Login</a><!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Box Example</title>
-    <link rel="stylesheet" href="/css/mapstyle.css"> <!-- Link to the CSS file -->
-</head>
-<body>
-
-<div class="search-container">
-    <input type="text" placeholder="Search..." class="search-input">
-    <button class="search-button">Search</button>
-</div>
-
-</body>
-</html>
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest Page with Map</title>
+    <title>OneMap: Default Map (TileJSON)</title>
     <link rel="stylesheet" href="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet.css" />
     <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/onemap-leaflet.js"></script>
     <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet-tilejson.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <style>
-        #mapdiv {
-            height: 800px; /* Adjust height as needed */
-        }
-    </style>
+    <link rel="stylesheet" href="\css\styles_2.css">
 </head>
+
 <body>
-    <div id="mapdiv"></div>
+    <!-- Header with logo, search bar, filter, and login/register -->
+    <div class="header">
+        <!-- Logo -->
+        <img src="\css\images\logo.jpg" alt="Logo" class="logo">
+
+        <!-- Search bar with search icon -->
+        <div class="search-bar">
+            <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
+            <img src="\css\images\icons\search.png" alt="Search" class="search-icon">
+            <img src="\css\images\icons\filter.png" alt="Filter" class="filter-button" onclick="toggleFilterDropdown()">
+        </div>
+
+        <!-- Login/Register Icon -->
+        <a href="/login" class="login-register">
+            <img src="\css\images\icons\login-register.png" alt="Login" class="login-icon">
+            <span class="login-caption">Login/Register</span>
+        </a>
+    </div>
+
+    <div class="content">
+        <!-- Sidebar for parking lots -->
+        <div class="sidebar">
+            <h2>Parking Lots Found</h2>
+            <div id="parking-lots">
+                <!-- Parking lot info will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id='mapdiv'></div>
+        </div>
+
+        <!-- Right sidebar for parking history -->
+        <div class="history-sidebar">
+            <h2>Parking History</h2>
+            <div id="parking-history">
+                <!-- Parking history info will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Dropdown -->
+    <div class="filter-dropdown" id="filterDropdown">
+        <div class="filter-option">Shortest Distance</div>
+        <div class="filter-option">Cheapest Carpark</div>
+        <div class="filter-option">Parking Lots</div>
+    </div>
 
     <script>
+        // Function to toggle filter dropdown
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('filterDropdown');
+            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Define Singapore boundary
         let sw = L.latLng(1.144, 103.535);
         let ne = L.latLng(1.494, 104.502);
         let bounds = L.latLngBounds(sw, ne);
-
         let map;
 
-        $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function(data, status) {
-            map = L.TileJSON.createMap('mapdiv', data);
+        // Fetch OneMap TileJSON and initialize map
+        $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function(data) {
+            // Initialize the map
+            map = L.map('mapdiv', {
+                maxBounds: bounds,
+                minZoom: 11,
+                zoom: 12,
+                center: [1.3521, 103.8198],
+                zoomControl: false // Disable default zoom control
+            });
 
-            map.setMaxBounds(bounds);
-            map.setView(L.latLng(1.2868108, 103.8545349), 16);
+            // Create and add the tile layer
+            let layer = L.tileLayer(data.tiles[0], {
+                maxZoom: data.maxzoom,
+                minZoom: data.minzoom,
+                attribution: data.attribution
+            });
+            layer.addTo(map);
 
-            /** DO NOT REMOVE the OneMap attribution below **/
-            map.attributionControl.setPrefix('<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>');
+            // Add custom zoom control at the bottom right
+            L.control.zoom({
+                position: 'bottomright' // Set position to bottom right
+            }).addTo(map);
         });
+
     </script>
 </body>
 </html>
-
