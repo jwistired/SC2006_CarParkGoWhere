@@ -22,11 +22,11 @@
             <img src="\css\images\icons\filter.png" alt="Filter" class="filter-button" onclick="toggleFilterDropdown()">
          </div>
 
-         <!-- Login/Register Icon -->
-         <a href="/login" class="login-register">
-            <img src="\css\images\icons\login-register.png" alt="Login" class="login-icon">
-            <span class="login-caption">Login/Register</span>
-         </a>
+          <!-- Logout icon -->
+          <button class="logout-btn w3-button w3-indigo" onclick="logout()">
+            <img src="\css\images\icons\login-register.png" class="login-icon">
+            <span class="logout-caption">Logout</span>
+          </button>
       </div>
 
       <div class="content">
@@ -72,10 +72,21 @@
 
       <script>
          // Function to toggle filter dropdown
-        function toggleFilterDropdown() {
+         function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
+         }
+
+         function logout() {
+            fetch('/logout', {
+               method: 'DELETE'
+            }).then(response => {
+                if (response.redirected) {
+                  sessionStorage.clear();
+                  window.location.href = response.url;
+                }
+            })
+         }
 
         // Hide dropdown when clicking outside
         document.addEventListener('click', function(event) {
