@@ -128,6 +128,21 @@ html, body {
   color: black;
 }
 
+.logout-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  margin-right: 50px; /* Center the login/register icon */
+}
+
+.logout-caption {
+  font-size: 14px;
+  text-align: left;
+  color: white;
+}
+
 /* Content layout */
 .content {
   display: flex;
@@ -159,10 +174,12 @@ html, body {
 }
 
 .sidebar {
+  display: none;
   left: 0;
 }
 
 .history-sidebar {
+  display: none;
   right: 0;
 }
 
@@ -187,7 +204,7 @@ html, body {
   height: 100vh;; /* Full height minus header */
   width: 100%; /* Full width */
   position: absolute; /* Position absolute to cover the entire viewport */
-  top: 0;
+  top: 40;
   left: 0;
   z-index: 0; /* Lowest z-index */
 }
@@ -262,32 +279,6 @@ button {
 
 button:hover {
   opacity: 0.9;
-}
-
-.search {
-  --padding: 14px;
-  position: absolute;
-  width: max-content;
-  display: flex;
-  align-items: center;
-  padding: 14px;
-  border-radius: 28px;
-  background-color: rgb(156, 156, 156);
-  padding: var(--padding);
-  border-radius: 10px;
-  transition: box-shadow 0.25s;;
-  /*grid-area: 2/25;
-  z-index: 1000;*/
-
-}
-
-.search:focus-within{
-  background: #f1f1f1;
-  box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.search-input::placeholder{
-  color:rgba(0, 0, 0, 0.25);
 }
 
 .material-symbols-outlined {
