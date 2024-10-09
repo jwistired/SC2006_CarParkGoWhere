@@ -42,15 +42,6 @@ html, body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
 }
 
-.search-input {
-  width: 100%;
-  padding: 18px 40px 18px 10px; /* Adjust padding */
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-}
-
 .search-icon {
   width: 24px;
   height: 24px;
@@ -78,32 +69,39 @@ html, body {
 
 }
 
-.search-input{
-  font-size: 16px;
-  font-family: 'Courier New', Courier, sans-serif;
-  color: #333333;
-  margin-left:var(--padding);
+.search-input {
+  width: 100%;
+  padding: 18px 40px 18px 10px;
+  box-sizing: border-box;
   border: none;
+  border-radius: 5px;
   outline: none;
-  background: transparent;
-  /*flex: 1;
-  grid-area: 2/25;*/
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px; /* Change to your desired font size */
+  padding-left: 20px;
+  color: #333;
 }
+
+/* Style for the placeholder text */
+.search-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-style: italic;
+  opacity: 1;
+  /* padding-left: 20px; */
+}
+
 
 .search:focus-within{
   background: #f1f1f1;
   box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.search-input::placeholder{
-  color:rgba(0, 0, 0, 0.25);
-}
-
-
 /* Filter button */
 .filter-button {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   margin: 0 20px; /* Space between search bar and filter icon */
   cursor: pointer; /* Pointer on hover */
 }
@@ -119,8 +117,8 @@ html, body {
 }
 
 .login-icon {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   margin-bottom: 5px;
 }
 
@@ -281,18 +279,6 @@ button:hover {
   /*grid-area: 2/25;
   z-index: 1000;*/
 
-}
-
-.search-input{
-  font-size: 16px;
-  font-family: 'Courier New', Courier, sans-serif;
-  color: #333333;
-  margin-left:var(--padding);
-  border: none;
-  outline: none;
-  background: transparent;
-  /*flex: 1;
-  grid-area: 2/25;*/
 }
 
 .search:focus-within{
