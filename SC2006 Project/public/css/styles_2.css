@@ -177,10 +177,10 @@ html, body {
 }
 
 /* Map zoom control styling */
-.fixed-zoom-control {
-  position: absolute;
-  top: 10px; /* Adjust the top position as needed */
-  right: 10px; /* Adjust the right position as needed */
+.fixed-control-zoom {
+  position: fixed; /* Ensure it is fixed */
+  top: 100px; /* Adjust the top position as needed */
+  right: 20px; /* Adjust the right position as needed */
   z-index: 1000; /* Ensure it is on top of other elements */
 }
 

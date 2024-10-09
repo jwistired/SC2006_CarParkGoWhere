@@ -109,9 +109,10 @@
             map.setMaxBounds(bounds);
 
             // Add custom zoom control at the bottom right
-            L.control.zoom({
+            let zoomControl = L.control.zoom({
                 position: 'topright' // Set position
-            }).addTo(map).getContainer().classList.add('fixed-zoom-control');;
+            }).addTo(map);
+            zoomControl.getContainer().classList.add('fixed-control-zoom');
 
             // Set custom attribution
             map.attributionControl.setPrefix('<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>');
