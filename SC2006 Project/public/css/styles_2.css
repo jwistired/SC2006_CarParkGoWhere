@@ -25,23 +25,30 @@ html, body {
 .logo {
   width: 80px;
   height: auto;
+  margin-left: 50px;
 }
 
 /* Search bar and button styling */
 .search-bar {
   display: flex;
   align-items: center;
-  width: 70%;
+  width: 65%;
   position: relative;
-  margin: 0 auto;
+  margin-left: 30px;
+  background-color: white; /* Add background color */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 15px; /* Add border radius */
+  padding: 5px; /* Add padding */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
 }
 
 .search-input {
   width: 100%;
-  padding: 20px 40px;
+  padding: 18px 40px 18px 10px; /* Adjust padding */
   box-sizing: border-box;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 5px;
+  outline: none;
 }
 
 .search-icon {
@@ -54,12 +61,73 @@ html, body {
   pointer-events: none;
 }
 
+.search {
+  --padding: 14px;
+  position: absolute;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border-radius: 28px;
+  background-color: rgb(156, 156, 156);
+  padding: var(--padding);
+  border-radius: 10px;
+  transition: box-shadow 0.25s;;
+  /*grid-area: 2/25;
+  z-index: 1000;*/
+
+}
+
+.search-input{
+  font-size: 16px;
+  font-family: 'Courier New', Courier, sans-serif;
+  color: #333333;
+  margin-left:var(--padding);
+  border: none;
+  outline: none;
+  background: transparent;
+  /*flex: 1;
+  grid-area: 2/25;*/
+}
+
+.search:focus-within{
+  background: #f1f1f1;
+  box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.search-input::placeholder{
+  color:rgba(0, 0, 0, 0.25);
+}
+
+
 /* Filter button */
 .filter-button {
   width: 30px;
   height: 30px;
-  margin-left: 10px; /* Space between search bar and filter icon */
+  margin: 0 20px; /* Space between search bar and filter icon */
   cursor: pointer; /* Pointer on hover */
+}
+
+/* Login/Register Icon */
+.login-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  margin-right: 50px; /* Center the login/register icon */
+}
+
+.login-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 5px;
+}
+
+.login-caption {
+  font-size: 14px;
+  text-align: center;
+  color: black;
 }
 
 /* Content layout */
@@ -79,7 +147,7 @@ html, body {
 /* Parking lots and history styling */
 .sidebar, .history-sidebar {
   flex: 1; /* Use flex to allow them to shrink and grow */
-  width: 150px; /* Optional maximum width */
+  width: 200px; /* Optional maximum width */
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
   margin-top: 30px;
   overflow-y: auto; /* Allow scrolling */
@@ -94,17 +162,16 @@ html, body {
 
 .sidebar {
   left: 0;
-  /* position: absolute; */
 }
 
 .history-sidebar {
   right: 0;
-  /* position: absolute; */ 
 }
 
 .map-container {
   flex-grow: 1;
-  margin: 40px 180px 0 180px;
+  margin-top: 40px ;
+  margin-left: 200px;
   position: relative;
   z-index: 1; /* Lower z-index for the map */
 }
@@ -115,28 +182,6 @@ html, body {
   top: 10px; /* Adjust the top position as needed */
   right: 10px; /* Adjust the right position as needed */
   z-index: 1000; /* Ensure it is on top of other elements */
-}
-
-/* Login/Register Icon */
-.login-register {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: black;
-  margin: auto; /* Center the login/register icon */
-}
-
-.login-icon {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 5px;
-}
-
-.login-caption {
-  font-size: 14px;
-  text-align: center;
-  color: black;
 }
 
 /* Map Container */
@@ -179,7 +224,6 @@ html, body {
   width: 100%; /* Adjust width based on sidebar */
   position: absolute;
   left: 200px; /* Adjust to account for sidebar */
-  right: 200px; /* Adjust to account for the other sidebar */
   z-index: 1;
   display: grid; /* Use grid layout to position the map and sidebar */
   grid-template-columns: 5fr 300px;
