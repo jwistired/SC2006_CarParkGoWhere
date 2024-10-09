@@ -90,9 +90,9 @@ app.use('/register', checkNotAuthenticated, (req, res, next) => {req.users = use
 app.use('/forgetPassword', checkNotAuthenticated, 
     (req, res, next) => {req.users = users, next()}, 
     ForgetPassword)
-app.use('/resetPassword', checkAuthenticated, ResetPassword)
+app.use('/resetPassword', ResetPassword)
 
 // Start the server on port 3000
 app.listen(3000, () => {
-    console.log('Server running on http://localhost:3000');
-});
+    console.log('Server running on http://localhost:3000')
+})
