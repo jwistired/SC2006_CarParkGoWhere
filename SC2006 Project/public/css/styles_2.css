@@ -65,39 +65,56 @@ html, body {
 /* Content layout */
 .content {
   display: flex;
-  position: relative; /* Allow overlapping with sidebars */
-  top: 50px; /* Height of the header */
+  position: relative;
+  top: 50px; 
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 5; /* Lower than header but higher than map */
+  z-index: 5;
+  height: calc(100% - 50px); 
+  text-align: center;
+  font-size: 14px;
 }
 
+/* Parking lots and history styling */
 .sidebar, .history-sidebar {
-  width: 250px; /* Fixed width for sidebars */
+  flex: 1; /* Use flex to allow them to shrink and grow */
+  width: 150px; /* Optional maximum width */
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
-  padding: 10px;
-  z-index: 10; /* Higher z-index to float above map */
-  position: absolute; /* Position absolute to avoid overlap with header */
-  top: 50px; /* Below the header */
-  height: calc(100% - 50px); /* Full height minus header */
+  margin-top: 30px;
   overflow-y: auto; /* Allow scrolling */
+  background-color: white;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+  height: 95%; 
+  position: fixed;
 }
 
 .sidebar {
-  left: 0; /* Position the sidebar on the left */
-  min-height: fit-content;
+  left: 0;
+  /* position: absolute; */
 }
 
 .history-sidebar {
-  right: 0; /* Position the history sidebar on the right */
-  min-height: fit-content;
+  right: 0;
+  /* position: absolute; */ 
 }
 
 .map-container {
   flex-grow: 1;
+  margin: 40px 180px 0 180px;
   position: relative;
   z-index: 1; /* Lower z-index for the map */
+}
+
+/* Map zoom control styling */
+.fixed-zoom-control {
+  position: absolute;
+  top: 10px; /* Adjust the top position as needed */
+  right: 10px; /* Adjust the right position as needed */
+  z-index: 1000; /* Ensure it is on top of other elements */
 }
 
 /* Login/Register Icon */
@@ -124,7 +141,7 @@ html, body {
 
 /* Map Container */
 #mapdiv {
-  height: calc(100vh - 50px); /* Full height minus header */
+  height: 100vh;; /* Full height minus header */
   width: 100%; /* Full width */
   position: absolute; /* Position absolute to cover the entire viewport */
   top: 0;
@@ -158,44 +175,16 @@ html, body {
 
 /* Map container */
 #map {
-  height: 100vh; /* Make sure the map takes the full viewport height */
-  width: calc(100% - 600px); /* Adjust width based on sidebar */
+  height: 100%; /* Make sure the map takes the full viewport height */
+  width: 100%; /* Adjust width based on sidebar */
   position: absolute;
-  left: 300px; /* Adjust to account for sidebar */
-  right: 300px; /* Adjust to account for the other sidebar */
+  left: 200px; /* Adjust to account for sidebar */
+  right: 200px; /* Adjust to account for the other sidebar */
   z-index: 1;
   display: grid; /* Use grid layout to position the map and sidebar */
   grid-template-columns: 5fr 300px;
   grid-template-rows: 5fr 300px; 
   place-items: center; /* Center the map*/
-}
-
-/* Sidebar styling for parking lots */
-.sidebar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 300px;
-  height: 100vh; /* Full viewport height */
-  background-color: white;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  overflow-y: auto;
-}
-
-/* Sidebar styling for parking history */
-.history-sidebar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 100vh; /* Full viewport height */
-  background-color: white;
-  padding: 20px;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  overflow-y: auto;
 }
 
 /* Filter options */
