@@ -1,8 +1,5 @@
-//npm install proj4
-//<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script> //for html
-
-require('dotenv').config(); // Load .env variables
-const proj4 = require('proj4'); // Ensure proj4 is required
+require('dotenv').config(); 
+const proj4 = require('proj4'); 
 
 
 const SVY21 = 'EPSG:3414';
@@ -13,8 +10,6 @@ const WGS84 = 'EPSG:4326'; // WGS 84
 const accessKey = process.env.ACCESS_KEY; 
 const token = process.env.TOKEN; 
 
-//const accessKey = 'eec999fb-724e-4183-98be-3bd8e9600102'; 
-//const token = '-CsZn@97v09ghu-qc+z18z8QB60v1M87+884BhSR6-3uebeda2UUr+w5bn93bW-nB6Nc88y893B9GWr9sd96W9mex9GX4R-8YxcH'; // Replace with the token for the day
 
 // Function to fetch car park data
 function fetchCarParkData() {
