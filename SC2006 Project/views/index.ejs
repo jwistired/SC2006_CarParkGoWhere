@@ -59,13 +59,34 @@
       </div>
 
     <!-- Filter Dropdown -->
-    <div class="filter-dropdown" id="filterDropdown">
-        <div class="filter-option">Shortest Distance</div>
-        <div class="filter-option">Cheapest Carpark</div>
-        <div class="filter-option">Parking Lots</div>
+    <div class="filter-dropdown" id="filterDropdown">  
+      <div >
+         <label class="switch">
+            <input type="checkbox">
+               <span class="slider round">
+               </span> 
+         </label>
+      </div>
+      <div class="slider-text" >Distance</div>
+      <div >
+         <label class="switch">
+            <input type="checkbox">
+               <span class="slider round">
+               </span> 
+         </label>
+      </div>
+      <div class="slider-text">Cheapest Carpark</div>
+      <div >
+         <label class="switch">
+            <input type="checkbox">
+               <span class="slider round">
+               </span> 
+         </label>
+      </div>
+      <div class="slider-text">Parking Lots</div>
     </div>
    
-      <!-- Filter options -->
+      <!-- Filter options
       <div class="filter-options">
          <h3>Filter Options</h3>
          <label>
@@ -77,7 +98,7 @@
          <label>
             <input type="checkbox" id="availability-filter"> Parking Lots Availability
          </label>
-      </div>
+      </div> -->
 
       <!-- Logout button -->
       <form action="/logout?_method=DELETE" method="POST">
@@ -86,29 +107,11 @@
 
       <script>
          // Function to toggle filter dropdown
-         function toggleFilterDropdown() {
+          function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-         }
-
-         function search() {
-            const searchInput = document.getElementById('search').value;
-            console.log('Searching for:', searchInput);
-            // You can implement search logic here
-
-            const data = JSON.stringify(false);
-            const xhr = new XMLHttpRequest();
-            xhr.addEventListener("readystatechange", function () {
-                  if (this.readyState === this.DONE) {
-                     print(this.responseText);
-                  }
-                  else{
-                     console.log('Request failed with status:', this.status);
-                  }
-                  });
-            xhr.open("GET", "https://www.onemap.gov.sg/api/common/elastic/search?searchVal=200640&returnGeom=Y&getAddrDetails=Y&pageNum=1");    
-            xhr.send(data)
-         }
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+            dropdown.style.flexDirection = 'column';
+          }
 
          function logout() {
             fetch('/logout', {
