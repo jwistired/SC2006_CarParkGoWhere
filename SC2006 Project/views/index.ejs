@@ -1,286 +1,331 @@
 <html>
-   <head>
-      <title>OneMap: Default Map (TileJSON)</title>
-      <link rel="stylesheet" href="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet.css" />
-      <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/onemap-leaflet.js"></script>
-      <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet-tilejson.js"></script>
-      <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
-      <link rel="stylesheet" href="\css\styles_2.css">
-   </head>
+<head>
+    <title>OneMap: Default Map (TileJSON)</title>
+    <link rel="stylesheet" href="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet.css" />
+    <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/onemap-leaflet.js"></script>
+    <script src="https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet-tilejson.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+    <link rel="stylesheet" href="\css\styles_2.css">
+</head>
+<body>
+    <!-- Header with logo, search bar, filter, and login/register -->
+    <div class="header">
+        <!-- Logo -->
+        <img src="\css\images\logo.jpg" alt="Logo" class="logo">
 
-   <body>
-      <!-- Header with logo, search bar, filter, and login/register -->
-      <div class="header">
-         <!-- Logo -->
-         <img src="\css\images\logo.jpg" alt="Logo" class="logo">
-         
-         <!-- Search bar with search icon -->
-         <div class="search-bar">
-            <class class="search-input">
-               <form autocomplete="on" onsubmit="searchLocation()">
-                  <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
-                  <button class="search-icon-btn" onclick="searchLocation()">
-                     <img src="\css\images\icons\search.png">
-                  </button>
-               </form>
-            </class>
-         </div>
+        <!-- Search bar with search icon -->
+        <div class="search-bar">
+            <form autocomplete="on" onsubmit="event.preventDefault(); searchLocation();">
+                <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
+                <button type="submit" class="search-icon-btn">
+                    <img src="\css\images\icons\search.png" alt="Search">
+                </button>
+            </form>
+        </div>
 
-         <!-- Filter dropdown -->
-          <button  class="filter-button w3-button" onclick="toggleFilterDropdown()">
-            <img src="\css\images\icons\filter.png" class="filter-icon" >
+        <!-- Filter dropdown -->
+        <button class="filter-button w3-button" onclick="toggleFilterDropdown()">
+            <img src="\css\images\icons\filter.png" class="filter-icon">
             <span class="filter-caption">Filter</span>
-          </button>
+        </button>
 
-          <!-- Logout icon -->
-          <button class="logout-btn w3-button" onclick="logout()">
+        <!-- Logout icon -->
+        <button class="logout-btn w3-button" onclick="logout()">
             <img src="\css\images\icons\login-register.png" class="login-icon">
             <span class="logout-caption">Logout</span>
-          </button>
-      </div>
+        </button>
+    </div>
 
-      <div class="content">
-         <!-- Sidebar for parking lots -->
-         <div class="sidebar">
+    <div class="content">
+        <!-- Sidebar for parking lots -->
+        <div class="sidebar">
             <h2>Parking Lots Found</h2>
             <div id="parking-lots">
-               <!-- Parking lot info will be dynamically added here -->
+                <!-- Parking lot info will be dynamically added here -->
             </div>
-         </div>
+        </div>
 
-      <!-- MAP -->
-      <div id='mapdiv' style='height:800px;'></div>
-          
-      <!-- Right sidebar for parking history -->
-      <div class="history-sidebar">
-      <h2>Parking History</h2>
-         <div id="parking-history">
-         <!-- Parking history info will be dynamically added here -->
-         </div>
-      </div>
+        <!-- MAP -->
+        <div id='mapdiv' style='height:800px;'></div>
 
-    <!-- Filter Dropdown -->
-    <div class="filter-dropdown" id="filterDropdown">  
-      <div >
-         <label class="switch">
-            <input type="checkbox">
-               <span class="slider round">
-               </span> 
-         </label>
-      </div>
-      <div class="slider-text" >Distance</div>
-      <div >
-         <label class="switch">
-            <input type="checkbox">
-               <span class="slider round">
-               </span> 
-         </label>
-      </div>
-      <div class="slider-text">Cheapest Carpark</div>
-      <div >
-         <label class="switch">
-            <input type="checkbox">
-               <span class="slider round">
-               </span> 
-         </label>
-      </div>
-      <div class="slider-text">Parking Lots</div>
-    </div>
-   
-      <!-- Filter options
-      <div class="filter-options">
-         <h3>Filter Options</h3>
-         <label>
-            <input type="checkbox" id="shortest-distance-filter"> Shortest Distance
-         </label>
-         <label>
-            <input type="checkbox" id="cheapest-parking-filter"> Cheapest Car Park
-         </label>
-         <label>
-            <input type="checkbox" id="availability-filter"> Parking Lots Availability
-         </label>
-      </div> -->
+        <!-- Right sidebar for parking history -->
+        <div class="history-sidebar">
+            <h2>Parking History</h2>
+            <div id="parking-history">
+                <!-- Parking history info will be dynamically added here -->
+            </div>
+        </div>
 
-      <!-- Logout button -->
-      <form action="/logout?_method=DELETE" method="POST">
-         <button type = "submit">Log Out</button>
-      </form>
+        <!-- Filter Dropdown -->
+        <div class="filter-dropdown" id="filterDropdown">
+            <div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="slider-text">Distance</div>
+            <div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="slider-text">Cheapest Carpark</div>
+            <div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="slider-text">Parking Lots</div>
+        </div>
 
-      <script>
-         // Function to toggle filter dropdown
-          function toggleFilterDropdown() {
-            const dropdown = document.getElementById('filterDropdown');
-            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-            dropdown.style.flexDirection = 'column';
-          }
+        <script>
+            let sw = L.latLng(1.144, 103.535);
+            let ne = L.latLng(1.494, 104.502);
+            let bounds = L.latLngBounds(sw, ne);
+            let map, userLatLng;
 
-         function logout() {
-            fetch('/logout', {
-               method: 'DELETE'
-            }).then(response => {
-                if (response.redirected) {
-                  sessionStorage.clear();
-                  window.location.href = response.url;
+            // Initialize the map
+            $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function (data) {
+                if (map) {
+                    map.remove();
                 }
-            })
-         }
+                map = L.TileJSON.createMap('mapdiv', data);
+                map.setMaxBounds(bounds);
+                map.setView(L.latLng(1.2868108, 103.8545349), 16);
 
-        // Hide dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('filterDropdown');
-            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
-                dropdown.style.display = 'none';
-            }
-        });
-         // Define Singapore boundary
-         let sw = L.latLng(1.144, 103.535);
-         let ne = L.latLng(1.494, 104.502);
-         let bounds = L.latLngBounds(sw, ne);
-         let map;
+                // Add attribution
+                map.attributionControl.setPrefix('<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>');
 
-         // Fetch OneMap TileJSON and initialize map
-         $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function(data, status) {
-            map = L.TileJSON.createMap('mapdiv', data);
-            map.setMaxBounds(bounds);
-            map.setView(L.latLng(1.2868108, 103.8545349), 16);
-
-            // Add attribution
-            map.attributionControl.setPrefix('<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>');
-         });
-
-         // Simulated data for car parks (you would fetch this from OneMap API)
-         const parkingLots = [
-            { id: 1, lat: 1.3521, lng: 103.8198, title: 'Car Park 1', price: 0.50, distance: 200, availability: 37 },
-            { id: 2, lat: 1.3531, lng: 103.8190, title: 'Car Park 2', price: 0.60, distance: 300, availability: 25 },
-            { id: 3, lat: 1.3541, lng: 103.8185, title: 'Car Park 3', price: 0.55, distance: 400, availability: 23 }
-         ];
-
-         // Function to display parking lots
-         function displayParkingLots(parkingLots) {
-            parkingLots.forEach(lot => {
-               // Add marker to the map
-               const marker = L.marker([lot.lat, lot.lng]).addTo(map)
-                  .bindPopup(`<strong>${lot.title}</strong><br>Price: $${lot.price}/hour<br>Distance: ${lot.distance}m<br>Availability: ${lot.availability}/50`);
-
-               // Append parking lot info to the sidebar
-               const parkingLotDiv = document.createElement('div');
-               parkingLotDiv.classList.add('parking-lot');
-               parkingLotDiv.innerHTML = `
-                  <h3>${lot.title}</h3>
-                  <p>Price: $${lot.price} / hour</p>
-                  <p>Distance: ${lot.distance}m</p>
-                  <p>Availability: ${lot.availability}/50 spots</p>
-                  <button>Select</button>
-               `;
-               document.getElementById('parking-lots').appendChild(parkingLotDiv);
+                // Call functions that need the map to be initialized
+                showUserLocation();
+                displayParkingLots(parkingLots);
+                displayParkingHistory();
             });
-         }
 
-         // Function to search for locations using OneMap API
-         function searchLocation() {
-            const searchQuery = document.getElementById('search').value;
-
-            if (searchQuery.trim() !== "") {
-               const url = `https://developers.onemap.sg/commonapi/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=N`;
-
-               $.get(url, function(data) {
-                  if (data.results.length > 0) {
-                     const firstResult = data.results[0]; // Take the first result
-
-                     // Extract the latitude and longitude of the search result
-                     const lat = parseFloat(firstResult.LATITUDE);
-                     const lng = parseFloat(firstResult.LONGITUDE);
-
-                     // Add a marker for the searched location
-                     const searchMarker = L.marker([lat, lng]).addTo(map)
-                        .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
-                        .openPopup();
-
-                     // Center the map to the search result location
-                     map.setView([lat, lng], 16);
-                  } else {
-                     alert("No results found.");
-                  }
-               });
-            } else {
-               alert("Please enter a location to search for.");
+            // Toggle filter dropdown visibility
+            function toggleFilterDropdown() {
+                const dropdown = document.getElementById('filterDropdown');
+                dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+                dropdown.style.flexDirection = 'column';
             }
-         }
 
-         // Attach event listener to the search button or input field
-         document.getElementById('search').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-               searchLocation();
+            function logout() {
+                fetch('/logout', {
+                    method: 'DELETE'
+                }).then(response => {
+                    if (response.redirected) {
+                        sessionStorage.clear();
+                        window.location.href = response.url;
+                    }
+                });
             }
-         });
 
+            // Hide dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                const dropdown = document.getElementById('filterDropdown');
+                if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
+                    dropdown.style.display = 'none';
+                }
+            });
 
-         // Function to simulate parking history
-         function displayParkingHistory() {
-            const history = [
-               { id: 5, title: 'Car Park 5', price: 0.55, distance: 400, availability: 23 }
+            // Parking lot data
+            const parkingLots = [
+                { id: 1, lat: 1.3521, lng: 103.8198, title: 'Car Park 1', price: 0.50, distance: 200, availability: 37 },
+                { id: 2, lat: 1.3531, lng: 103.8190, title: 'Car Park 2', price: 0.60, distance: 300, availability: 25 },
+                { id: 3, lat: 1.3541, lng: 103.8185, title: 'Car Park 3', price: 0.55, distance: 400, availability: 23 }
             ];
 
-            history.forEach(lot => {
-               const historyDiv = document.createElement('div');
-               historyDiv.classList.add('parking-history');
-               historyDiv.innerHTML = `
-                  <h3>${lot.title}</h3>
-                  <p>Price: $${lot.price} / hour</p>
-                  <p>Distance: ${lot.distance}m</p>
-                  <p>Availability: ${lot.availability}/50 spots</p>
-                  <button>Select</button>
-               `;
-               document.getElementById('parking-history').appendChild(historyDiv);
+            // Display parking lots on map
+            function displayParkingLots(parkingLots) {
+                if (!map) {
+                    console.error("Map is not initialized yet.");
+                    return;
+                }
+
+                parkingLots.forEach(lot => {
+                    if (lot.lat && lot.lng) {
+                        const marker = L.marker([lot.lat, lot.lng]).addTo(map)
+                            .bindPopup(`<strong>${lot.title}</strong><br>Price: $${lot.price}/hour<br>Distance: ${lot.distance}m<br>Availability: ${lot.availability}/50`);
+
+                        // Append parking lot info to sidebar
+                        const parkingLotDiv = document.createElement('div');
+                        parkingLotDiv.classList.add('parking-lot');
+                        parkingLotDiv.innerHTML = `
+                            <h3>${lot.title}</h3>
+                            <p>Price: $${lot.price} / hour</p>
+                            <p>Distance: ${lot.distance}m</p>
+                            <p>Availability: ${lot.availability}/50 spots</p>
+                            <button>Select</button>
+                        `;
+                        document.getElementById('parking-lots').appendChild(parkingLotDiv);
+                    } else {
+                        console.error("Invalid parking lot data: missing latitude or longitude.", lot);
+                    }
+                });
+            }
+
+            // Function to search for locations using OneMap API
+            function searchLocation() {
+                const searchQuery = document.getElementById('search').value;
+
+                if (searchQuery.trim() !== "") {
+                    const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
+
+                    $.get(url, function (data) {
+                        if (data.results.length > 0) {
+                            const firstResult = data.results[0];
+                            const lat = parseFloat(firstResult.LATITUDE);
+                            const lng = parseFloat(firstResult.LONGITUDE);
+                            const searchLatLng = L.latLng(lat, lng);
+
+                            // Add marker for the searched location
+                            L.marker([lat, lng]).addTo(map)
+                                .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
+                                .openPopup();
+
+                            // Center the map to the search result location
+                            map.setView([lat, lng], 16);
+
+                            // Call the routing function if user's location is available
+                            if (userLatLng) {
+                                getRoute(userLatLng, searchLatLng);
+                            } else {
+                                console.error("User location is not available.");
+                            }
+                        } else {
+                            alert("No results found.");
+                        }
+                    }).fail(function () {
+                        alert("Error fetching data from OneMap API.");
+                    });
+                } else {
+                    alert("Please enter a location to search for.");
+                }
+            }
+
+            // Display parking history
+            function displayParkingHistory() {
+                const history = [
+                    { id: 5, title: 'Car Park 5', price: 0.55, distance: 400, availability: 23 }
+                ];
+
+                history.forEach(lot => {
+                    const historyDiv = document.createElement('div');
+                    historyDiv.classList.add('parking-history');
+                    historyDiv.innerHTML = `
+                        <h3>${lot.title}</h3>
+                        <p>Price: $${lot.price} / hour</p>
+                        <p>Distance: ${lot.distance}m</p>
+                        <p>Availability: ${lot.availability}/50 spots</p>
+                        <button>Select</button>
+                    `;
+                    document.getElementById('parking-history').appendChild(historyDiv);
+                });
+            }
+
+            // Get user's location
+            function showUserLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+
+                        // Add marker for user's location
+                        L.marker(userLatLng).addTo(map)
+                            .bindPopup('Your Location')
+                            .openPopup();
+
+                        // Center map on user's location
+                        map.setView(userLatLng, 16);
+                    }, function (error) {
+                        console.error("Error getting location: ", error.message);
+                    });
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+            }
+
+           // Function to get the route between user location and searched location
+         function getRoute(startLatLng, endLatLng) {
+            if (!startLatLng || !endLatLng) {
+               console.error("Start or end location is missing.");
+               return;
+            }
+
+            // Get current date and time for the route request
+            const currentDate = new Date();
+            const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
+            const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
+
+            // Construct the API URL according to the documentation
+            const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=walk&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT&maxWalkDistance=1000&numItineraries=3`;
+
+            $.ajax({
+               url: routeUrl,
+               type: 'GET',
+               headers: {
+                     'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ODMzODhiYmIyODViNzIwYWFmMDc2NTcyZDdiYWQ0NyIsImlzcyI6Imh0dHA6Ly9pbnRlcm5hbC1hbGItb20tcHJkZXppdC1pdC0xMjIzNjk4OTkyLmFwLXNvdXRoZWFzdC0xLmVsYi5hbWF6b25hd3MuY29tL2FwaS92Mi91c2VyL3Bhc3N3b3JkIiwiaWF0IjoxNzI4NTc1NzQ2LCJleHAiOjE3Mjg4MzQ5NDYsIm5iZiI6MTcyODU3NTc0NiwianRpIjoibEducjVoRGpqVTNUaW9wZCIsInVzZXJfaWQiOjQ4NDgsImZvcmV2ZXIiOmZhbHNlfQ.ArI1-P0tc-GN1xt8KCbxiDD2AOztYQTuENyN18hjODQ' // Replace with your actual access token
+               },
+               success: function (data) {
+                     if (data && data.route_geometry) {
+                        // Decode the route geometry to get the polyline coordinates
+                        const routeCoordinates = decodePolyline(data.route_geometry);
+
+                        // Draw the route on the map
+                        L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
+                     } else {
+                        alert("No route found between the specified locations.");
+                     }
+               },
+               error: function () {
+                     alert("Error fetching route from OneMap API.");
+               }
             });
          }
 
-         // Function to get user location and add marker
-         function showUserLocation() {
-            if (navigator.geolocation) {
-               navigator.geolocation.getCurrentPosition(function(position) {
-                     const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
 
-                     // Add marker for user location
-                     const userMarker = L.marker(userLatLng).addTo(map)
-                        .bindPopup('Your Location')
-                        .openPopup();
+            // Function to decode polyline into an array of coordinates
+            function decodePolyline(encoded) {
+               let points = [];
+               let index = 0, len = encoded.length;
+               let lat = 0, lng = 0;
 
-                     // Center the map to the user's location
-                     map.setView(userLatLng, 16);
-               }, function(error) {
-                     console.error("Error getting location: ", error.message);
-               });
-            } else {
-               alert("Geolocation is not supported by this browser.");
+               while (index < len) {
+                  let b, shift = 0, result = 0;
+                  do {
+                        b = encoded.charCodeAt(index++) - 63;
+                        result |= (b & 0x1f) << shift;
+                        shift += 5;
+                  } while (b >= 0x20);
+                  let dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+                  lat += dlat;
+
+                  shift = 0;
+                  result = 0;
+                  do {
+                        b = encoded.charCodeAt(index++) - 63;
+                        result |= (b & 0x1f) << shift;
+                        shift += 5;
+                  } while (b >= 0x20);
+                  let dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+                  lng += dlng;
+
+                  points.push([lat / 1E5, lng / 1E5]);
+               }
+
+               return points;
             }
-         }
-
-         // Call the function to show user location
-         showUserLocation();
-        
 
 
-         // Display initial data
-         displayParkingLots(parkingLots);
-         displayParkingHistory();
-
-         // Optional: Implement filter functionality
-         document.getElementById('shortest-distance-filter').addEventListener('change', function () {
-            console.log('Shortest distance filter toggled');
-            // You can implement sorting logic here
-         });
-
-         document.getElementById('cheapest-parking-filter').addEventListener('change', function () {
-            console.log('Cheapest parking filter toggled');
-            // You can implement sorting logic here
-         });
-
-         document.getElementById('availability-filter').addEventListener('change', function () {
-            console.log('Availability filter toggled');
-            // You can implement sorting logic here
-         });
-      </script>
-   </body>
+            // Attach event listener to the search button or input field
+            document.getElementById('search').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    searchLocation();
+                }
+            });
+        </script>
+</body>
 </html>
