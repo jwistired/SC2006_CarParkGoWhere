@@ -32,6 +32,8 @@ html, body {
 .search-bar {
   display: flex;
   align-items: center;
+  flex-direction: row;
+  height: 50px;
   width: 65%;
   position: relative;
   margin-left: 30px;
@@ -40,9 +42,27 @@ html, body {
   border-radius: 15px; /* Add border radius */
   padding: 5px; /* Add padding */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+
 }
 
+/* Button styling */
+button {
+  background-color: #6a1b9a;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/*Search Bar*/
+
 .search-icon {
+  align-items: center;
   width: 24px;
   height: 24px;
   position: absolute; 
@@ -50,6 +70,8 @@ html, body {
   top: 50%; 
   transform: translateY(-50%);
   pointer-events: none;
+  grid-template-columns: 5fr;
+  grid-row: 1;
 }
 
 .search {
@@ -63,15 +85,12 @@ html, body {
   background-color: rgb(156, 156, 156);
   padding: var(--padding);
   border-radius: 10px;
-  transition: box-shadow 0.25s;;
-  /*grid-area: 2/25;
-  z-index: 1000;*/
-
+  transition: box-shadow 0.25s;
 }
 
 .search-input {
   width: 100%;
-  padding: 18px 40px 18px 10px;
+  padding-top: 10px;
   box-sizing: border-box;
   border: none;
   border-radius: 5px;
@@ -92,21 +111,72 @@ html, body {
   /* padding-left: 20px; */
 }
 
-
 .search:focus-within{
   background: #f1f1f1;
   box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Filter button */
+/* Filter Related styles */
 .filter-button {
-  width: 24px;
-  height: 24px;
-  margin: 0 20px; /* Space between search bar and filter icon */
-  cursor: pointer; /* Pointer on hover */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  margin-right: 50px;
+  scale: 1;
 }
 
-/* Login/Register Icon */
+.filter-caption {
+  font-size: 14px;
+  text-align: left;
+  color: white;
+}
+
+.filter-icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.filter-dropdown {
+  display: none; /* Hidden by default */
+  position: absolute; /* Position it below the filter button */
+  top: 70px; /* Align with the header */
+  right: 90px; /* Align right with filter button */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 15; /* Higher than other elements */
+  padding: 10px;
+  width: 150px; /* Width of the dropdown */
+}
+
+.filter-options {
+  position: absolute;
+  bottom: 20px;
+  right: 320px; /* Adjust to fit within the content area */
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.filter-option {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.filter-option:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* Login/Register/Logout Related Styles */
+
+/* Login/Register Icons */
 .login-register {
   display: flex;
   flex-direction: column;
@@ -116,6 +186,7 @@ html, body {
   margin-right: 50px; /* Center the login/register icon */
 }
 
+/* Login/Register Icons */
 .login-icon {
   width: 30px;
   height: 30px;
@@ -127,7 +198,7 @@ html, body {
   text-align: center;
   color: black;
 }
-
+/* Logout Icons */
 .logout-btn{
   display: flex;
   flex-direction: column;
@@ -173,6 +244,15 @@ html, body {
   position: fixed;
 }
 
+/* Parking lot info styling */
+.parking-lot, .parking-history {
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
 .sidebar {
   display: none;
   left: 0;
@@ -183,13 +263,7 @@ html, body {
   right: 0;
 }
 
-.map-container {
-  flex-grow: 1;
-  margin-top: 40px ;
-  margin-left: 200px;
-  position: relative;
-  z-index: 1; /* Lower z-index for the map */
-}
+/*Map Related Styles*/
 
 /* Map zoom control styling */
 .fixed-control-zoom {
@@ -201,7 +275,7 @@ html, body {
 
 /* Map Container */
 #mapdiv {
-  height: 100vh;; /* Full height minus header */
+  height: 100vh; /* Full height minus header */
   width: 100%; /* Full width */
   position: absolute; /* Position absolute to cover the entire viewport */
   top: 40;
@@ -209,28 +283,12 @@ html, body {
   z-index: 0; /* Lowest z-index */
 }
 
-/* Filter Dropdown */
-.filter-dropdown {
-  display: none; /* Hidden by default */
-  position: absolute; /* Position it below the filter button */
-  top: 70px; /* Align with the header */
-  right: 90px; /* Align right with filter button */
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 15; /* Higher than other elements */
-  padding: 10px;
-  width: 150px; /* Width of the dropdown */
-}
-
-.filter-option {
-  padding: 5px;
-  cursor: pointer;
-}
-
-.filter-option:hover {
-  background-color: #f0f0f0;
+.map-container {
+  flex-grow: 1;
+  margin-top: 40px ;
+  margin-left: 200px;
+  position: relative;
+  z-index: 1; /* Lower z-index for the map */
 }
 
 /* Map container */
@@ -246,49 +304,11 @@ html, body {
   place-items: center; /* Center the map*/
 }
 
-/* Filter options */
-.filter-options {
-  position: absolute;
-  bottom: 20px;
-  right: 320px; /* Adjust to fit within the content area */
-  background-color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-}
-
-/* Parking lot info styling */
-.parking-lot, .parking-history {
-  margin-bottom: 15px;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-/* Button styling */
-button {
-  background-color: #6a1b9a;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
+/* Icon styling */
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
   'wght' 400,
   'GRAD' 0,
   'opsz' 24
-}
-
-#parent{
-  position:relative;
 }

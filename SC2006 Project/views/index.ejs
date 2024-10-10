@@ -17,13 +17,22 @@
 
          <!-- Search bar with search icon -->
          <div class="search-bar">
-            <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
-            <img src="\css\images\icons\search.png" alt="Search" class="search-icon">
-            <img src="\css\images\icons\filter.png" alt="Filter" class="filter-button" onclick="toggleFilterDropdown()">
+            <class class="search-input">
+               <form autocomplete="on" method="POST">
+                  <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
+                  <img src="\css\images\icons\search.png" alt="Search" class="search-icon" type="submit" >
+               </form>
+            </class>
          </div>
 
+         <!-- Filter dropdown -->
+          <button  class="filter-button w3-button" onclick="toggleFilterDropdown()">
+            <img src="\css\images\icons\filter.png" class="filter-icon" >
+            <span class="filter-caption">Filter</span>
+          </button>
+
           <!-- Logout icon -->
-          <button class="logout-btn w3-button w3-indigo" onclick="logout()">
+          <button class="logout-btn w3-button" onclick="logout()">
             <img src="\css\images\icons\login-register.png" class="login-icon">
             <span class="logout-caption">Logout</span>
           </button>
@@ -80,6 +89,25 @@
          function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+         }
+
+         function search() {
+            const searchInput = document.getElementById('search').value;
+            console.log('Searching for:', searchInput);
+            // You can implement search logic here
+
+            const data = JSON.stringify(false);
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener("readystatechange", function () {
+                  if (this.readyState === this.DONE) {
+                     print(this.responseText);
+                  }
+                  else{
+                     console.log('Request failed with status:', this.status);
+                  }
+                  });
+            xhr.open("GET", "https://www.onemap.gov.sg/api/common/elastic/search?searchVal=200640&returnGeom=Y&getAddrDetails=Y&pageNum=1");    
+            xhr.send(data)
          }
 
          function logout() {
