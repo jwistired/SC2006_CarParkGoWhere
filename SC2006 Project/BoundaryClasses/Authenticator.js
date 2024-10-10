@@ -14,7 +14,19 @@ function checkNotAuthenticated(req, res, next) {
     next()
 }
 
+function terminateAuthentication(req) {
+    // Clear the req.user object to terminate Passport authentication
+    req.user = null
+
+    // isAuthenticated() status
+    if (req.session && req.session.passport) {
+        delete req.session.passport
+    }
+}
+
+
 module.exports = {
     checkAuthenticated,
-    checkNotAuthenticated
+    checkNotAuthenticated,
+    terminateAuthentication
 }
