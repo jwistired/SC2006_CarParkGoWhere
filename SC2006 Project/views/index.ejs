@@ -248,43 +248,51 @@
                 }
             }
 
-           // Function to get the route between user location and searched location
-         function getRoute(startLatLng, endLatLng) {
-            if (!startLatLng || !endLatLng) {
-               console.error("Start or end location is missing.");
-               return;
+           // Declare a variable to store the current route
+let currentRoute;
+
+// Function to get the route between user location and searched location
+function getRoute(startLatLng, endLatLng) {
+    if (!startLatLng || !endLatLng) {
+        console.error("Start or end location is missing.");
+        return;
+    }
+
+    // Get current date and time for the route request
+    const currentDate = new Date();
+    const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
+    const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
+
+    // Construct the API URL according to the documentation
+    const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=walk&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT&maxWalkDistance=1000&numItineraries=3`;
+
+    $.ajax({
+        url: routeUrl,
+        type: 'GET',
+        headers: {
+            'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ODMzODhiYmIyODViNzIwYWFmMDc2NTcyZDdiYWQ0NyIsImlzcyI6Imh0dHA6Ly9pbnRlcm5hbC1hbGItb20tcHJkZXppdC1pdC0xMjIzNjk4OTkyLmFwLXNvdXRoZWFzdC0xLmVsYi5hbWF6b25hd3MuY29tL2FwaS92Mi91c2VyL3Bhc3N3b3JkIiwiaWF0IjoxNzI4NTc1NzQ2LCJleHAiOjE3Mjg4MzQ5NDYsIm5iZiI6MTcyODU3NTc0NiwianRpIjoibEducjVoRGpqVTNUaW9wZCIsInVzZXJfaWQiOjQ4NDgsImZvcmV2ZXIiOmZhbHNlfQ.ArI1-P0tc-GN1xt8KCbxiDD2AOztYQTuENyN18hjODQ' // Replace with actual access token
+        },
+        success: function (data) {
+            if (data && data.route_geometry) {
+                // Decode the route geometry to get the polyline coordinates
+                const routeCoordinates = decodePolyline(data.route_geometry);
+
+                // If there is an existing route, remove it
+                if (currentRoute) {
+                    map.removeLayer(currentRoute);
+                }
+
+                // Draw the new route on the map
+                currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
+            } else {
+                alert("No route found between the specified locations.");
             }
-
-            // Get current date and time for the route request
-            const currentDate = new Date();
-            const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
-            const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
-
-            // Construct the API URL according to the documentation
-            const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=walk&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT&maxWalkDistance=1000&numItineraries=3`;
-
-            $.ajax({
-               url: routeUrl,
-               type: 'GET',
-               headers: {
-                     'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ODMzODhiYmIyODViNzIwYWFmMDc2NTcyZDdiYWQ0NyIsImlzcyI6Imh0dHA6Ly9pbnRlcm5hbC1hbGItb20tcHJkZXppdC1pdC0xMjIzNjk4OTkyLmFwLXNvdXRoZWFzdC0xLmVsYi5hbWF6b25hd3MuY29tL2FwaS92Mi91c2VyL3Bhc3N3b3JkIiwiaWF0IjoxNzI4NTc1NzQ2LCJleHAiOjE3Mjg4MzQ5NDYsIm5iZiI6MTcyODU3NTc0NiwianRpIjoibEducjVoRGpqVTNUaW9wZCIsInVzZXJfaWQiOjQ4NDgsImZvcmV2ZXIiOmZhbHNlfQ.ArI1-P0tc-GN1xt8KCbxiDD2AOztYQTuENyN18hjODQ' // Replace with your actual access token
-               },
-               success: function (data) {
-                     if (data && data.route_geometry) {
-                        // Decode the route geometry to get the polyline coordinates
-                        const routeCoordinates = decodePolyline(data.route_geometry);
-
-                        // Draw the route on the map
-                        L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
-                     } else {
-                        alert("No route found between the specified locations.");
-                     }
-               },
-               error: function () {
-                     alert("Error fetching route from OneMap API.");
-               }
-            });
-         }
+        },
+        error: function () {
+            alert("Error fetching route from OneMap API.");
+        }
+    });
+}
 
 
             // Function to decode polyline into an array of coordinates
