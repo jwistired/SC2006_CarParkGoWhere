@@ -14,7 +14,7 @@
       <div class="header">
          <!-- Logo -->
          <img src="\css\images\logo.jpg" alt="Logo" class="logo">
-
+         
          <!-- Search bar with search icon -->
          <div class="search-bar">
             <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
@@ -133,6 +133,45 @@
             });
          }
 
+         // Function to search for locations using OneMap API
+         function searchLocation() {
+            const searchQuery = document.getElementById('search').value;
+
+            if (searchQuery.trim() !== "") {
+               const url = `https://developers.onemap.sg/commonapi/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=N`;
+
+               $.get(url, function(data) {
+                  if (data.results.length > 0) {
+                     const firstResult = data.results[0]; // Take the first result
+
+                     // Extract the latitude and longitude of the search result
+                     const lat = parseFloat(firstResult.LATITUDE);
+                     const lng = parseFloat(firstResult.LONGITUDE);
+
+                     // Add a marker for the searched location
+                     const searchMarker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
+                        .openPopup();
+
+                     // Center the map to the search result location
+                     map.setView([lat, lng], 16);
+                  } else {
+                     alert("No results found.");
+                  }
+               });
+            } else {
+               alert("Please enter a location to search for.");
+            }
+         }
+
+         // Attach event listener to the search button or input field
+         document.getElementById('search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+               searchLocation();
+            }
+         });
+
+
          // Function to simulate parking history
          function displayParkingHistory() {
             const history = [
@@ -176,7 +215,6 @@
 
          // Call the function to show user location
          showUserLocation();
-
         
 
 
