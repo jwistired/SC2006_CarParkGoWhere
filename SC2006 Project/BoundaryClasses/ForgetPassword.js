@@ -3,9 +3,8 @@ const express = require('express')
 const router = express.Router()
 const nodemailer = require('nodemailer')
 const otp = require('otp-generator')
+const terminateAuthentication = require('./Authenticator.js')
 var generatedOTP
-
-var message
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -19,23 +18,25 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res, next) => {
-
+    //check if email exists within our users array
     passport.authenticate('local-forget-password', {
         failureRedirect: '/forgetPassword',
         failureFlash: true
-    })(req, res, next);
+    })(req, res, next)
     }, (req, res) => {
     console.log("Authentication successful, sending OTP...");
     generatedOTP = otp.generate(6,{digits: true, alphabets:false, upperCase:false, specialChars:false})
+    req.session.OTPGeneratedAt = Date.now()
+    req.session.email = 
     req.session.generatedOTP = generatedOTP
-
+    // create message for sending
     const message = {
         from: "CarparkGoWhere <carparkgowhere@gmail.com>",
         to: req.user.email,
         subject: "CarparkGoWhere reset password",
-        text: `Your OTP is: ${generatedOTP}`
+        text: `Your OTP is: ${generatedOTP}. Token will expire in 5 minute`
     };
-
+    //send mail
     transporter.sendMail(message, (error, info) => {
         if (error) {
             console.error("Error sending OTP:", error)
