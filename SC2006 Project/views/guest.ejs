@@ -19,10 +19,21 @@
 
         <!-- Search bar with search icon -->
         <div class="search-bar">
-            <input class="search-input" type="search" id="search" placeholder="Search for your destination">
-            <img src="\css\images\icons\search.png" alt="Search" class="search-icon">
-            <img src="\css\images\icons\filter.png" alt="Filter" class="filter-button" onclick="toggleFilterDropdown()">
-        </div>
+            <class class="search-input" top="50px">
+               <form autocomplete="on" onsubmit="searchLocation()">
+                  <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
+                  <button class="search-icon-btn" onclick="searchLocation()">
+                     <img src="\css\images\icons\search.png">
+                  </button>
+               </form>
+            </class>
+         </div>
+
+        <!-- Filter dropdown -->
+        <button  class="filter-button w3-button" onclick="toggleFilterDropdown()">
+            <img src="\css\images\icons\filter.png" class="filter-icon" >
+            <span class="filter-caption">Filter</span>
+          </button>
 
         <!-- Login/Register Icon -->
         <a href="/login" class="login-register">
@@ -31,19 +42,19 @@
         </a>
     </div>
 
-    <div class="content">
-        <!-- Sidebar for parking lots -->
-        <div class="sidebar">
+    <!-- <div class="content">
+        Sidebar for parking lots -->
+        <!--  <div class="sidebar">
             <h2>Parking Lots Found</h2>
-            <div id="parking-lots">
+            <div id="parking-lots"> -->
                 <!-- Parking lot info will be dynamically added here -->
-            </div>
-        </div>
+            <!-- </div>
+        </div> --> 
 
-        <!-- Map -->
-        <div class="map-container">
-            <div id='mapdiv'></div>
-        </div>
+    <!-- Map -->
+    <div class="map-container">
+        <div id='mapdiv'></div>
+    </div>
 
         <!-- Right sidebar for parking history -->
         <!-- <div class="history-sidebar">
@@ -52,20 +63,42 @@
                 Parking history info will be dynamically added here
             </div>
         </div> -->
-    </div>
+    <!-- </div> -->
 
-    <!-- Filter Dropdown -->
-    <div class="filter-dropdown" id="filterDropdown">
-        <div class="filter-option">Shortest Distance</div>
-        <div class="filter-option">Cheapest Carpark</div>
-        <div class="filter-option">Parking Lots</div>
-    </div>
+     <!-- Filter Dropdown -->
+     <div class="filter-dropdown" id="filterDropdown">  
+        <div >
+           <label class="switch">
+              <input type="checkbox">
+                 <span class="slider round">
+                 </span> 
+           </label>
+        </div>
+        <div class="slider-text" >Distance</div>
+        <div >
+           <label class="switch">
+              <input type="checkbox">
+                 <span class="slider round">
+                 </span> 
+           </label>
+        </div>
+        <div class="slider-text">Cheapest Carpark</div>
+        <div >
+           <label class="switch">
+              <input type="checkbox">
+                 <span class="slider round">
+                 </span> 
+           </label>
+        </div>
+        <div class="slider-text">Parking Lots</div>
+      </div>
 
     <script>
         // Function to toggle filter dropdown
         function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+            dropdown.style.flexDirection = 'column';
         }
 
         // Hide dropdown when clicking outside
@@ -75,6 +108,37 @@
                 dropdown.style.display = 'none';
             }
         });
+
+        // Function to search for locations using OneMap API
+        function searchLocation() {
+            const searchQuery = document.getElementById('search').value;
+
+            if (searchQuery.trim() !== "") {
+               const url = `https://developers.onemap.sg/commonapi/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=N`;
+
+               $.get(url, function(data) {
+                  if (data.results.length > 0) {
+                     const firstResult = data.results[0]; // Take the first result
+
+                     // Extract the latitude and longitude of the search result
+                     const lat = parseFloat(firstResult.LATITUDE);
+                     const lng = parseFloat(firstResult.LONGITUDE);
+
+                     // Add a marker for the searched location
+                     const searchMarker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
+                        .openPopup();
+
+                     // Center the map to the search result location
+                     map.setView([lat, lng], 16);
+                  } else {
+                     alert("No results found.");
+                  }
+               });
+            } else {
+               alert("Please enter a location to search for.");
+            }
+         }
 
         // Define Singapore boundary
         let sw = L.latLng(1.144, 103.535);

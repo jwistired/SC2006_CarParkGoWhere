@@ -17,16 +17,27 @@
          
          <!-- Search bar with search icon -->
          <div class="search-bar">
-            <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
-            <img src="\css\images\icons\search.png" alt="Search" class="search-icon">
-            <img src="\css\images\icons\filter.png" alt="Filter" class="filter-button" onclick="toggleFilterDropdown()">
+            <class class="search-input">
+               <form autocomplete="on" onsubmit="searchLocation()">
+                  <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
+                  <button class="search-icon-btn" onclick="searchLocation()">
+                     <img src="\css\images\icons\search.png">
+                  </button>
+               </form>
+            </class>
          </div>
 
-         <!-- Login/Register Icon -->
-         <a href="/login" class="login-register">
-            <img src="\css\images\icons\login-register.png" alt="Login" class="login-icon">
-            <span class="login-caption">Login/Register</span>
-         </a>
+         <!-- Filter dropdown -->
+          <button  class="filter-button w3-button" onclick="toggleFilterDropdown()">
+            <img src="\css\images\icons\filter.png" class="filter-icon" >
+            <span class="filter-caption">Filter</span>
+          </button>
+
+          <!-- Logout icon -->
+          <button class="logout-btn w3-button" onclick="logout()">
+            <img src="\css\images\icons\login-register.png" class="login-icon">
+            <span class="logout-caption">Logout</span>
+          </button>
       </div>
 
       <div class="content">
@@ -50,13 +61,34 @@
       </div>
 
     <!-- Filter Dropdown -->
-    <div class="filter-dropdown" id="filterDropdown">
-        <div class="filter-option">Shortest Distance</div>
-        <div class="filter-option">Cheapest Carpark</div>
-        <div class="filter-option">Parking Lots</div>
+    <div class="filter-dropdown" id="filterDropdown">  
+      <div >
+         <label class="switch">
+            <input type="checkbox">
+               <span class="slider round">
+               </span> 
+         </label>
+      </div>
+      <div class="slider-text" >Distance</div>
+      <div >
+         <label class="switch">
+            <input type="checkbox">
+               <span class="slider round">
+               </span> 
+         </label>
+      </div>
+      <div class="slider-text">Cheapest Carpark</div>
+      <div >
+         <label class="switch">
+            <input type="checkbox">
+               <span class="slider round">
+               </span> 
+         </label>
+      </div>
+      <div class="slider-text">Parking Lots</div>
     </div>
    
-      <!-- Filter options -->
+      <!-- Filter options
       <div class="filter-options">
          <h3>Filter Options</h3>
          <label>
@@ -68,7 +100,7 @@
          <label>
             <input type="checkbox" id="availability-filter"> Parking Lots Availability
          </label>
-      </div>
+      </div> -->
 
       <!-- Logout button -->
       <form action="/logout?_method=DELETE" method="POST">
@@ -77,10 +109,22 @@
 
       <script>
          // Function to toggle filter dropdown
-        function toggleFilterDropdown() {
+          function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+            dropdown.style.flexDirection = 'column';
+          }
+
+         function logout() {
+            fetch('/logout', {
+               method: 'DELETE'
+            }).then(response => {
+                if (response.redirected) {
+                  sessionStorage.clear();
+                  window.location.href = response.url;
+                }
+            })
+         }
 
         // Hide dropdown when clicking outside
         document.addEventListener('click', function(event) {
