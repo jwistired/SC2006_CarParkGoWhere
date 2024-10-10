@@ -23,6 +23,7 @@
     "otp-generator": "^4.0.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "proj4": "^2.12.1",
     "uid2": "^1.0.0"
   },
   "devDependencies": {
