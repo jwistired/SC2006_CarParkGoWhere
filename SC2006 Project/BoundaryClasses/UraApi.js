@@ -1,17 +1,15 @@
-//npm install proj4
-//<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script> //for html
+require('dotenv').config(); 
+const proj4 = require('proj4'); 
 
-const proj4 = require('proj4'); // Ensure proj4 is required
 
-// Define the SVY21 projection
 const SVY21 = 'EPSG:3414';
 proj4.defs(SVY21, "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
-
-// Define the target projection (WGS84)
 const WGS84 = 'EPSG:4326'; // WGS 84
 
-const accessKey = 'eec999fb-724e-4183-98be-3bd8e9600102'; 
-const token = 'e7109+3e3D6e20bfehA08UT40xX9edvF6nJejxT7VMsbbz0C95Sx7d94s3-8W3WbF-39740gfc-8vF1-M91Ne9sfwff4xEZ37Mn0'; // Replace with the token for the day
+
+const accessKey = process.env.ACCESS_KEY; 
+const token = process.env.TOKEN; 
+
 
 // Function to fetch car park data
 function fetchCarParkData() {
@@ -26,7 +24,7 @@ function fetchCarParkData() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json(); // Parse the response body as JSON
+        return response.json(); 
     });
 }
 
@@ -44,7 +42,7 @@ function fetchCarParkPriceData() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json(); // Parse the response body as JSON
+        return response.json(); 
     });
 }
 
@@ -61,12 +59,12 @@ function listAllCarparkNos() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json(); // Parse the response body as JSON
+        return response.json(); 
     })
     .then(data => {
         if (data.Status === "Success") {
-            const carparkNos = data.Result.map(carpark => carpark.carparkNo); // Extract carparkNo from the result
-            console.log('List of Carpark Numbers:', JSON.stringify(carparkNos, null, 2)); // Log the list of carpark numbers
+            const carparkNos = data.Result.map(carpark => carpark.carparkNo); 
+            console.log('List of Carpark Numbers:', JSON.stringify(carparkNos, null, 2)); 
         } else {
             console.warn('Failed to retrieve data:', data.Message);
         }
@@ -76,17 +74,19 @@ function listAllCarparkNos() {
     });
 }
 
+
+
 // Function to get the number of lots available for a specific carpark
 function getLotsAvailable(carparkNo) {
     return fetchCarParkData()
         .then(data => {
             const carpark = data.Result.find(cp => cp.carparkNo === carparkNo); 
             if (carpark) {
-                console.log(`Lots Available for ${carparkNo}: ${carpark.lotsAvailable}`); // Log the available lots
-                return carpark.lotsAvailable; // Return available lots if found
+                console.log(`Lots Available for ${carparkNo}: ${carpark.lotsAvailable}`); 
+                return carpark.lotsAvailable; 
             } else {
                 console.warn(`No data found for ppCode: ${carparkNo}`);
-                return null; // Return null if carpark not found
+                return null; 
             }
         })
         .catch(error => {
@@ -100,7 +100,7 @@ function getCoordinates(ppCode) {
         .then(data => {
             const carpark = data.Result.find(cp => cp.ppCode === ppCode);
             if (carpark && carpark.geometries && carpark.geometries.length > 0) {
-                const geometry = carpark.geometries[0]; // Get the first geometry
+                const geometry = carpark.geometries[0]; 
                 const coordinates = geometry.coordinates.split(','); // Split the coordinates string into an array
                 
                 // Parse the coordinates to floats
@@ -112,7 +112,7 @@ function getCoordinates(ppCode) {
                 const longitude = wgs84Coordinates[0]; // Longitude
                 const latitude = wgs84Coordinates[1]; // Latitude
 
-                console.log(`Coordinates for ${ppCode}: ${latitude}, ${longitude}`); // Log the coordinates
+                console.log(`Coordinates for ${ppCode}: ${latitude}, ${longitude}`);
                 return `${latitude}, ${longitude}`; // Return coordinates as a string
             } else {
                 console.warn(`No geometries available for ppCode: ${ppCode}`);
@@ -159,11 +159,10 @@ function getAllCarparksDetail(ppCode) {
                     coordinates: `${latitude}, ${longitude}` // Return coordinates as a string
                 };
                 
-                console.log(`Details for ${ppCode}:`, JSON.stringify(details, null, 2)); // Log the car park details
-                return details;
+                console.log(`Details for ${ppCode}:`, JSON.stringify(details, null, 2)); 
             } else {
                 console.warn(`No data found for ppCode: ${ppCode}`);
-                return null; // Return null if carpark not found
+                return null; 
             }
         })
         .catch(error => {
@@ -196,7 +195,7 @@ function getPricingRate(ppCode) {
                 return pricing;
             } else {
                 console.warn(`No data found for ppCode: ${ppCode}`);
-                return null; // Return null if carpark not found
+                return null; 
             }
         })
         .catch(error => {
