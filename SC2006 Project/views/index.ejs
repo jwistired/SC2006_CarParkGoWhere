@@ -18,9 +18,11 @@
          <!-- Search bar with search icon -->
          <div class="search-bar">
             <class class="search-input">
-               <form autocomplete="on" method="POST">
+               <form autocomplete="on" onsubmit="searchLocation()">
                   <input class="search-input" type="search" id="search" placeholder="Search for parking lots">
-                  <img src="\css\images\icons\search.png" alt="Search" class="search-icon" type="submit" >
+                  <button class="search-icon-btn" onclick="searchLocation()">
+                     <img src="\css\images\icons\search.png">
+                  </button>
                </form>
             </class>
          </div>

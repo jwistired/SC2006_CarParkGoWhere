@@ -33,7 +33,7 @@ html, body {
   display: flex;
   align-items: center;
   flex-direction: row;
-  height: 50px;
+  height: 30px;
   width: 65%;
   position: relative;
   margin-left: 30px;
@@ -61,17 +61,22 @@ button:hover {
 
 /*Search Bar*/
 
-.search-icon {
+.search-icon-btn{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  right: 20px;
+  top: 20%;
+  height:4px;
+  width: 4px;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
-  position: absolute; 
-  right: 80px;
-  top: 50%; 
-  transform: translateY(-50%);
-  pointer-events: none;
-  grid-template-columns: 5fr;
-  grid-row: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  scale: 0.5;
 }
 
 .search {
@@ -91,7 +96,6 @@ button:hover {
 .search-input {
   width: 100%;
   height: 100%;
-  padding-top: 3px;
   box-sizing: border-box;
   border: none;
   border-radius: 5px;
@@ -100,6 +104,7 @@ button:hover {
   font-size: 14px; /* Change to your desired font size */
   padding-left: 20px;
   color: #333;
+  position: relative;
 }
 
 /* Style for the placeholder text */
