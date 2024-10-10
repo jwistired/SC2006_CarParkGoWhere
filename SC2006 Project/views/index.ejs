@@ -264,7 +264,7 @@ function getRoute(startLatLng, endLatLng) {
     const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
 
     // Construct the API URL according to the documentation
-    const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=walk&date=${formattedDate}&time=${formattedTime}&mode=TRANSIT&maxWalkDistance=1000&numItineraries=3`;
+    const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=drive`;
 
     $.ajax({
         url: routeUrl,
