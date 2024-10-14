@@ -7,7 +7,7 @@ router.get('/', checkAuthenticated, (req, res) => {
     res.render('index.ejs', { name: req.user.name })
 })
 
-router.delete('/logout',(req, res) => {
+router.delete('/logout', (req, res, next) => {
     req.logOut(function(err) {
         if (err) { 
             return next(err) 
