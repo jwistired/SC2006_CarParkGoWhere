@@ -1,0 +1,406 @@
+/* Body for guest/user map interface */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex; 
+  flex-direction: column; 
+}
+
+/* Styling for the header */
+.header {
+  position: fixed; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: rgba(241, 241, 241, 1);
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* Logo */
+.logo {
+  width: 80px;
+  height: auto;
+  margin-left: 50px;
+}
+
+/* Search bar and button styling */
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 30px;
+  width: 65%;
+  position: relative;
+  margin-left: 30px;
+  background-color: white; /* Add background color */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 15px; /* Add border radius */
+  padding: 5px; /* Add padding */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+
+}
+
+/* Button styling */
+button {
+  background-color: #6a1b9a;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/*Search Bar*/
+
+.search-icon-btn{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  right: 20px;
+  top: 20%;
+  height:4px;
+  width: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  scale: 0.5;
+}
+
+.search {
+  --padding: 14px;
+  position: absolute;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border-radius: 28px;
+  background-color: rgb(156, 156, 156);
+  padding: var(--padding);
+  border-radius: 10px;
+  transition: box-shadow 0.25s;
+}
+
+.search-input {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px; /* Change to your desired font size */
+  padding-left: 20px;
+  color: #333;
+  position: relative;
+}
+
+/* Style for the placeholder text */
+.search-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-style: italic;
+  opacity: 1;
+  /* padding-left: 20px; */
+}
+
+.search:focus-within{
+  background: #f1f1f1;
+  box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Filter Related styles */
+.filter-button {
+  display :flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  margin-right: 50px;
+  scale: 1;
+}
+
+.filter-caption {
+  font-size: 14px;
+  text-align: left;
+  color: white;
+}
+
+.filter-icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.filter-dropdown {
+  display: none; /* Hidden by default */
+  position: absolute; /* Position it below the filter button */
+  top: 70px; /* Align with the header */
+  right: 90px; /* Align right with filter button */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 15; /* Higher than other elements */
+  padding: 10px;
+  width: 170px; /* Width of the dropdown */
+  flex-basis: 100%; /* Allow it to grow to full width */
+}
+
+/* .filter-options {
+  position: absolute;
+  bottom: 20px;
+  right: 320px; /* Adjust to fit within the content area */
+  /* background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+} */
+/* 
+.filter-option {
+  padding: 5px;
+  cursor: pointer;
+} */
+
+/* .filter-option:hover {
+  background-color: #f0f0f0;
+} */ 
+
+
+/* Login/Register/Logout Related Styles */
+
+/* Login/Register Icons */
+.login-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  margin-right: 50px; /* Center the login/register icon */
+}
+
+/* Login/Register Icons */
+.login-icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.login-caption {
+  font-size: 14px;
+  text-align: center;
+  color: black;
+}
+/* Logout Icons */
+.logout-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  margin-right: 50px; /* Center the login/register icon */
+}
+
+.logout-caption {
+  font-size: 14px;
+  text-align: left;
+  color: white;
+}
+
+/* Content layout */
+.content {
+  display: flex;
+  position: relative;
+  top: 50px; 
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: calc(100% - 50px); 
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Parking lots styling */
+.sidebar{
+  flex: 1; /* Use flex to allow them to shrink and grow */
+  width: 200px; /* Optional maximum width */
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+  margin-top: 30px;
+  overflow-y: auto; /* Allow scrolling */
+  background-color: white;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+  height: 95%; 
+  position: fixed;
+}
+
+/* Parking lot info styling */
+.parking-lot {
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.sidebar {
+  display: none;
+  left: 0;
+}
+
+
+/*Map Related Styles*/
+
+/* Map zoom control styling */
+.fixed-control-zoom {
+  position: fixed; /* Ensure it is fixed */
+  top: 100px; /* Adjust the top position as needed */
+  right: 20px; /* Adjust the right position as needed */
+  z-index: 1000; /* Ensure it is on top of other elements */
+}
+
+/* Map Container */
+#mapdiv {
+  height: 100vh; /* Full height minus header */
+  width: 100%; /* Full width */
+  position: absolute; /* Position absolute to cover the entire viewport */
+  top: 40;
+  left: 0;
+  z-index: 0; /* Lowest z-index */
+}
+
+.map-container {
+  flex-grow: 1;
+  margin-top: 40px ;
+  margin-left: 200px;
+  position: relative;
+  z-index: 1; /* Lower z-index for the map */
+}
+
+/* Map container */
+#map {
+  height: 100%; /* Make sure the map takes the full viewport height */
+  width: 100%; /* Adjust width based on sidebar */
+  position: absolute;
+  left: 200px; /* Adjust to account for sidebar */
+  z-index: 1;
+  display: grid; /* Use grid layout to position the map and sidebar */
+  grid-template-columns: 5fr 300px;
+  grid-template-rows: 5fr 300px; 
+  place-items: center; /* Center the map*/
+}
+
+/* Icon styling */
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+ /* The switch - the box around the slider */
+ .switch {
+  position: relative;
+  display: flex;
+  width: 40px;
+  height: 22px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+} 
+
+.slider-text{
+  position: relative;
+  bottom: 20px;
+  font: Arial, sans-serif;
+  font-size: 14px;
+  text-align: right;
+}
+
+#autocomplete-list {
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+#autocomplete-list div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+#autocomplete-list div:hover {
+  background-color: #e9e9e9;
+}
