@@ -315,7 +315,7 @@ function getRoute(startLatLng, endLatLng) {
         url: routeUrl,
         type: 'GET',
         headers: {
-            'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ODMzODhiYmIyODViNzIwYWFmMDc2NTcyZDdiYWQ0NyIsImlzcyI6Imh0dHA6Ly9pbnRlcm5hbC1hbGItb20tcHJkZXppdC1pdC0xMjIzNjk4OTkyLmFwLXNvdXRoZWFzdC0xLmVsYi5hbWF6b25hd3MuY29tL2FwaS92Mi91c2VyL3Bhc3N3b3JkIiwiaWF0IjoxNzI4NTc1NzQ2LCJleHAiOjE3Mjg4MzQ5NDYsIm5iZiI6MTcyODU3NTc0NiwianRpIjoibEducjVoRGpqVTNUaW9wZCIsInVzZXJfaWQiOjQ4NDgsImZvcmV2ZXIiOmZhbHNlfQ.ArI1-P0tc-GN1xt8KCbxiDD2AOztYQTuENyN18hjODQ' // Replace with actual access token
+            'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vaW50ZXJuYWwtYWxiLW9tLXByZGV6aXQtaXQtMTIyMzY5ODk5Mi5hcC1zb3V0aGVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hcGkvdjIvdXNlci9wYXNzd29yZCIsImlhdCI6MTcyODk2NTQyMCwiZXhwIjoxNzI5MjI0NjIwLCJuYmYiOjE3Mjg5NjU0MjAsImp0aSI6InFxdGJuVFNOazRnZDdxTE4iLCJzdWIiOiJmYjg3MjkxYzkyNDZhMzFiZDk2YjZkNWU0MTI2MTIwYiIsInVzZXJfaWQiOjQ4OTEsImZvcmV2ZXIiOmZhbHNlfQ.ObeoP8VYpSPv4jUB3TPUSc1fyC7PJ1Mwx_zbQMLLRyk' // Replace with actual access token
         },
         success: function (data) {
             if (data && data.route_geometry) {
