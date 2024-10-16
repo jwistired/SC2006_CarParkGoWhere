@@ -1,4 +1,9 @@
 /* Body for guest/user map interface */
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
 html, body {
   height: 100%;
   margin: 0;
@@ -17,8 +22,7 @@ html, body {
   background-color: rgba(241, 241, 241, 1);
   border-bottom: 1px solid #ccc;
   width: 100%;
-  z-index: 10;
-  overflow: hidden;
+  z-index: 1000;
 }
 
 /* Logo */
@@ -42,7 +46,7 @@ html, body {
   border-radius: 15px; /* Add border radius */
   padding: 5px; /* Add padding */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
-
+  z-index: 2000; /* Ensure it has a higher z-index */
 }
 
 /* Button styling */
@@ -68,7 +72,7 @@ button:hover {
   outline: none;
   position: absolute;
   right: 20px;
-  top: 20%;
+  top: 12px;
   height:4px;
   width: 4px;
   display: flex;
@@ -94,8 +98,9 @@ button:hover {
 }
 
 .search-input {
-  width: 100%;
+  width: 1000px;
   height: 100%;
+  top: 10px;
   box-sizing: border-box;
   border: none;
   border-radius: 5px;
@@ -159,27 +164,6 @@ button:hover {
   flex-basis: 100%; /* Allow it to grow to full width */
 }
 
-/* .filter-options {
-  position: absolute;
-  bottom: 20px;
-  right: 320px; /* Adjust to fit within the content area */
-  /* background-color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-} */
-/* 
-.filter-option {
-  padding: 5px;
-  cursor: pointer;
-} */
-
-/* .filter-option:hover {
-  background-color: #f0f0f0;
-} */ 
-
-
 /* Login/Register/Logout Related Styles */
 
 /* Login/Register Icons */
@@ -235,9 +219,9 @@ button:hover {
 }
 
 /* Parking lots and history styling */
-.sidebar, .history-sidebar {
+.sidebar {
   flex: 1; /* Use flex to allow them to shrink and grow */
-  width: 200px; /* Optional maximum width */
+  width: 0px; /* Optional maximum width */
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
   margin-top: 30px;
   overflow-y: auto; /* Allow scrolling */
@@ -248,6 +232,25 @@ button:hover {
   overflow-y: auto;
   height: 95%; 
   position: fixed;
+  display: none;
+  transition: 0.5s;
+
+}
+
+.exit-button {
+  background-color: #6a1b9a;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.history-sidebar{
+  display: grid;
+  grid-template-columns: 4;
+  grid-template-rows: auto auto auto auto auto auto;
+
 }
 
 /* Parking lot info styling */
@@ -259,15 +262,6 @@ button:hover {
   border-radius: 5px;
 }
 
-.sidebar {
-  display: none;
-  left: 0;
-}
-
-.history-sidebar {
-  display: none;
-  right: 0;
-}
 
 /*Map Related Styles*/
 
@@ -294,7 +288,7 @@ button:hover {
   margin-top: 40px ;
   margin-left: 200px;
   position: relative;
-  z-index: 1; /* Lower z-index for the map */
+  z-index: 0; /* Lower z-index for the map */
 }
 
 /* Map container */
@@ -391,11 +385,13 @@ input:checked + .slider:before {
 }
 
 #autocomplete-list {
+  position: absolute;
   border: 1px solid #d4d4d4;
   border-bottom: none;
   border-top: none;
   max-height: 150px;
   overflow-y: auto;
+  z-index: 2000;
 }
 
 #autocomplete-list div {
@@ -408,3 +404,14 @@ input:checked + .slider:before {
 #autocomplete-list div:hover {
   background-color: #e9e9e9;
 }
+
+
+/* Map related icons */
+
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(\css\images\icons\gps-marker.png);
+	}
+
+.leaflet-marker-icon { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(\css\images\icons\gps-marker.png);
+	}
