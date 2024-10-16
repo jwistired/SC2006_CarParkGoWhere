@@ -207,6 +207,13 @@
             // Clear suggestions if no input
             document.getElementById("autocomplete-list").innerHTML = "";
         }}
+
+        function setMarkerZIndex(marker, zIndexValue) {
+            // Check if the current z-index is negative and reset it
+            if (marker.getElement()) {
+                marker.getElement().style.zIndex = Math.max(0, zIndexValue); // Ensure non-negative
+            }
+        }
         
         // Function to search for locations using OneMap API
         function searchLocation() {
@@ -223,9 +230,13 @@
                         const searchLatLng = L.latLng(lat, lng);
 
                         // Add marker for the searched location
-                        L.marker([lat, lng]).addTo(map)
-                            .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
-                            .openPopup();
+                        var marker = L.marker([lat, lng], {
+                            className: 'marker'
+                        }).addTo(map)
+                        .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
+                        .openPopup();
+
+                        setMarkerZIndex(marker, 1000);
 
                         // Center the map to the search result location
                         map.setView([lat, lng], 16);
@@ -245,26 +256,6 @@
             } else {
                 alert("Please enter a location to search for.");
             }
-        }
-
-        // Display parking history
-        function displayParkingHistory() {
-            const history = [
-                { id: 5, title: 'Car Park 5', price: 0.55, distance: 400, availability: 23 }
-            ];
-
-            history.forEach(lot => {
-                const historyDiv = document.createElement('div');
-                historyDiv.classList.add('parking-history');
-                historyDiv.innerHTML = `
-                    <h3>${lot.title}</h3>
-                    <p>Price: $${lot.price} / hour</p>
-                    <p>Distance: ${lot.distance}m</p>
-                    <p>Availability: ${lot.availability}/50 spots</p>
-                    <button>Select</button>
-                `;
-                document.getElementById('parking-history').appendChild(historyDiv);
-            });
         }
 
         // Get user's location
@@ -333,7 +324,6 @@
             }
         });
         }
-
 
         // Function to decode polyline into an array of coordinates
         function decodePolyline(encoded) {
