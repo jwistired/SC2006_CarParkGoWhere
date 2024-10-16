@@ -297,7 +297,7 @@ button:hover {
 #map {
   height: 100%; /* Make sure the map takes the full viewport height */
   width: 100%; /* Adjust width based on sidebar */
-  position: absolute;
+  position: relative;
   left: 200px; /* Adjust to account for sidebar */
   z-index: 1;
   display: grid; /* Use grid layout to position the map and sidebar */
@@ -350,7 +350,7 @@ button:hover {
   width: 20px;
   left: 2px;
   bottom: 1px;
-  background-color: white;
+  background-color: rgb(255, 0, 0);
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -387,11 +387,13 @@ input:checked + .slider:before {
 }
 
 #autocomplete-list {
+  position: absolute;
   border: 1px solid #d4d4d4;
   border-bottom: none;
   border-top: none;
   max-height: 150px;
   overflow-y: auto;
+  z-index: 2000;
 }
 
 #autocomplete-list div {
@@ -403,4 +405,20 @@ input:checked + .slider:before {
 
 #autocomplete-list div:hover {
   background-color: #e9e9e9;
+}
+
+.marker {
+  z-index: 1001;
+  position: absolute;
+}
+
+/* Make sure all Leaflet marker icons have a uniform z-index */
+.leaflet-marker-icon {
+  z-index: 1000 !important; /* Use !important to override any conflicting styles */
+  position: relative; /* Required for z-index to take effect */
+}
+
+/* Optional: higher z-index for popups */
+.leaflet-popup {
+  z-index: 1500; /* Make sure popups are above markers */
 }
