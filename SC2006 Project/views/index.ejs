@@ -31,22 +31,60 @@
         <button class="filter-button w3-button" onclick="toggleFilterDropdown()">
             <img src="\css\images\icons\filter.png" class="filter-icon">
             <span class="filter-caption">Filter</span>
-        </button>
+            <div class="filter-dropdown" id="filtersDropdown">
+                <div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="slider-text">Distance</div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="slider-text">Cheapest Carpark</div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="slider-text">Parking Lots</div>
+            </div>
+        </button>   
+        
+        <!-- Profile and Language Setting -->
+        <button class="profile-settings">
+            <img src="\css\images\icons\settings.png" class="settings-icon">
+            <span class="profile-caption">Settings</span>
 
+
+        </button>
+            
         <!-- Logout icon -->
         <button class="logout-btn w3-button" onclick="logout()">
-            <img src="\css\images\icons\login-register.png" class="login-icon">
+            <img src="\css\images\icons\logout.png" class="login-icon">
             <span class="logout-caption">Logout</span>
         </button>
+
+        
+
     </div>
 
     <div class="content">
         <!-- Sidebar for parking lots -->
-        <div class="sidebar">
+        <div class ="sidebar" id="sidebar">
             <h2>Parking Lots Found</h2>
-            <div id="parking-lots">
-               <button class="exit-button" onclick="closesideBar()">Exit</button>
-            </div>
+            <div id="parking-lots"></div>
+            <button class="exit-button" onclick="closesideBar()">Exit</button>
+        </div>
+
+        <!-- Sidebar for settings -->
+        <div class ="profile-sidebar" id="profile-bar">
+            <h2>User Profiles and Settings</h2>
         </div>
 
         <!-- MAP -->
@@ -58,31 +96,6 @@
             <div id="parking-history">
                 <!-- Parking history info will be dynamically added here -->
             </div>
-        </div>
-
-        <!-- Filter Dropdown -->
-        <div class="filter-dropdown" id="filterDropdown">
-            <div>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="slider-text">Distance</div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="slider-text">Cheapest Carpark</div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="slider-text">Parking Lots</div>
         </div>
     </div>
 
@@ -112,11 +125,25 @@
 
         // Toggle filter dropdown visibility
         function toggleFilterDropdown() {
-            const dropdown = document.getElementById('filterDropdown');
+            const dropdown = document.getElementById('filtersDropdown');
             dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
             dropdown.style.flexDirection = 'column';
         }
 
+        // Open and close sidebar
+        function opensideBar() {
+            document.getElementById("sidebar").style.width = "200px";
+            document.getElementById("sidebar").style.display = "flex";
+            document.getElementById("sidebar").style.animation = "slideIn";
+        }
+
+        function closesideBar() {
+            document.getElementById("sidebar").style.width = "0px";
+            document.getElementById("sidebar").style.display = "none";
+            document.getElementById("sidebar").style.animation = "slideOut";
+        }
+
+        // Logout Button function
         function logout() {
             fetch('/logout', {
                 method: 'DELETE'
@@ -238,9 +265,6 @@
                             console.error("User location is not available.");
                         }
 
-                        //Open sidebar
-
-                        opensideBar();
                     } else {
                         alert("No results found.");
                     }
@@ -379,17 +403,6 @@
                 searchLocation();
             }
         });
-
-        // Open and close sidebar
-        function opensideBar() {
-
-            document.getElementById("sidebar").style.width = '200px';
-        }
-
-        function closesideBar() {
-            document.getElementById("sidebar").style.width = '0px';
-        }
-
     
     </script>
 </body>
