@@ -208,12 +208,12 @@
             document.getElementById("autocomplete-list").innerHTML = "";
         }}
 
-        function setMarkerZIndex(marker, zIndexValue) {
-            // Check if the current z-index is negative and reset it
-            if (marker.getElement()) {
-                marker.getElement().style.zIndex = Math.max(0, zIndexValue); // Ensure non-negative
-            }
-        }
+        // function setMarkerZIndex(marker, zIndexValue) {
+        //     // Check if the current z-index is negative and reset it
+        //     if (marker.getElement()) {
+        //         marker.getElement().style.zIndex = Math.max(0, zIndexValue); // Ensure non-negative
+        //     }
+        // }
         
         // Function to search for locations using OneMap API
         function searchLocation() {
@@ -236,7 +236,7 @@
                         .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
                         .openPopup();
 
-                        setMarkerZIndex(marker, 1000);
+                        // setMarkerZIndex(marker, 1000);
 
                         // Center the map to the search result location
                         map.setView([lat, lng], 16);
@@ -314,7 +314,7 @@
                     }
 
                     // Draw the new route on the map
-                    currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
+                    currentRoute = L.polyline(routeCoordinates, { color: 'purple', weight: 10, opacity:1 }).addTo(map);
                 } else {
                     alert("No route found between the specified locations.");
                 }
