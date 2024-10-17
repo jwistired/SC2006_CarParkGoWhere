@@ -14,6 +14,35 @@ app.use(express.json());
 app.use(express
 */
 
+/*
+//Connecting to MongoDB database (userLogin)
+
+mongoose.connect('mongodb://localhost:27017/userLogin');
+.then(() => {
+console.log('Connected to MongoDB');
+})
+.catch((err) => {
+    console.error('Error connecting to MongoDB', err);
+});
+
+//Define userLogin schema
+const userLoginSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    name: String,
+    email: String
+});
+
+//Create UserLogin model
+const UserLogin = mongoose.model('UserLogin', userLoginSchema);
+
+-> Maybe need to add middleware to handle bcrypt hashing of password
+
+-> Maybe need to add middleware to parse JSON body
+
+
+Guide : https://medium.com/@ravipatel.it/building-a-secure-user-registration-and-login-api-with-express-js-mongodb-and-jwt-10b6f8f3741d
+*/
 
 
 // Load environment variables if not in production
