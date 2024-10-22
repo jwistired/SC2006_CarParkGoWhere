@@ -67,6 +67,7 @@ const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
 const { checkAuthenticated, checkNotAuthenticated } = require('./BoundaryClasses/Authenticator.js');
 const initialisePassport = require("./passport-config");
 
+const getToken = require('./getOneMapToken.js'); //get onemap token 
 
 // In-memory users array (could be replaced with a database)
 const users = [];
@@ -120,6 +121,17 @@ app.use('/forgetPassword', checkNotAuthenticated,
     (req, res, next) => {req.users = users, next()}, 
     ForgetPassword)
 app.use('/resetPassword', ResetPassword)
+
+//getOneMapToken
+app.get('/api/token', async (req, res) => {
+    try {
+        const token = await getToken();
+        res.json({ token });
+    } catch (error) {
+        console.error('Error fetching token:', error);
+        res.status(500).json({ error: 'Failed to fetch token' });
+    }
+});
 
 // Start the server on port 3000
 app.listen(3000, () => {
