@@ -105,6 +105,28 @@
         let bounds = L.latLngBounds(sw, ne);
         let map, userLatLng;
 
+        // Fetch the token when the page loads
+        let apiToken;
+
+        async function fetchApiToken() {
+        try {
+            const response = await fetch('/api/token');
+            if (!response.ok) {
+                throw new Error('Failed to fetch token');
+            }
+            const data = await response.json();
+            apiToken = data.token; // Store the token
+        } catch (error) {
+            console.error('Error fetching token:', error);
+        }
+        }
+
+        // Call fetchApiToken when the page loads
+        window.onload = function() {
+        fetchApiToken();
+        };
+
+
         // Initialize the map
         $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function (data) {
             if (map) {
@@ -334,12 +356,12 @@
 
         // Construct the API URL according to the documentation
         const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=drive`;
-
+        
         $.ajax({
             url: routeUrl,
             type: 'GET',
             headers: {
-                'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vaW50ZXJuYWwtYWxiLW9tLXByZGV6aXQtaXQtMTIyMzY5ODk5Mi5hcC1zb3V0aGVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hcGkvdjIvdXNlci9wYXNzd29yZCIsImlhdCI6MTcyODk2NTQyMCwiZXhwIjoxNzI5MjI0NjIwLCJuYmYiOjE3Mjg5NjU0MjAsImp0aSI6InFxdGJuVFNOazRnZDdxTE4iLCJzdWIiOiJmYjg3MjkxYzkyNDZhMzFiZDk2YjZkNWU0MTI2MTIwYiIsInVzZXJfaWQiOjQ4OTEsImZvcmV2ZXIiOmZhbHNlfQ.ObeoP8VYpSPv4jUB3TPUSc1fyC7PJ1Mwx_zbQMLLRyk' // Replace with actual access token
+                'Authorization': apiToken //fetch oneMapToken
             },
             success: function (data) {
                 if (data && data.route_geometry) {
