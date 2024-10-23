@@ -7,6 +7,17 @@ router.get('/', checkAuthenticated, (req, res) => {
     res.render('index.ejs', { name: req.user.name })
 })
 
+//get user name
+router.get('/name', (req, res) => {
+    res.send(req.user.name)
+})
+
+//get email
+router.get('/email', (req, res) => {
+    res.send(req.user.email)
+})
+
+
 router.delete('/logout', (req, res, next) => {
     req.logOut(function(err) {
         if (err) { 
