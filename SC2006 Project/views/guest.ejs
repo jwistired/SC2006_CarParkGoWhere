@@ -24,7 +24,7 @@
                 <!-- Autocomplete suggestion list -->
                 <div id="autocomplete-list" class="autocomplete-items"></div>
                 <button type="submit" class="search-icon-btn">
-                    <img src="\css\images\icons\search.png" alt="Search">
+                    <img src="\css\images\icons\search.png" class="search-icon" alt="Search">
                 </button>
             </form>
         </div>
@@ -35,14 +35,22 @@
             <span class="filter-caption">Filter</span>
         </button>
 
+        <!-- Profile and Language Setting -->
+        <button class="profile-settings" onclick="openprofileBar()">
+            <img src="\css\images\icons\settings.png" class="settings-icon">
+            <span class="profile-caption">Settings</span>
+        </button>
+
         <!-- Login/Register Icon -->
-        <a href="/login" class="login-register">
+        <button class="login-register" onclick="location.href='/login'">
             <img src="\css\images\icons\login-register.png" alt="Login" class="login-icon">
             <span class="login-caption">Login/Register</span>
-        </a>
+        </button>
+
     </div>
 
     <div class="content">
+        
         <!-- Sidebar for parking lots -->
          <div class="sidebar">
             <h2>Parking Lots Found</h2>
@@ -55,6 +63,24 @@
         <div class="map-container">
             <div id='mapdiv'></div>
         </div>
+        
+        <!-- Sidebar for settings -->
+        <div class ="profile-sidebar" id="profile-bar">
+            <img src="\css\images\icons\close.png" class="close-icon" onclick="closeprofileBar()">
+            <h2 class="profile-header-text">User Profiles and Settings</h2>
+            <nav>
+                <div class="language-selector">
+                    <label for="languageDropdown">Select Language:</label>
+                    <select id="languageDropdown" onchange="changeLanguage()">
+                        <option value="en" selected>English</option>
+                        <option value="zh">中文 (Chinese)</option>
+                        <option value="ms">Malay</option>
+                        <option value="ta">தமிழ் (Tamil)</option>
+                    </select>
+                </div>
+            </nav>
+        </div>
+
     </div>
 
     <!-- Filter Dropdown -->
@@ -116,6 +142,19 @@
             dropdown.style.flexDirection = 'column';
         }
 
+        // Open and close sidebar
+        function openprofileBar() {
+            document.getElementById("profile-bar").style.width = "350px";
+            document.getElementById("profile-bar").style.display = "grid";
+            document.getElementById("profile-bar").style.animation = "slideIn";
+        }
+
+        function closeprofileBar() {
+            document.getElementById("profile-bar").style.width = "0px";
+            document.getElementById("profile-bar").style.display = "none";
+            document.getElementById("profile-bar").style.animation = "slideOut";
+        }
+
         function logout() {
             fetch('/logout', {
                 method: 'DELETE'
@@ -130,10 +169,61 @@
         // Hide dropdown when clicking outside
         document.addEventListener('click', function (event) {
             const dropdown = document.getElementById('filterDropdown');
-            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
+            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
                 dropdown.style.display = 'none';
             }
         });
+
+        // Event listener to close the sidebar when clicking outside of it
+        document.addEventListener('click', function (event) {
+            const profileBar = document.getElementById('profile-bar');s
+            const profileButton = document.querySelector('.profile-settings');
+
+            // Hide the sidebar if clicking outside the profile button and sidebar
+            if (!event.target.closest('.profile-settings') && !event.target.closest('#profile-bar')) {
+                closeprofileBar();
+            }
+        });
+
+        //Filter Toggles
+
+        function toggleDistance(){
+            //code to toggle distance filter
+        }
+
+        function toggleAvailableLots(){
+            //code to toggle available lots filter
+        }
+
+        function togglePrice(){
+            //code to toggle price filter
+        }
+
+        // Language settings
+        const translations = {
+            en: {
+                welcome: "Welcome",
+                description: "This is the guest map interface."
+            },
+            zh: {
+                welcome: "欢迎",
+                description: "这是访客地图界面。"
+            },
+            ms: {
+                welcome: "Selamat Datang",
+                description: "Ini adalah antara muka peta tetamu."
+            },
+            ta: {
+                welcome: "வரவேற்கிறோம்",
+                description: "இது விருந்தினர்களின் வரைபட இடைமுகம்."
+            }
+        };
+
+        function changeLanguage() {
+            const language = document.getElementById('languageDropdown').value;
+            document.getElementById('welcomeText').innerText = translations[language].welcome;
+            document.getElementById('descriptionText').innerText = translations[language].description;
+        }
 
         // Parking lot data
         const parkingLots = [

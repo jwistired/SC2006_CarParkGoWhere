@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="\css\styles_user.css">
 </head>
 
-<body>
+<body onload="getUsername()">
     <!-- Header with logo, search bar, filter, and login/register -->
     <div class="header">
         <!-- Logo -->
@@ -34,21 +34,21 @@
             <div class="filter-dropdown" id="filtersDropdown">
                 <div>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="toggle-distance" onchange="toggleDistance()">
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="slider-text">Distance</div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="toggle-price" onchange="togglePrice()">
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="slider-text">Cheapest Carpark</div>
                 <div>
-                    <label class="switch">
-                        <input type="checkbox">
+                    <label class="switch" >
+                        <input type="checkbox" id="toggle-avaliableLots" onchange="toggleAvailableLots()">
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -57,11 +57,9 @@
         </button>   
         
         <!-- Profile and Language Setting -->
-        <button class="profile-settings">
+        <button class="profile-settings" onclick="openprofileBar()">
             <img src="\css\images\icons\settings.png" class="settings-icon">
             <span class="profile-caption">Settings</span>
-
-
         </button>
             
         <!-- Logout icon -->
@@ -69,9 +67,6 @@
             <img src="\css\images\icons\logout.png" class="login-icon">
             <span class="logout-caption">Logout</span>
         </button>
-
-        
-
     </div>
 
     <div class="content">
@@ -82,9 +77,23 @@
             <button class="exit-button" onclick="closesideBar()">Exit</button>
         </div>
 
-        <!-- Sidebar for settings -->
+        <!-- settings sidebar -->
         <div class ="profile-sidebar" id="profile-bar">
-            <h2>User Profiles and Settings</h2>
+            <img src="\css\images\icons\close.png" class="close-icon" onclick="closeprofileBar()">
+            <h2 class="profile-header-text">User Profiles and Settings</h2>
+            <img src="\css\images\icons\account_icon.png" class="user-profile-pic">
+            <h1 class="profile-sider-username" id="name-display">Welcome,</h1>
+            <h1 class="profile-sider-username" id="name-display"><%= name %></h1>
+            <h2 class="profile-sider-username" id="email-display">Placeholder Email</h2>
+            <h2>Languages</h2>
+            <div id="language-dropdown" class ="language-select">
+                <select>
+                    <option value="english">English</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="malay">Malay</option>
+                    <option value="tamil">Tamil</option>d
+                </select>
+            </div>
         </div>
 
         <!-- MAP -->
@@ -164,6 +173,44 @@
             document.getElementById("sidebar").style.display = "none";
             document.getElementById("sidebar").style.animation = "slideOut";
         }
+
+        //Profile sidebar functions
+
+        // Open and close profile/setting sidebar
+        function openprofileBar() {
+            document.getElementById("profile-bar").style.width = "350px";
+            document.getElementById("profile-bar").style.display = "inline-block";
+            document.getElementById("profile-bar").style.animation = "slideIn";
+        }
+
+        function closeprofileBar() {
+            document.getElementById("profile-bar").style.width = "0px";
+            document.getElementById("profile-bar").style.display = "none";
+            document.getElementById("profile-bar").style.animation = "slideOut";
+        }
+
+        // Hide Profile Sidebar when clicking outside
+        document.addEventListener('click', function (event) {
+            const dropdown = document.getElementById('profile-bar');
+            if (!event.target.closest('.profile-sidebar')&&!event.target.closest('.profile-settings') && !event.target.closest('.language-dropdown-content') && !event.target.closest('.close-icon') && !event.target.closest('.language-drop-btn')) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        //Filter Toggles
+
+        function toggleDistance(){
+            //code to toggle distance filter
+        }
+
+        function toggleAvailableLots(){
+            //code to toggle available lots filter
+        }
+
+        function togglePrice(){
+            //code to toggle price filter
+        }
+        
 
         // Logout Button function
         function logout() {

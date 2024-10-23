@@ -79,12 +79,11 @@ button:hover {
 }
 
 .search {
-  --padding: 14px;
-  position: absolute;
+  position: relative;
   width: max-content;
   display: flex;
   align-items: center;
-  padding: 14px;
+  padding-right: 14px;
   border-radius: 28px;
   background-color: rgb(156, 156, 156);
   padding: var(--padding);
@@ -93,9 +92,9 @@ button:hover {
 }
 
 .search-input {
-  width: 1000px;
+  width: calc(100% - 40px);
   height: 100%;
-  top: 10px;
+  top: calc(50% - 20px);
   box-sizing: border-box;
   border: none;
   border-radius: 5px;
@@ -104,17 +103,16 @@ button:hover {
   font-size: 14px; /* Change to your desired font size */
   padding-left: 20px;
   color: #333;
-  position: relative;
+  position: absolute;
 }
 
-/* Style for the placeholder text */
+ /* Style for the placeholder text */
 .search-input::placeholder {
   color: rgba(0, 0, 0, 0.5);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-style: italic;
   opacity: 1;
-  /* padding-left: 20px; */
 }
 
 .search:focus-within{
@@ -123,6 +121,7 @@ button:hover {
 }
 
 /* Filter Related styles */
+
 .filter-button {
   background-color: #6a1b9a;
   color: white;
@@ -132,7 +131,8 @@ button:hover {
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-right: 50px;
+  /* margin-right: 25px; */
+  position: relative;
 }
 
 .filter-caption {
@@ -150,8 +150,8 @@ button:hover {
 .filter-dropdown {
   display: none; /* Hidden by default */
   position: absolute; /* Position it below the filter button */
-  top: calc(100% + 10px); /* Position below the filter button with some spacing */
-  right: 0; /* Align right with filter button */
+  top: calc(100%); /* Position below the filter button with some spacing */
+  right: calc(50px+ 100%); /* Align right with filter button */
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -208,6 +208,8 @@ button:hover {
   color: white;
 }
 
+/* Profile Bar Related Styles */
+
 /* Profile and Settings button */
 .profile-settings {
   display: flex;
@@ -215,24 +217,41 @@ button:hover {
   align-items: center;
   text-decoration: none;
   color: white;
-  margin-right: 50px; /* Center the login/register icon */
+}
+ 
+
+/* profile and Setting bar related Styles*/
+.profile-sidebar{
+  display: none;
+  column-count: 1;
+  column-gap: 15px;
+  grid-template-columns: 120px 120px 120px; /* Specify one column */
+  grid-template-rows: repeat(6  , auto); /* Repeat 'auto' for 6 rows */
+  position: fixed;
+  right: 0px; /* Position the sidebar on the right */
+  top: (100%-30px); /* Position the sidebar at the top */
+  height: 100%;
+  width: 360px;
+  background-color: white;
+  z-index: 1000;
+  margin-top: 40px;
 }
 
-/* profile right bar */
-.profile-sidebar{
-  display: grid;
-  grid-template-columns: 1fr; /* Specify one column */
-  grid-template-rows: repeat(6, auto); /* Repeat 'auto' for 6 rows */
-  position: fixed;
-  right: 0; /* Position the sidebar on the right */
-  top: 0;
-  height: 100%;
-  width: 0px;
-  background-color: white;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: none;
-  margin-top: 40px;
+/* Profile Settings Header Text*/
+.profile-header-text {
+  font-size: 20px;
+  text-align: right;
+  color: black;
+  padding-right: 20px;
+}
+
+.close-icon {
+  padding-top: 10px;
+  padding-left: 10px;
+  align-items: right;
+  cursor: pointer;
+  width:40px;
+  height: 40px;
 }
 
 .settings-icon {
@@ -240,6 +259,35 @@ button:hover {
   height: 30px;
   margin-bottom: 5px;
 }
+
+.user-profile-pic
+{
+  width: 120px;
+  height: 120px;
+  align-items: center;
+}
+
+.profile-sidebar-username
+{
+  font-size: large;
+}
+
+.language-select{
+  min-width: 70px;
+}
+
+.language-select select{
+  background-color: #6a1b9a;
+  color: white;
+  width: 100px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+
+
+
+/* Main Body styles */
 
 /* Content layout */
 .content {
@@ -255,7 +303,7 @@ button:hover {
   font-size: 14px;
 }
 
-/* Parking lots and history styling */
+/* Parking lots Sidebar */
 
 .sidebar {
   flex: 1; /* Use flex to allow them to shrink and grow */
@@ -431,10 +479,11 @@ input:checked + .slider:before {
 
 .slider-text{
   position: relative;
-  bottom: 30px; /* Adjust bottom position */
+  bottom: 20px; /*Adjust bottom position */
   font: Arial, sans-serif;
   font-size: 14px;
   text-align: right;
+  color: black;
 }
 
 #autocomplete-list {
@@ -460,14 +509,21 @@ input:checked + .slider:before {
 
 
 /* Map related icons */
-
-.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(\css\images\icons\gps-marker.png);
-	}
-
-.leaflet-marker-icon { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(\css\images\icons\gps-marker.png);
-	}
+  .marker {
+    z-index: 1001;
+    position: absolute;
+  }
+  
+  /* Make sure all Leaflet marker icons have a uniform z-index */
+  .leaflet-marker-icon {
+    z-index: 1000 !important; /* Use !important to override any conflicting styles */
+    position: relative; /* Required for z-index to take effect */
+  }
+  
+  /* Optional: higher z-index for popups */
+  .leaflet-popup {
+    z-index: 1500; /* Make sure popups are above markers */
+  }
 
 
 /* Animations */
