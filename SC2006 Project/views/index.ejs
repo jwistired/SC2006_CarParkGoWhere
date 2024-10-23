@@ -422,6 +422,7 @@
 
                     // Draw the new route on the map
                     currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
+                    L.circle([endLatLng.lat,endLatLng.lng], 500).addTo(map);
                 } else {
                     alert("No route found between the specified locations.");
                 }
