@@ -129,12 +129,34 @@
             console.error('Error fetching token:', error);
         }
         }
+        async function getAllCarparkCoor_HDB() {
+            try {
+                const response = await fetch('/api/carpark-coordinates');
+                const data = await response.json(); // Get the coordinates data from the response
+                console.log("Carpark Coordinates:", data); // For debugging
+                return data; // Return the data for further use
+            } catch (error) {
+                console.error('Error fetching carpark coordinates:', error);
+                return [];
+            }
+        }
+
+        async function findNearbyCarparks_HDB(lat, lon) {
+            try {
+                const response = await fetch(`/api/find-nearby-carparks?lat=${lat}&lon=${lon}`);
+                const data = await response.json(); // Get the nearby carparks data from the response
+                console.log("Nearby Carparks:", data); // For debugging
+                return data; // Return the data for further use
+            } catch (error) {
+                console.error('Error fetching nearby carparks:', error);
+                return [];
+            }
+        }
 
         // Call fetchApiToken when the page loads
         window.onload = function() {
         fetchApiToken();
         };
-
 
         // Initialize the map
         $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function (data) {
@@ -227,8 +249,13 @@
         // Hide dropdown when clicking outside
         document.addEventListener('click', function (event) {
             const dropdown = document.getElementById('filterDropdown');
-            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
-                dropdown.style.display = 'none';
+            const filterButton = document.querySelector('.filter-button');
+
+            // Check if the clicked target is outside the filter button and dropdown
+            if (!event.target.closest('.filter-button') && !event.target.closest('#filterDropdown')) {
+                if (dropdown) {
+                    dropdown.style.display = 'none'; // Hide the dropdown if it exists
+                }
             }
         });
 
@@ -390,47 +417,74 @@
         let currentRoute;
 
         // Function to get the route between user location and searched location
-        function getRoute(startLatLng, endLatLng) {
-        if (!startLatLng || !endLatLng) {
-            console.error("Start or end location is missing.");
-            return;
-        }
-
-        // Get current date and time for the route request
-        const currentDate = new Date();
-        const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
-        const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
-
-        // Construct the API URL according to the documentation
-        const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=drive`;
-        
-        $.ajax({
-            url: routeUrl,
-            type: 'GET',
-            headers: {
-                'Authorization': apiToken //fetch oneMapToken
-            },
-            success: function (data) {
-                if (data && data.route_geometry) {
-                    // Decode the route geometry to get the polyline coordinates
-                    const routeCoordinates = decodePolyline(data.route_geometry);
-
-                    // If there is an existing route, remove it
-                    if (currentRoute) {
-                        map.removeLayer(currentRoute);
-                    }
-
-                    // Draw the new route on the map
-                    currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
-                    L.circle([endLatLng.lat,endLatLng.lng], 500).addTo(map);
-                } else {
-                    alert("No route found between the specified locations.");
-                }
-            },
-            error: function () {
-                alert("Error fetching route from OneMap API.");
+        async function getRoute(startLatLng, endLatLng) {
+            if (!startLatLng || !endLatLng) {
+                console.error("Start or end location is missing.");
+                return;
             }
-        });
+
+            // Get current date and time for the route request
+            const currentDate = new Date();
+            const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
+            const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
+
+            // Construct the API URL according to the documentation
+            const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=drive`;
+
+            $.ajax({
+                url: routeUrl,
+                type: 'GET',
+                headers: {
+                    'Authorization': apiToken //fetch oneMapToken
+                },
+                success: async function (data) { // Make the success callback async
+                    if (data && data.route_geometry) {
+                        // Decode the route geometry to get the polyline coordinates
+                        const routeCoordinates = decodePolyline(data.route_geometry);
+
+                        // If there is an existing route, remove it
+                        if (currentRoute) {
+                            map.removeLayer(currentRoute);
+                        }
+
+                        // Draw the new route on the map
+                        currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
+                        L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);
+
+                        // Fetch all car park coordinates and display in the map
+                        const carparkCoordinates = await getAllCarparkCoor_HDB();
+                        //console.log("Carpark Coordinates:", carparkCoordinates); // For debugging
+
+                        // Fetch nearby carparks and add markers
+                        const nearbyCarparks = await findNearbyCarparks_HDB(endLatLng.lat, endLatLng.lng);
+                        //console.log("Nearby Carparks:", nearbyCarparks); // For debugging
+
+                        const customIcon = L.icon({
+                        iconUrl: '/images/Parking_icon.svg.png',  // Path to your custom icon
+                        iconSize: [30, 30],  // Adjust size as needed
+                        iconAnchor: [15, 30],  // Anchor to the center
+                        popupAnchor: [0, -30]  // Popup anchor for the label
+                    });
+
+                    nearbyCarparks.forEach(lot => {
+                    // Assuming lot is a string like "1.434901737416896, 103.78661383499883"
+                    const coords = lot.split(',').map(coord => parseFloat(coord.trim())); // Split the string and trim any extra spaces
+
+                    if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
+                        L.marker([coords[0], coords[1]]).addTo(map)
+                            .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
+                    } else {
+                        console.error("Invalid lat/lng for:", lot);
+                    }
+                });
+                    } else {
+                        alert("No route found between the specified locations.");
+                    }
+                },
+                error: function () {
+                    alert("Error fetching route from OneMap API.");
+                }
+            });
         }
 
 
