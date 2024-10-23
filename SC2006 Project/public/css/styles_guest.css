@@ -231,7 +231,7 @@ button:hover {
   right: 0px; /* Position the sidebar on the right */
   top: (100%-30px); /* Position the sidebar at the top */
   height: 100%;
-  width: 350px;
+  width: 250px;
   background-color: white;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -245,7 +245,7 @@ button:hover {
   font-size: 20px;
   text-align: right;
   color: black;
-  padding-top: 20px;
+  padding-top: 25px;
   padding-right: 20px;
 }
 
@@ -276,34 +276,33 @@ button:hover {
 
 /* Parking lots styling */
 .sidebar{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
   flex: 1; /* Use flex to allow them to shrink and grow */
-  width: 200px; /* Optional maximum width */
+  width: 400px; /* Optional maximum width */
+  height: 100vh; 
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
-  margin-top: 30px;
+  margin-top: 60px;
   overflow-y: auto; /* Allow scrolling */
   background-color: white;
-  padding: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  z-index: 5000;
   overflow-y: auto;
-  height: 95%; 
-  position: fixed;
+}
+
+.sidebar h2 {
+  padding-top: 10px;
 }
 
 /* Parking lot info styling */
 .parking-lot {
-  margin-bottom: 15px;
+  margin: 4px 15px;
   background-color: #f9f9f9;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
-.sidebar {
-  display: none;
-  left: 0;
-}
-
 
 /*Map Related Styles*/
 
@@ -328,7 +327,7 @@ button:hover {
 .map-container {
   flex-grow: 1;
   margin-top: 60px ;
-  margin-left: 200px;
+  margin-left: 400px;
   position: relative;
   z-index: 0; /* Lower z-index for the map */
 }
@@ -338,7 +337,7 @@ button:hover {
   height: 100%; /* Make sure the map takes the full viewport height */
   width: 100%; /* Adjust width based on sidebar */
   position: absolute;
-  left: 200px; /* Adjust to account for sidebar */
+  left: 400px; /* Adjust to account for sidebar */
   z-index: 1;
   display: grid; /* Use grid layout to position the map and sidebar */
   grid-template-columns: 5fr 300px;
