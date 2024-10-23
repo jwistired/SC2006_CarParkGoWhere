@@ -63,6 +63,17 @@
         <div class ="profile-sidebar" id="profile-bar">
             <img src="\css\images\icons\close.png" class="close-icon" onclick="closeprofileBar()">
             <h2 class="profile-header-text">User Profiles and Settings</h2>
+            <nav>
+                <div class="language-selector">
+                    <label for="languageDropdown">Select Language:</label>
+                    <select id="languageDropdown" onchange="changeLanguage()">
+                        <option value="en" selected>English</option>
+                        <option value="zh">中文 (Chinese)</option>
+                        <option value="ms">Malay</option>
+                        <option value="ta">தமிழ் (Tamil)</option>
+                    </select>
+                </div>
+            </nav>
         </div>
 
         <!-- Map -->
@@ -172,6 +183,32 @@
                 closeprofileBar();
             }
         });
+
+        // Language settings
+        const translations = {
+            en: {
+                welcome: "Welcome",
+                description: "This is the guest map interface."
+            },
+            zh: {
+                welcome: "欢迎",
+                description: "这是访客地图界面。"
+            },
+            ms: {
+                welcome: "Selamat Datang",
+                description: "Ini adalah antara muka peta tetamu."
+            },
+            ta: {
+                welcome: "வரவேற்கிறோம்",
+                description: "இது விருந்தினர்களின் வரைபட இடைமுகம்."
+            }
+        };
+
+        function changeLanguage() {
+            const language = document.getElementById('languageDropdown').value;
+            document.getElementById('welcomeText').innerText = translations[language].welcome;
+            document.getElementById('descriptionText').innerText = translations[language].description;
+        }
 
         // Parking lot data
         const parkingLots = [
