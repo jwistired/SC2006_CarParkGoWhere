@@ -68,6 +68,7 @@ const { checkAuthenticated, checkNotAuthenticated } = require('./BoundaryClasses
 const initialisePassport = require("./passport-config");
 
 const getToken = require('./getOneMapToken.js'); //get onemap token 
+const carparkFunctions = require('./BoundaryClasses/Hdb_Api.js'); // Ensure you have the correct path
 
 // In-memory users array (could be replaced with a database)
 const users = [];
@@ -131,6 +132,59 @@ app.get('/api/token', async (req, res) => {
         console.error('Error fetching token:', error);
         res.status(500).json({ error: 'Failed to fetch token' });
     }
+});
+
+// Routes
+app.get('/api/carpark-details/:carParkNo', async (req, res) => {
+    const carParkNo = req.params.carParkNo;
+    const carParkDetails = await carparkFunctions.getHdbCarParkDetails(carParkNo);
+    if (carParkDetails) {
+        res.json(carParkDetails);
+    } else {
+        res.status(404).json({ error: `Car park ${carParkNo} not found.` });
+    }
+});
+
+app.get('/api/carpark-coordinates/:carParkNo', async (req, res) => {
+    const carParkNo = req.params.carParkNo;
+    const coordinates = await carparkFunctions.getCarparkCoor(carParkNo);
+    if (coordinates) {
+        res.json(coordinates);
+    } else {
+        res.status(404).json({ error: `Coordinates for car park ${carParkNo} not found.` });
+    }
+});
+
+app.get('/api/carpark-availability', async (req, res) => {
+    const availability = await carparkFunctions.fetchCarparkAvailability();
+    res.json(availability);
+});
+
+app.get('/api/carpark-numbers', async (req, res) => {
+    const carparkNumbers = await carparkFunctions.getAllCarparkNumbers();
+    res.json(carparkNumbers);
+});
+
+app.get('/api/carpark-lots-details/:carparkNumber', async (req, res) => {
+    const carparkNumber = req.params.carparkNumber;
+    const lotsDetails = await carparkFunctions.getCarparkLotsDetails(carparkNumber);
+    if (lotsDetails) {
+        res.json(lotsDetails);
+    } else {
+        res.status(404).json({ error: `Details for car park number ${carparkNumber} not found.` });
+    }
+});
+
+app.get('/api/carpark-coordinates', async (req, res) => {
+    const coordinates = await carparkFunctions.getAllCarparkCoor_HDB();
+    res.json(coordinates);
+});
+
+app.get('/api/find-nearby-carparks', async (req, res) => {
+    const { lat, lon } = req.query; // Expect lat and lon as query parameters
+    const destinationCoords = `${lat}, ${lon}`;
+    const nearbyCarparks = await carparkFunctions.findNearbyCarparks_HDB(destinationCoords, 500);
+    res.json(nearbyCarparks);
 });
 
 // Start the server on port 3000

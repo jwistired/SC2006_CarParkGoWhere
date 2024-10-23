@@ -515,10 +515,12 @@ input:checked + .slider:before {
   }
   
   /* Make sure all Leaflet marker icons have a uniform z-index */
+  
   .leaflet-marker-icon {
+
     z-index: 1000 !important; /* Use !important to override any conflicting styles */
-    position: relative; /* Required for z-index to take effect */
-  }
+    position: absolute; /* Required for z-index to take effect */
+  } 
   
   /* Optional: higher z-index for popups */
   .leaflet-popup {
