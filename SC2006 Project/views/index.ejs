@@ -77,10 +77,12 @@
             <button class="exit-button" onclick="closesideBar()">Exit</button>
         </div>
 
-        <!-- Sidebar for settings -->
+        <!-- settings sidebar -->
         <div class ="profile-sidebar" id="profile-bar">
             <img src="\css\images\icons\close.png" class="close-icon" onclick="closeprofileBar()">
             <h2 class="profile-header-text">User Profiles and Settings</h2>
+            <img src="\css\images\icons\account_icon.png" class="user-profile-pic">
+            <p class="profile-sider-username"><script>getUsername()</script></p>
         </div>
 
         <!-- MAP -->
@@ -129,7 +131,7 @@
         // Open and close sidebar
         function openprofileBar() {
             document.getElementById("profile-bar").style.width = "350px";
-            document.getElementById("profile-bar").style.display = "grid";
+            document.getElementById("profile-bar").style.display = "inline-block";
             document.getElementById("profile-bar").style.animation = "slideIn";
         }
 
@@ -150,6 +152,14 @@
             document.getElementById("sidebar").style.width = "0px";
             document.getElementById("sidebar").style.display = "none";
             document.getElementById("sidebar").style.animation = "slideOut";
+        }
+
+        function getUsername(){
+            fetch('/username')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.profile-sider-username').textContent = data.username;
+            });
         }
 
         // Logout Button function
