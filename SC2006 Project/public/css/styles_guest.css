@@ -463,3 +463,60 @@ input:checked + .slider:before {
 .leaflet-popup {
   z-index: 1500; /* Make sure popups are above markers */
 }
+
+/* Style for the language selector */
+/* Language Selector Styling */
+.language-selector {
+  display: flex; /* Ensure it is a block-level element */
+  position: absolute;
+  margin-top: 90px;
+  margin-right: 20px;
+  margin-left: 20px;
+  left: 0;
+  top: 0;
+  font-size: 12px;
+  color: white;
+  background-color: #888;
+  padding: 8px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.language-selector span {
+  display: flex; /* Ensure each language is on a new line */
+  margin-bottom: 5px;
+}
+
+.language-selector select {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.language-selector select:hover {
+  border-color: #888;
+}
+
+.language-selector select:focus {
+  border-color: #555;
+}
+
+.language-selector label {
+  display: flex;
+  margin: 8px;
+  font-size: 17px;
+  text-align: left;
+  font-weight: bold;
+  color: #f9f9f9;
+}
+
+/* Additional styles to align with your overall design */
+nav {
+  margin-top: 120px;
+}
