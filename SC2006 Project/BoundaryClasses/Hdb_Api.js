@@ -127,39 +127,115 @@ const getCarparkLotsDetails = async (carparkNumber) => {
   return null; 
 };
 
-// Fetch coordinates for all car parks and log them directly
-const getAllCarparkCoor = async () => {
-  try {
-    const response = await fetch(`${hdbUrl}&limit=1000`); // Fetch a sufficient number of records
-    if (!response.ok) {
-      throw new Error('Failed to fetch HDB car park data');
-    }
+// Fetch all car park coordinates
+const getAllCarparkCoor_HDB = async () => {
+  const carparkCoordinates = new Set(); // Use a Set to avoid duplicates
+  let offset = 0;
+  const limit = 5000;
 
-    const data = await response.json();
-    const carparkCoordinates = data.result.records
-      .map(record => {
+  try {
+    while (true) {
+      const response = await fetch(`${hdbUrl}&limit=${limit}&offset=${offset}`);
+      if (!response.ok) throw new Error('Failed to fetch HDB car park data');
+      const data = await response.json();
+
+      if (data.result.records.length === 0) break;
+
+      data.result.records.forEach(record => {
         const x_coord = parseFloat(record.x_coord);
         const y_coord = parseFloat(record.y_coord);
         if (!isNaN(x_coord) && !isNaN(y_coord)) {
           const [longitude, latitude] = proj4(SVY21, WGS84, [x_coord, y_coord]);
-          return `${latitude}, ${longitude}`; // Format as a string
+          carparkCoordinates.add(`${latitude}, ${longitude}`); // Add formatted coordinates to the Set
         }
-        return null; // Skip if coordinates are invalid
-      })
-      .filter(Boolean); // Remove any null values
+      });
 
-    // Log the coordinates directly
-    console.log('All Car Park Coordinates:', carparkCoordinates);
+      offset += limit; // Increment offset for next batch
+    }
 
-    return carparkCoordinates; // Return the array of formatted coordinates if needed
+    return Array.from(carparkCoordinates); // Convert Set to Array and return
   } catch (error) {
     console.error('Error fetching car park coordinates:', error);
+    return []; // Return an empty array in case of error
   }
 };
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371000; // Radius of the Earth in meters
+  const φ1 = lat1 * (Math.PI / 180); // φ in radians
+  const φ2 = lat2 * (Math.PI / 180); // φ in radians
+  const Δφ = (lat2 - lat1) * (Math.PI / 180); // Difference in latitude in radians
+  const Δλ = (lon2 - lon1) * (Math.PI / 180); // Difference in longitude in radians
+
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c; // Distance in meters
+}
+
+// Fetch all car park coordinates within a 500m radius
+const findNearbyCarparks_HDB = async (destinationCoords, radius = 500) => {
+  const coordinates = await getAllCarparkCoor(); // Get all car park coordinates
+  const nearbyCarparks = [];
+
+  const [destLat, destLon] = destinationCoords.split(', ').map(Number); // Parse destination coordinates
+
+  coordinates.forEach(coord => {
+    const [lat, lon] = coord.split(', ').map(Number); // Parse car park coordinates
+    const distance = haversineDistance(destLat, destLon, lat, lon); // Calculate distance
+
+    if (distance <= radius) { // Check if within radius
+      nearbyCarparks.push(coord); // Add to nearby car parks
+    }
+  });
+
+  return nearbyCarparks; // Return the filtered car parks
+};
+
+// find nearby carpark 
+/*
+(async () => {
+  const destinationCoords = '1.4368197, 103.7860668'; // Define destination coordinates
+  const nearbyCarparks = await findNearbyCarparks_HDB(destinationCoords, 500); // Find nearby car parks within 500m
+
+  console.log('Nearby Car Parks within 500m radius:\n', nearbyCarparks.join('\n')); // Log the result
+})();
+*/
 
 // Example usage
 // getHdbCarParkDetails('ACB'); // Get the car park details 
 // getCarparkCoor('ACB'); // Get HDB car park coordinates
-// getAllCarparkNumbers(); // Get all car park numbers
-// getCarparkLotsDetails('ACB'); // Get details for carpark 
-getAllCarparkCoor(); // Fetch and log all car park coordinates
+//fetchCarparkAvailability();
+
+// Get all car park numbers
+/*
+(async () => {
+  const carparkNumbers = await getAllCarparkNumbers(); // Call the function to get car park numbers
+  const carparkNumbersString = carparkNumbers.join(', '); // Join numbers with a comma and space
+  console.log('All Car Park Numbers:\n', carparkNumbersString); // Log the formatted string
+})(); */
+
+
+// get all car park coordinates
+/*
+(async () => {
+  const coordinates = await getAllCarparkCoor_HDB(); // Call the function to get coordinates
+  const coordinatesString = coordinates.join('\n'); // Join coordinates with a newline character
+  console.log('All Car Park Coordinates:\n', coordinatesString); // Log the formatted string
+})(); */
+
+// Export all functions
+module.exports = {
+  getHdbCarParkDetails,
+  getCarparkCoor,
+  fetchCarparkAvailability,
+  getAllCarparkNumbers,
+  getCarparkLotsDetails,
+  getAllCarparkCoor_HDB,
+  findNearbyCarparks_HDB,
+  haversineDistance
+};
+
+
