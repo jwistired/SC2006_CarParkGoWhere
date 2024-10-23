@@ -13,9 +13,7 @@ const availabilityUrl = `https://api.data.gov.sg/v1/transport/carpark-availabili
 async function getHdbCarParkDetails(car_park_no) {
   try {
     const response = await fetch(hdbUrl);
-    if (!response.ok) {
-      throw new Error('Failed to fetch HDB car park data');
-    }
+    if (!response.ok) throw new Error('Failed to fetch HDB car park data');
     const data = await response.json();
     const carpark = data.result.records.find(record => record.car_park_no === car_park_no);
 
@@ -28,6 +26,7 @@ async function getHdbCarParkDetails(car_park_no) {
     }
   } catch (error) {
     console.error('Error fetching HDB car park data:', error);
+    return null; // Return null on error
   }
 }
 
@@ -35,9 +34,7 @@ async function getHdbCarParkDetails(car_park_no) {
 async function getCarparkCoor(car_park_no) {
   try {
     const response = await fetch(hdbUrl);
-    if (!response.ok) {
-      throw new Error('Failed to fetch HDB car park data');
-    }
+    if (!response.ok) throw new Error('Failed to fetch HDB car park data');
     const data = await response.json();
     const carpark = data.result.records.find(record => record.car_park_no === car_park_no);
 
@@ -53,14 +50,15 @@ async function getCarparkCoor(car_park_no) {
         return { latitude, longitude, address };
       } else {
         console.warn(`Invalid or missing coordinates for Car Park ${car_park_no}`);
-        return '';
+        return null;
       }
     } else {
       console.warn(`Car park with number ${car_park_no} not found.`);
-      return '';
+      return null;
     }
   } catch (error) {
     console.error('Error fetching HDB car park data:', error);
+    return null; // Return null on error
   }
 }
 
@@ -68,9 +66,7 @@ async function getCarparkCoor(car_park_no) {
 const fetchCarparkAvailability = async () => {
   try {
     const response = await fetch(availabilityUrl);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-    }
+    if (!response.ok) throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
     const data = await response.json();
     return data.items || [];
   } catch (error) {
@@ -88,14 +84,10 @@ const getAllCarparkNumbers = async () => {
   try {
     while (true) {
       const response = await fetch(`${hdbUrl}&limit=${limit}&offset=${offset}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch HDB car park data');
-      }
+      if (!response.ok) throw new Error('Failed to fetch HDB car park data');
       const data = await response.json();
 
-      if (data.result.records.length === 0) {
-        break;
-      }
+      if (data.result.records.length === 0) break;
 
       data.result.records.forEach(record => {
         carparkNumbers.add(record.car_park_no);
@@ -104,12 +96,10 @@ const getAllCarparkNumbers = async () => {
       offset += limit;
     }
 
-    console.log('All Carpark Numbers:');
-    carparkNumbers.forEach(carparkNumber => {
-      console.log(carparkNumber);
-    });
+    return Array.from(carparkNumbers); // Convert Set to Array and return
   } catch (error) {
     console.error('Error fetching car park numbers:', error);
+    return []; // Return an empty array in case of error
   }
 };
 
@@ -137,9 +127,39 @@ const getCarparkLotsDetails = async (carparkNumber) => {
   return null; 
 };
 
-// Example usage
-//getHdbCarParkDetails('ACB'); // get the car park details 
-getCarparkCoor('ACB'); // get hdb carpark coordinates
+// Fetch coordinates for all car parks and log them directly
+const getAllCarparkCoor = async () => {
+  try {
+    const response = await fetch(`${hdbUrl}&limit=1000`); // Fetch a sufficient number of records
+    if (!response.ok) {
+      throw new Error('Failed to fetch HDB car park data');
+    }
 
-//getAllCarparkNumbers(); // Get all car park numbers //set vscode terminal scrollback to a larger value to see all carpark numbers
-getCarparkLotsDetails('ACB'); // Get details for carpark 
+    const data = await response.json();
+    const carparkCoordinates = data.result.records
+      .map(record => {
+        const x_coord = parseFloat(record.x_coord);
+        const y_coord = parseFloat(record.y_coord);
+        if (!isNaN(x_coord) && !isNaN(y_coord)) {
+          const [longitude, latitude] = proj4(SVY21, WGS84, [x_coord, y_coord]);
+          return `${latitude}, ${longitude}`; // Format as a string
+        }
+        return null; // Skip if coordinates are invalid
+      })
+      .filter(Boolean); // Remove any null values
+
+    // Log the coordinates directly
+    console.log('All Car Park Coordinates:', carparkCoordinates);
+
+    return carparkCoordinates; // Return the array of formatted coordinates if needed
+  } catch (error) {
+    console.error('Error fetching car park coordinates:', error);
+  }
+};
+
+// Example usage
+// getHdbCarParkDetails('ACB'); // Get the car park details 
+// getCarparkCoor('ACB'); // Get HDB car park coordinates
+// getAllCarparkNumbers(); // Get all car park numbers
+// getCarparkLotsDetails('ACB'); // Get details for carpark 
+getAllCarparkCoor(); // Fetch and log all car park coordinates
