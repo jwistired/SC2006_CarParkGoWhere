@@ -479,10 +479,11 @@ input:checked + .slider:before {
 
 .slider-text{
   position: relative;
-  bottom: 30px; /* Adjust bottom position */
+  bottom: 20px; /*Adjust bottom position */
   font: Arial, sans-serif;
   font-size: 14px;
   text-align: right;
+  color: black;
 }
 
 #autocomplete-list {
@@ -508,14 +509,21 @@ input:checked + .slider:before {
 
 
 /* Map related icons */
-
-.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(\css\images\icons\gps-marker.png);
-	}
-
-.leaflet-marker-icon { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(\css\images\icons\gps-marker.png);
-	}
+  .marker {
+    z-index: 1001;
+    position: absolute;
+  }
+  
+  /* Make sure all Leaflet marker icons have a uniform z-index */
+  .leaflet-marker-icon {
+    z-index: 1000 !important; /* Use !important to override any conflicting styles */
+    position: relative; /* Required for z-index to take effect */
+  }
+  
+  /* Optional: higher z-index for popups */
+  .leaflet-popup {
+    z-index: 1500; /* Make sure popups are above markers */
+  }
 
 
 /* Animations */

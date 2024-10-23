@@ -9,14 +9,19 @@ router.get('/', checkAuthenticated, (req, res) => {
 
 //get user name
 router.get('/name', (req, res) => {
-    res.send(req.user.name)
+    const userName = req.user.name;
+    res.render('index.ejs', { name: userName });
 })
 
-//get email
-router.get('/email', (req, res) => {
-    res.send(req.user.email)
-})
-
+//get email maybe use when database is implemented
+// router.get('/email', (req, res) => {
+//     if (req.user && req.user.email) {
+//         const userEmail = req.user.email;
+//         res.render('index.ejs', { email: userEmail });
+//     } else {
+//         res.status(400).send('Email not found');
+//     }
+// })
 
 router.delete('/logout', (req, res, next) => {
     req.logOut(function(err) {

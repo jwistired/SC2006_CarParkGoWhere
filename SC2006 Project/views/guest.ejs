@@ -169,14 +169,14 @@
         // Hide dropdown when clicking outside
         document.addEventListener('click', function (event) {
             const dropdown = document.getElementById('filterDropdown');
-            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown')) {
+            if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
                 dropdown.style.display = 'none';
             }
         });
 
         // Event listener to close the sidebar when clicking outside of it
         document.addEventListener('click', function (event) {
-            const profileBar = document.getElementById('profile-bar');
+            const profileBar = document.getElementById('profile-bar');s
             const profileButton = document.querySelector('.profile-settings');
 
             // Hide the sidebar if clicking outside the profile button and sidebar
@@ -184,6 +184,20 @@
                 closeprofileBar();
             }
         });
+
+        //Filter Toggles
+
+        function toggleDistance(){
+            //code to toggle distance filter
+        }
+
+        function toggleAvailableLots(){
+            //code to toggle available lots filter
+        }
+
+        function togglePrice(){
+            //code to toggle price filter
+        }
 
         // Language settings
         const translations = {
