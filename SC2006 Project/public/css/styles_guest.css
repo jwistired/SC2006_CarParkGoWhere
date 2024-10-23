@@ -161,27 +161,6 @@ button:hover {
   flex-basis: 100%; /* Allow it to grow to full width */
 }
 
-/* .filter-options {
-  position: absolute;
-  bottom: 20px;
-  right: 320px; /* Adjust to fit within the content area */
-  /* background-color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-} */
-/* 
-.filter-option {
-  padding: 5px;
-  cursor: pointer;
-} */
-
-/* .filter-option:hover {
-  background-color: #f0f0f0;
-} */ 
-
-
 /* Login/Register/Logout Related Styles */
 
 /* Login/Register Icons */
@@ -380,18 +359,20 @@ button:hover {
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
+  border-radius: 34px; /* Rounded corners */
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
+  height: 18px; /* Adjust height to fit within the slider */
+  width: 18px; /* Adjust width to fit within the slider */
   left: 2px;
-  bottom: 1px;
+  bottom: 2px; /* Adjust bottom to fit within the slider */
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+  border-radius: 50%; /* Rounded corners */
 }
 
 input:checked + .slider {
@@ -403,9 +384,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(16px);
-  -ms-transform: translateX(16px);
-  transform: translateX(16px);
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
 }
 
 /* Rounded sliders */
@@ -420,7 +401,7 @@ input:checked + .slider:before {
 .slider-text{
   position: relative;
   bottom: 20px;
-  font: Arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 14px;
   text-align: right;
 }

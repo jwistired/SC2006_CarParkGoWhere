@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="\css\styles_user.css">
 </head>
 
-<body>
+<body onload="getUsername()">
     <!-- Header with logo, search bar, filter, and login/register -->
     <div class="header">
         <!-- Logo -->
@@ -34,21 +34,21 @@
             <div class="filter-dropdown" id="filtersDropdown">
                 <div>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="toggle-distance" onchange="toggleDistance()">
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="slider-text">Distance</div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="toggle-price" onchange="togglePrice()">
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="slider-text">Cheapest Carpark</div>
                 <div>
-                    <label class="switch">
-                        <input type="checkbox">
+                    <label class="switch" >
+                        <input type="checkbox" id="toggle-avaliableLots" onchange="toggleAvailableLots()">
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -82,14 +82,16 @@
             <img src="\css\images\icons\close.png" class="close-icon" onclick="closeprofileBar()">
             <h2 class="profile-header-text">User Profiles and Settings</h2>
             <img src="\css\images\icons\account_icon.png" class="user-profile-pic">
-            <h2 class="profile-sider-username"></h2>
+            <h1 class="profile-sider-username" id="name-display">Welcome,</h1>
+            <h1 class="profile-sider-username" id="name-display"><%= name %></h1>
+            <h2 class="profile-sider-username" id="email-display">Placeholder Email</h2>
             <h2>Languages</h2>
             <div id="language-dropdown" class ="language-select">
                 <select>
                     <option value="english">English</option>
                     <option value="chinese">Chinese</option>
                     <option value="malay">Malay</option>
-                    <option value="tamil">Tamil</option>
+                    <option value="tamil">Tamil</option>d
                 </select>
             </div>
         </div>
@@ -173,18 +175,6 @@
         }
 
         //Profile sidebar functions
-        
-        function getUsername(){
-            fetch('/username')
-            .then(response => response.json())
-            .then(data => {
-            var name = data.username;
-            document.getElementById("profile-sider-username").innerHTML = name;
-            })
-            .catch(error => {
-            console.error('Error fetching username:', error);
-            });
-        }
 
         // Open and close profile/setting sidebar
         function openprofileBar() {
@@ -206,6 +196,20 @@
                 dropdown.style.display = 'none';
             }
         });
+
+        //Filter Toggles
+
+        function toggleDistance(){
+            //code to toggle distance filter
+        }
+
+        function toggleAvailableLots(){
+            //code to toggle available lots filter
+        }
+
+        function togglePrice(){
+            //code to toggle price filter
+        }
         
 
         // Logout Button function
