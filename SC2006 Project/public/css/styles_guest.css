@@ -17,15 +17,14 @@ html, body {
   background-color: rgba(241, 241, 241, 1);
   border-bottom: 1px solid #ccc;
   width: 100%;
-  z-index: 10;
-  overflow: hidden;
+  z-index: 1000;
 }
 
 /* Logo */
 .logo {
-  width: 80px;
+  width: 100px;
   height: auto;
-  margin-left: 50px;
+  margin-left: 10px;
 }
 
 /* Search bar and button styling */
@@ -33,7 +32,7 @@ html, body {
   display: flex;
   align-items: center;
   flex-direction: row;
-  height: 30px;
+  height: 45px;
   width: 65%;
   position: relative;
   margin-left: 30px;
@@ -42,7 +41,7 @@ html, body {
   border-radius: 15px; /* Add border radius */
   padding: 5px; /* Add padding */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
-
+  z-index: 2000;
 }
 
 /* Button styling */
@@ -60,16 +59,13 @@ button:hover {
 }
 
 /*Search Bar*/
-
 .search-icon-btn{
   background-color: transparent;
-  border: none;
   cursor: pointer;
-  outline: none;
   position: absolute;
   right: 20px;
-  top: 20%;
-  height:4px;
+  top: 30%;
+  height: 4px;
   width: 4px;
   display: flex;
   justify-content: center;
@@ -79,13 +75,18 @@ button:hover {
   scale: 0.5;
 }
 
+.search-icon {
+  width: 60px;
+  height: 60px;
+}
+
 .search {
   --padding: 14px;
   position: absolute;
   width: max-content;
+  margin: 20px 0;
   display: flex;
   align-items: center;
-  padding: 14px;
   border-radius: 28px;
   background-color: rgb(156, 156, 156);
   padding: var(--padding);
@@ -94,8 +95,9 @@ button:hover {
 }
 
 .search-input {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  width: 100vh;
+  height: 50px;
   box-sizing: border-box;
   border: none;
   border-radius: 5px;
@@ -114,7 +116,6 @@ button:hover {
   font-size: 14px;
   font-style: italic;
   opacity: 1;
-  /* padding-left: 20px; */
 }
 
 .search:focus-within{
@@ -126,15 +127,16 @@ button:hover {
 .filter-button {
   display :flex;
   align-items: center;
+  flex-direction: column;
   text-decoration: none;
   color: white;
-  margin-right: 50px;
+  margin: 0 10px;
   scale: 1;
 }
 
 .filter-caption {
   font-size: 14px;
-  text-align: left;
+  text-align: center;
   color: white;
 }
 
@@ -147,8 +149,8 @@ button:hover {
 .filter-dropdown {
   display: none; /* Hidden by default */
   position: absolute; /* Position it below the filter button */
-  top: 70px; /* Align with the header */
-  right: 90px; /* Align right with filter button */
+  top: 120px; /* Align with the header */
+  right: 90px; /*Align right with filter button */
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -159,27 +161,6 @@ button:hover {
   flex-basis: 100%; /* Allow it to grow to full width */
 }
 
-/* .filter-options {
-  position: absolute;
-  bottom: 20px;
-  right: 320px; /* Adjust to fit within the content area */
-  /* background-color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-} */
-/* 
-.filter-option {
-  padding: 5px;
-  cursor: pointer;
-} */
-
-/* .filter-option:hover {
-  background-color: #f0f0f0;
-} */ 
-
-
 /* Login/Register/Logout Related Styles */
 
 /* Login/Register Icons */
@@ -188,11 +169,10 @@ button:hover {
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: black;
-  margin-right: 50px; /* Center the login/register icon */
+  color: white;
+  margin: 0 25px 0 10px; /* Center the login/register icon */
 }
 
-/* Login/Register Icons */
 .login-icon {
   width: 30px;
   height: 30px;
@@ -202,22 +182,61 @@ button:hover {
 .login-caption {
   font-size: 14px;
   text-align: center;
-  color: black;
+  color: white;
 }
-/* Logout Icons */
-.logout-btn{
+
+/* Profile and Settings button */
+.profile-settings {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-decoration: none;
   color: white;
-  margin-right: 50px; /* Center the login/register icon */
+  margin-right: 0 10px; /* Center the login/register icon */
 }
 
-.logout-caption {
-  font-size: 14px;
-  text-align: left;
-  color: white;
+.settings-icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+/* profile and Setting bar related Styles*/
+.profile-sidebar{
+  display: none;
+  grid-template-columns: auto auto auto; /* Specify one column */
+  grid-template-rows: repeat(6, auto); /* Repeat 'auto' for 6 rows */
+  position: fixed;
+  right: 0px; /* Position the sidebar on the right */
+  top: (100%-30px); /* Position the sidebar at the top */
+  height: 100%;
+  width: 250px;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 40px;
+}
+
+/* Profile Settings Header Text*/
+.profile-header-text {
+  grid-column: 2/3;
+  grid-row: 1/1;
+  font-size: 20px;
+  text-align: right;
+  color: black;
+  padding-top: 25px;
+  padding-right: 20px;
+}
+
+.close-icon {
+  padding-top: 30px;
+  padding-left: 10px;
+  grid-column: 1/1;
+  grid-row: 1/1;
+  align-items: center;
+  cursor: pointer;
+  width:40px;
+  height: 40px;
 }
 
 /* Content layout */
@@ -236,34 +255,33 @@ button:hover {
 
 /* Parking lots styling */
 .sidebar{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
   flex: 1; /* Use flex to allow them to shrink and grow */
-  width: 200px; /* Optional maximum width */
+  width: 400px; /* Optional maximum width */
+  height: 100vh; 
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
-  margin-top: 30px;
+  margin-top: 60px;
   overflow-y: auto; /* Allow scrolling */
   background-color: white;
-  padding: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  z-index: 5000;
   overflow-y: auto;
-  height: 95%; 
-  position: fixed;
+}
+
+.sidebar h2 {
+  padding-top: 10px;
 }
 
 /* Parking lot info styling */
 .parking-lot {
-  margin-bottom: 15px;
+  margin: 4px 15px;
   background-color: #f9f9f9;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
-.sidebar {
-  display: none;
-  left: 0;
-}
-
 
 /*Map Related Styles*/
 
@@ -287,18 +305,18 @@ button:hover {
 
 .map-container {
   flex-grow: 1;
-  margin-top: 40px ;
-  margin-left: 200px;
+  margin-top: 60px ;
+  margin-left: 400px;
   position: relative;
-  z-index: 1; /* Lower z-index for the map */
+  z-index: 0; /* Lower z-index for the map */
 }
 
 /* Map container */
 #map {
   height: 100%; /* Make sure the map takes the full viewport height */
   width: 100%; /* Adjust width based on sidebar */
-  position: relative;
-  left: 200px; /* Adjust to account for sidebar */
+  position: absolute;
+  left: 400px; /* Adjust to account for sidebar */
   z-index: 1;
   display: grid; /* Use grid layout to position the map and sidebar */
   grid-template-columns: 5fr 300px;
@@ -341,18 +359,20 @@ button:hover {
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
+  border-radius: 34px; /* Rounded corners */
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
+  height: 18px; /* Adjust height to fit within the slider */
+  width: 18px; /* Adjust width to fit within the slider */
   left: 2px;
-  bottom: 1px;
-  background-color: rgb(255, 0, 0);
+  bottom: 2px; /* Adjust bottom to fit within the slider */
+  background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+  border-radius: 50%; /* Rounded corners */
 }
 
 input:checked + .slider {
@@ -364,9 +384,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(16px);
-  -ms-transform: translateX(16px);
-  transform: translateX(16px);
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
 }
 
 /* Rounded sliders */
@@ -381,7 +401,7 @@ input:checked + .slider:before {
 .slider-text{
   position: relative;
   bottom: 20px;
-  font: Arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 14px;
   text-align: right;
 }
@@ -391,9 +411,10 @@ input:checked + .slider:before {
   border: 1px solid #d4d4d4;
   border-bottom: none;
   border-top: none;
-  max-height: 150px;
+  max-height: 180px;
   overflow-y: auto;
-  z-index: 2000;
+  z-index: 2000 !important; /* Ensure it is above the map */
+  width: 90%; /* Adjust the width to fit within the search bar */
 }
 
 #autocomplete-list div {
@@ -421,4 +442,61 @@ input:checked + .slider:before {
 /* Optional: higher z-index for popups */
 .leaflet-popup {
   z-index: 1500; /* Make sure popups are above markers */
+}
+
+/* Style for the language selector */
+/* Language Selector Styling */
+.language-selector {
+  display: flex; /* Ensure it is a block-level element */
+  position: absolute;
+  margin-top: 90px;
+  margin-right: 20px;
+  margin-left: 20px;
+  left: 0;
+  top: 0;
+  font-size: 12px;
+  color: white;
+  background-color: #888;
+  padding: 8px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.language-selector span {
+  display: flex; /* Ensure each language is on a new line */
+  margin-bottom: 5px;
+}
+
+.language-selector select {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.language-selector select:hover {
+  border-color: #888;
+}
+
+.language-selector select:focus {
+  border-color: #555;
+}
+
+.language-selector label {
+  display: flex;
+  margin: 8px;
+  font-size: 17px;
+  text-align: left;
+  font-weight: bold;
+  color: #f9f9f9;
+}
+
+/* Additional styles to align with your overall design */
+nav {
+  margin-top: 120px;
 }
