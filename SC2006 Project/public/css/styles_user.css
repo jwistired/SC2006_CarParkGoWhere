@@ -59,7 +59,6 @@ button:hover {
 }
 
 /*Search Bar*/
-
 .search-icon-btn{
   background-color: transparent;
   border: none;
@@ -166,7 +165,6 @@ button:hover {
   opacity: 1;
 }
 
-
 /* Login/Register/Logout Related Styles */
 
 /* Login/Register Icons */
@@ -218,7 +216,6 @@ button:hover {
   text-decoration: none;
   color: white;
 }
- 
 
 /* profile and Setting bar related Styles*/
 .profile-sidebar{
@@ -247,8 +244,8 @@ button:hover {
 
 .close-icon {
   padding-top: 10px;
-  padding-left: 10px;
-  align-items: right;
+  padding-right:280px;
+  align-self: left;
   cursor: pointer;
   width:40px;
   height: 40px;
@@ -272,20 +269,53 @@ button:hover {
   font-size: large;
 }
 
-.language-select{
-  min-width: 70px;
+.language{
+  align-self: auto;
 }
 
-.language-select select{
-  background-color: #6a1b9a;
+.language-selector {
+  display: flex; /* Ensure it is a block-level element */
+  font-size: 12px;
   color: white;
-  width: 100px;
-  height: 30px;
+  background-color: #888;
+  padding: 8px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.language-selector span {
+  display: flex; /* Ensure each language is on a new line */
   margin-bottom: 5px;
 }
 
+.language-selector select {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
 
+.language-selector select:hover {
+  border-color: #888;
+}
 
+.language-selector select:focus {
+  border-color: #555;
+}
+
+.language-selector label {
+  display: flex;
+  margin: 8px;
+  font-size: 17px;
+  text-align: left;
+  font-weight: bold;
+  color: #f9f9f9;
+}
 
 /* Main Body styles */
 

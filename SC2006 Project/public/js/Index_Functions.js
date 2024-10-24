@@ -1,6 +1,6 @@
 console.log('Index_Functions.js loaded');
 
-
+//Filter Related Functions
 // Toggle filter dropdown visibility
 function toggleFilterDropdown() {
     const dropdown = document.getElementById('filtersDropdown');
@@ -8,7 +8,20 @@ function toggleFilterDropdown() {
     dropdown.style.flexDirection = 'column';
 }
 
-// Open and close sidebar
+function toggleDistance(){
+    //code to toggle distance filter
+}
+
+function toggleAvailableLots(){
+    //code to toggle available lots filter
+}
+
+function togglePrice(){
+    //code to toggle price filter
+}
+
+
+// Open and close Parking sidebar
 function opensideBar() {
     document.getElementById("sidebar").style.width = "200px";
     document.getElementById("sidebar").style.display = "flex";
@@ -48,6 +61,8 @@ document.addEventListener('click', function (event) {
     }
 });
 
+//logout function
+
 function logout() {
     fetch('/logout', {
         method: 'DELETE'
@@ -58,3 +73,25 @@ function logout() {
         }
     });
 }
+
+//Translation
+function changeLanguage() {
+    const language = document.getElementById('languageDropdown').value;
+    document.getElementById('welcomeText').innerText = translations[language].welcome;
+}
+
+const translations = {
+    en: {
+        welcome: "Welcome"
+    },
+    zh: {
+        welcome: "欢迎"
+    },
+    ms: {
+        welcome: "Selamat Datang"
+    },
+    ta: {
+        welcome: "வரவேற்கின்றேன்"
+    }
+};
+

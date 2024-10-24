@@ -82,22 +82,25 @@
             <img src="\css\images\icons\close.png" class="close-icon" onclick="closeprofileBar()">
             <h2 class="profile-header-text">User Profiles and Settings</h2>
             <img src="\css\images\icons\account_icon.png" class="user-profile-pic">
-            <h1 class="profile-sider-username" id="name-display">Welcome,</h1>
+            <h1 class="profile-sider-username" id="welcomeText"></h1>
             <h1 class="profile-sider-username" id="name-display"><%= name %></h1>
             <h2 class="profile-sider-username" id="email-display">Placeholder Email</h2>
-            <h2>Languages</h2>
-            <div id="language-dropdown" class ="language-select">
-                <select>
-                    <option value="english">English</option>
-                    <option value="chinese">Chinese</option>
-                    <option value="malay">Malay</option>
-                    <option value="tamil">Tamil</option>d
-                </select>
+          
+            <div>
+                <div class="language-selector">
+                    <label for="languageDropdown">Select Language:</label>
+                    <select id="languageDropdown" onchange="changeLanguage()">
+                        <option value="en" selected>English</option>
+                        <option value="zh">中文 (Chinese)</option>
+                        <option value="ms">Malay</option>
+                        <option value="ta">தமிழ் (Tamil)</option>
+                    </select>
+                </div>
             </div>
         </div>
 
         <!-- MAP -->
-        <div id='mapdiv' style='height:800px;'></div>
+        <div id='mapdiv'></div>
 
         <!-- Right sidebar for parking history -->
         <div class="history-sidebar">
