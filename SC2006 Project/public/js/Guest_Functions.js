@@ -1,10 +1,32 @@
- // Toggle filter dropdown visibility
- function toggleFilterDropdown() {
+// Filter functions
+// Toggle filter dropdown visibility
+function toggleFilterDropdown() {
     const dropdown = document.getElementById('filterDropdown');
     dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
     dropdown.style.flexDirection = 'column';
 }
 
+function toggleDistance(){
+    //code to toggle distance filter
+}
+
+function toggleAvailableLots(){
+    //code to toggle available lots filter
+}
+
+function togglePrice(){
+    //code to toggle price filter
+}
+
+// Hide dropdown when clicking outside
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('filterDropdown');
+    if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
+        dropdown.style.display = 'none';
+    }
+});
+
+// Side bar functions
 // Open and close sidebar
 function openprofileBar() {
     document.getElementById("profile-bar").style.width = "350px";
@@ -19,17 +41,9 @@ function closeprofileBar() {
 }
 
 
-// Hide dropdown when clicking outside
-document.addEventListener('click', function (event) {
-    const dropdown = document.getElementById('filterDropdown');
-    if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
-        dropdown.style.display = 'none';
-    }
-});
-
 // Event listener to close the sidebar when clicking outside of it
 document.addEventListener('click', function (event) {
-    const profileBar = document.getElementById('profile-bar');s
+    const profileBar = document.getElementById('profile-bar');
     const profileButton = document.querySelector('.profile-settings');
 
     // Hide the sidebar if clicking outside the profile button and sidebar
@@ -37,20 +51,6 @@ document.addEventListener('click', function (event) {
         closeprofileBar();
     }
 });
-
-//Filter Toggles
-
-function toggleDistance(){
-    //code to toggle distance filter
-}
-
-function toggleAvailableLots(){
-    //code to toggle available lots filter
-}
-
-function togglePrice(){
-    //code to toggle price filter
-}
 
 // Language settings
 const translations = {
