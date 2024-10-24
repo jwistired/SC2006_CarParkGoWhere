@@ -175,6 +175,7 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
   return R * c; // Distance in meters
 }
 
+
 // Fetch all car park coordinates within a 500m radius
 const findNearbyCarparks_HDB = async (destinationCoords, radius = 500) => {
   const coordinates = await getAllCarparkCoor_HDB(); // Get all car park coordinates
@@ -224,8 +225,8 @@ const findNearbyCarparks_HDB = async (destinationCoords, radius = 500) => {
   const coordinates = await getAllCarparkCoor_HDB(); // Call the function to get coordinates
   const coordinatesString = coordinates.join('\n'); // Join coordinates with a newline character
   console.log('All Car Park Coordinates:\n', coordinatesString); // Log the formatted string
-})(); */
-
+})(); 
+*/
 // Export all functions
 module.exports = {
   getHdbCarParkDetails,
