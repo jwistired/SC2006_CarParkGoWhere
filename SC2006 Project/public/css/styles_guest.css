@@ -149,8 +149,8 @@ button:hover {
 .filter-dropdown {
   display: none; /* Hidden by default */
   position: absolute; /* Position it below the filter button */
-  top: 120px; /* Align with the header */
-  right: 90px; /*Align right with filter button */
+  top: calc(105%); /* Align with the header */
+  right: calc(50px+ 100%); /*Align right with filter button */
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -204,7 +204,9 @@ button:hover {
 /* profile and Setting bar related Styles*/
 .profile-sidebar{
   display: none;
-  grid-template-columns: auto auto auto; /* Specify one column */
+  column-count: 1;
+  column-gap: 15px;
+  grid-template-columns: auto auto; /* Specify one column */
   grid-template-rows: repeat(6, auto); /* Repeat 'auto' for 6 rows */
   position: fixed;
   right: 0px; /* Position the sidebar on the right */
@@ -219,10 +221,8 @@ button:hover {
 
 /* Profile Settings Header Text*/
 .profile-header-text {
-  grid-column: 2/3;
-  grid-row: 1/1;
   font-size: 20px;
-  text-align: right;
+  text-align: left;
   color: black;
   padding-top: 25px;
   padding-right: 20px;
@@ -233,12 +233,69 @@ button:hover {
   padding-left: 10px;
   grid-column: 1/1;
   grid-row: 1/1;
-  align-items: center;
+  align-items: left;
   cursor: pointer;
   width:40px;
   height: 40px;
 }
 
+/* Style for the language selector */
+/* Language Selector Styling */
+.language-selector {
+  display: flex; /* Ensure it is a block-level element */
+  position: absolute;
+  margin-top: 90px;
+  margin-right: 20px;
+  margin-left: 20px;
+  left: 0;
+  top: 0;
+  font-size: 12px;
+  color: white;
+  background-color: #888;
+  padding: 8px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.language-selector span {
+  display: flex; /* Ensure each language is on a new line */
+  margin-bottom: 5px;
+}
+
+.language-selector select {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.language-selector select:hover {
+  border-color: #888;
+}
+
+.language-selector select:focus {
+  border-color: #555;
+}
+
+.language-selector label {
+  display: flex;
+  margin: 8px;
+  font-size: 17px;
+  text-align: left;
+  font-weight: bold;
+  color: #f9f9f9;
+}
+
+nav {
+  margin-top: 120px;
+}
+
+/* Main Body styles */
 /* Content layout */
 .content {
   display: flex;
@@ -253,7 +310,7 @@ button:hover {
   font-size: 14px;
 }
 
-/* Parking lots styling */
+/* Parking lots Sidebar styling */
 .sidebar{
   display: flex;
   flex-direction: column;
@@ -274,7 +331,6 @@ button:hover {
   padding-top: 10px;
 }
 
-/* Parking lot info styling */
 .parking-lot {
   margin: 4px 15px;
   background-color: #f9f9f9;
@@ -284,7 +340,6 @@ button:hover {
 }
 
 /*Map Related Styles*/
-
 /* Map zoom control styling */
 .fixed-control-zoom {
   position: fixed; /* Ensure it is fixed */
@@ -404,6 +459,7 @@ input:checked + .slider:before {
   font-family: Arial, sans-serif;
   font-size: 14px;
   text-align: right;
+  color: #000;
 }
 
 #autocomplete-list {
@@ -436,68 +492,10 @@ input:checked + .slider:before {
 /* Make sure all Leaflet marker icons have a uniform z-index */
 .leaflet-marker-icon {
   z-index: 1000 !important; /* Use !important to override any conflicting styles */
-  position: relative; /* Required for z-index to take effect */
+  position: absolute; /* Required for z-index to take effect */
 }
 
 /* Optional: higher z-index for popups */
 .leaflet-popup {
   z-index: 1500; /* Make sure popups are above markers */
-}
-
-/* Style for the language selector */
-/* Language Selector Styling */
-.language-selector {
-  display: inline-block
-  ; /* Ensure it is a block-level element */
-  position: absolute;
-  margin-top: 90px;
-  margin-right: 20px;
-  margin-left: 20px;
-  left: 0;
-  top: 0;
-  font-size: 12px;
-  color: white;
-  background-color: #888;
-  padding: 8px;
-  border-radius: 5px;
-  z-index: 1000;
-}
-
-.language-selector span {
-  display: flex; /* Ensure each language is on a new line */
-  margin-bottom: 5px;
-}
-
-.language-selector select {
-  padding: 5px 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #333;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-.language-selector select:hover {
-  border-color: #888;
-}
-
-.language-selector select:focus {
-  border-color: #555;
-}
-
-.language-selector label {
-  display: flex;
-  margin: 8px;
-  font-size: 17px;
-  text-align: left;
-  font-weight: bold;
-  color: #f9f9f9;
-}
-
-/* Additional styles to align with your overall design */
-nav {
-  margin-top: 120px;
 }
