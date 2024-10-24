@@ -447,7 +447,8 @@ input:checked + .slider:before {
 /* Style for the language selector */
 /* Language Selector Styling */
 .language-selector {
-  display: flex; /* Ensure it is a block-level element */
+  display: inline-block
+  ; /* Ensure it is a block-level element */
   position: absolute;
   margin-top: 90px;
   margin-right: 20px;

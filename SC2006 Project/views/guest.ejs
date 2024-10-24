@@ -207,13 +207,6 @@
             // Clear suggestions if no input
             document.getElementById("autocomplete-list").innerHTML = "";
         }}
-
-        // function setMarkerZIndex(marker, zIndexValue) {
-        //     // Check if the current z-index is negative and reset it
-        //     if (marker.getElement()) {
-        //         marker.getElement().style.zIndex = Math.max(0, zIndexValue); // Ensure non-negative
-        //     }
-        // }
         
         // Function to search for locations using OneMap API
         function searchLocation() {
@@ -356,7 +349,6 @@
 
             return points;
         }
-
 
         // Attach event listener to the search button or input field
         document.getElementById('search').addEventListener('keypress', function (e) {
