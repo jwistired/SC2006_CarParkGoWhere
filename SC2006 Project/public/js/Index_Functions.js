@@ -75,23 +75,60 @@ function logout() {
 }
 
 //Translation
-function changeLanguage() {
-    const language = document.getElementById('languageDropdown').value;
-    document.getElementById('welcomeText').innerText = translations[language].welcome;
-}
-
 const translations = {
     en: {
-        welcome: "Welcome"
+        "header": "Guest Map View",
+        "filter": "Filter",
+        "settings": "Settings",
+        "logout": "Logout",
+        "searchPlaceholder": "Search for parking lots",
+        "parkingLotsHeader": "Parking Lots Found",
+        "selectLanguage": "Select Language:",
+        "yourLocation": "Your Location"
     },
     zh: {
-        welcome: "欢迎"
+        "header": "客人地图视图",
+        "filter": "过滤",
+        "settings": "设置",
+        "logout": "登出",
+        "searchPlaceholder": "搜索停车位",
+        "parkingLotsHeader": "找到的停车场",
+        "selectLanguage": "选择语言:",
+        "yourLocation": "您的位置"
     },
     ms: {
-        welcome: "Selamat Datang"
+        "header": "Peta Tetamu",
+        "filter": "Tapis",
+        "settings": "Tetapan",
+        "logout": "Log Keluar",
+        "searchPlaceholder": "Cari tempat letak kereta",
+        "parkingLotsHeader": "Tempat Letak Kereta Ditemui",
+        "selectLanguage": "Pilih Bahasa:",
+        "yourLocation": "Lokasi Anda"
     },
     ta: {
-        welcome: "வரவேற்கின்றேன்"
+        "header": "விருந்தினர் வரைபட காட்சி",
+        "filter": "வடிகட்டி",
+        "settings": "அமைப்புகள்",
+        "logout": "வெளியேறு",
+        "searchPlaceholder": "கார் பார்க்கிங் இடங்களை தேடுங்கள்",
+        "parkingLotsHeader": "கார்பார்க்குகள் கண்டறியப்பட்டன",
+        "selectLanguage": "மொழியைத் தேர்ந்தெடுக்கவும்:",
+        "yourLocation": "உங்கள் இருப்பிடம்"
     }
 };
+
+function changeLanguage() {
+    const selectedLang = document.getElementById("languageDropdown").value;
+
+    document.title = translations[selectedLang]["header"];
+    document.querySelector(".filter-caption").innerText = translations[selectedLang]["filter"];
+    document.querySelector(".profile-caption").innerText = translations[selectedLang]["settings"];
+    document.querySelector(".logout-caption").innerText = translations[selectedLang]["logout"];
+    document.getElementById("search").placeholder = translations[selectedLang]["searchPlaceholder"];
+    document.querySelector(".profile-header-text").innerText = translations[selectedLang]["settings"];
+    document.querySelector(".parkinglotsHeader").innerText = translations[selectedLang]["parkingLotsHeader"];
+    document.querySelector(".selectLanguage").innerText = translations[selectedLang]["selectLanguage"];
+    document.querySelector(".currloc").innerText = translations[selectedLang]["yourLocation"];
+}
 

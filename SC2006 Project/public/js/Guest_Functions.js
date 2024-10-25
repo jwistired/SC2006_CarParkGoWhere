@@ -53,27 +53,85 @@ document.addEventListener('click', function (event) {
 });
 
 // Language settings
+// const translations = {
+//     en: {
+//         welcome: "Welcome",
+//         description: "This is the guest map interface."
+//     },
+//     zh: {
+//         welcome: "欢迎",
+//         description: "这是访客地图界面。"
+//     },
+//     ms: {
+//         welcome: "Selamat Datang",
+//         description: "Ini adalah antara muka peta tetamu."
+//     },
+//     ta: {
+//         welcome: "வரவேற்கிறோம்",
+//         description: "இது விருந்தினர்களின் வரைபட இடைமுகம்."
+//     }
+// };
+
 const translations = {
     en: {
-        welcome: "Welcome",
-        description: "This is the guest map interface."
+        "header": "Guest Map View",
+        "filter": "Filter",
+        "settings": "Settings",
+        "login": "Login/Register",
+        "searchPlaceholder": "Search for parking lots",
+        "parkingLotsHeader": "Parking Lots Found",
+        "selectLanguage": "Select Language:",
+        "yourLocation": "Your Location"
     },
     zh: {
-        welcome: "欢迎",
-        description: "这是访客地图界面。"
+        "header": "客人地图视图",
+        "filter": "过滤",
+        "settings": "设置",
+        "login": "登录/注册",
+        "searchPlaceholder": "搜索停车位",
+        "parkingLotsHeader": "找到的停车场",
+        "selectLanguage": "选择语言:",
+        "yourLocation": "您的位置"
     },
     ms: {
-        welcome: "Selamat Datang",
-        description: "Ini adalah antara muka peta tetamu."
+        "header": "Peta Tetamu",
+        "filter": "Tapis",
+        "settings": "Tetapan",
+        "login": "Log Masuk/Daftar",
+        "searchPlaceholder": "Cari tempat letak kereta",
+        "parkingLotsHeader": "Tempat Letak Kereta Ditemui",
+        "selectLanguage": "Pilih Bahasa:",
+        "yourLocation": "Lokasi Anda"
     },
     ta: {
-        welcome: "வரவேற்கிறோம்",
-        description: "இது விருந்தினர்களின் வரைபட இடைமுகம்."
+        "header": "விருந்தினர் வரைபட காட்சி",
+        "filter": "வடிகட்டி",
+        "settings": "அமைப்புகள்",
+        "login": "உள்நுழைவு/பதிவு",
+        "searchPlaceholder": "கார் பார்க்கிங் இடங்களை தேடுங்கள்",
+        "parkingLotsHeader": "கார்பார்க்குகள் கண்டறியப்பட்டன",
+        "selectLanguage": "மொழியைத் தேர்ந்தெடுக்கவும்:",
+        "yourLocation": "உங்கள் இருப்பிடம்"
     }
 };
 
+
+// function changeLanguage() {
+//     const language = document.getElementById('languageDropdown').value;
+//     document.getElementById('welcomeText').innerText = translations[language].welcome;
+//     document.getElementById('descriptionText').innerText = translations[language].description;
+// }
+
 function changeLanguage() {
-    const language = document.getElementById('languageDropdown').value;
-    document.getElementById('welcomeText').innerText = translations[language].welcome;
-    document.getElementById('descriptionText').innerText = translations[language].description;
+    const selectedLang = document.getElementById("languageDropdown").value;
+
+    document.title = translations[selectedLang]["header"];
+    document.querySelector(".filter-caption").innerText = translations[selectedLang]["filter"];
+    document.querySelector(".profile-caption").innerText = translations[selectedLang]["settings"];
+    document.querySelector(".login-caption").innerText = translations[selectedLang]["login"];
+    document.getElementById("search").placeholder = translations[selectedLang]["searchPlaceholder"];
+    document.querySelector(".profile-header-text").innerText = translations[selectedLang]["settings"];
+    document.querySelector(".parkinglotsHeader").innerText = translations[selectedLang]["parkingLotsHeader"];
+    document.querySelector(".selectLanguage").innerText = translations[selectedLang]["selectLanguage"];
+    document.querySelector(".currloc").innerText = translations[selectedLang]["yourLocation"];
 }
