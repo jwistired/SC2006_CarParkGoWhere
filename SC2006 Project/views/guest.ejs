@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="\css\styles_guest.css">
 </head>
 
-<body>
+<body onload="changeLanguage()">
     <!-- Header with logo, search bar, filter, and login/register -->
     <div class="header">
         <!-- Logo -->
@@ -79,7 +79,7 @@
         
         <!-- Sidebar for parking lots -->
         <div class="sidebar">
-            <h2>Parking Lots Found</h2>
+            <h2 class="parkinglotsHeader">Parking Lots Found</h2>
             <div id="parking-lots">
                 <!-- Parking lot info will be dynamically added here -->
             </div>
@@ -96,7 +96,7 @@
             <h2 class="profile-header-text">Settings</h2>
             <nav>
                 <div class="language-selector">
-                    <label for="languageDropdown">Select Language:</label>
+                    <label for="languageDropdown" class="selectLanguage">Select Language:</label>
                     <select id="languageDropdown" onchange="changeLanguage()">
                         <option value="en" selected>English</option>
                         <option value="zh">中文 (Chinese)</option>
@@ -305,7 +305,7 @@
 
                     // Add marker for user's location
                     L.marker(userLatLng).addTo(map)
-                        .bindPopup('Your Location')
+                        .bindPopup('<p id="locationText" class="currloc">Your location</p>')
                         .openPopup();
 
                     // Center map on user's location
@@ -367,7 +367,7 @@
                         currentCarparks = []; // Reset the array
 
                         // Draw the new route on the map
-                        currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
+                        currentRoute = L.polyline(routeCoordinates, { color: 'blue', opacity: 0.6, weight: 8 }).addTo(map);
                         circle = L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);
 
                         // Fetch all car park coordinates and display in the map
