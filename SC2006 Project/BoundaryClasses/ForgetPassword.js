@@ -3,7 +3,6 @@ const express = require('express')
 const router = express.Router()
 const nodemailer = require('nodemailer')
 const otp = require('otp-generator')
-const terminateAuthentication = require('./Authenticator.js')
 var generatedOTP
 let transporter = nodemailer.createTransport({
     service: 'gmail',
