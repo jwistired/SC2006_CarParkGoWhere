@@ -110,7 +110,7 @@ const getCarparkLotsDetails = async (carparkNumber) => {
   for (const item of items) {
     const carparkData = item.carpark_data;
     const carpark = carparkData.find(cp => cp.carpark_number === carparkNumber);
-
+    
     if (carpark) {
       console.log(`Lots Availability for Carpark ${carparkNumber}:`);
       console.log(`   Update Datetime: ${carpark.update_datetime}`);
@@ -144,9 +144,10 @@ const getAllCarparkCoor_HDB = async () => {
       data.result.records.forEach(record => {
         const x_coord = parseFloat(record.x_coord);
         const y_coord = parseFloat(record.y_coord);
+        const carparkNumber=record.car_park_no;
         if (!isNaN(x_coord) && !isNaN(y_coord)) {
           const [longitude, latitude] = proj4(SVY21, WGS84, [x_coord, y_coord]);
-          carparkCoordinates.add(`${latitude}, ${longitude}`); // Add formatted coordinates to the Set
+          carparkCoordinates.add(`${carparkNumber},${latitude}, ${longitude}`); // Add formatted coordinates to the Set
         }
       });
 
@@ -184,7 +185,9 @@ const findNearbyCarparks_HDB = async (destinationCoords, radius = 500) => {
   const [destLat, destLon] = destinationCoords.split(', ').map(Number); // Parse destination coordinates
 
   coordinates.forEach(coord => {
-    const [lat, lon] = coord.split(', ').map(Number); // Parse car park coordinates
+    const [carparkNumber, lat, lon] = coord.split(',').map((value, index) =>
+      index === 0 ? value.trim() : Number(value.trim()) // Trim spaces and convert to numbers
+    );
     const distance = haversineDistance(destLat, destLon, lat, lon); // Calculate distance
 
     if (distance <= radius) { // Check if within radius
