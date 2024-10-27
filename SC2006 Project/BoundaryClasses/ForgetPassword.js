@@ -4,11 +4,12 @@ const router = express.Router()
 const nodemailer = require('nodemailer')
 const otp = require('otp-generator')
 var generatedOTP
+// Standardise email for onemaps and OTP sending
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'carparkgowhere@gmail.com', 
-        pass: process.env.APP_PASSWORD
+        user: process.env.ONEMAP_EMAIL, 
+        pass: process.env.ONEMAP_EMAIL_APPPASSWORD
     }
 })
 
