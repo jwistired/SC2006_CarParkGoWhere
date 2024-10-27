@@ -173,7 +173,7 @@
                 }
 
                 const data = await response.json();
-                console.log(`Distance: ${distance.toFixed(2)} m`);
+                console.log(`Distance: ${distance.toFixed(2)} km`);
                 return data.distance;
             } catch (error) {
                 console.error('Error fetching distance:', error);
@@ -437,7 +437,7 @@
                             // Fetch car park details asynchronously
                             const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber);
 
-                            const carparkDistDetails = await getDistanceInformation(latitude, longitude , endLatLng.lat, endLatLng.lng);
+                            const carparkDistDetails = await getDistanceInformation(latitude, longitude , startLatLng.lat, startLatLng.lng);
 
                             // Optionally update the popup with car park details if available
                             if (carparkLotsDetails) {
