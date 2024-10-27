@@ -419,7 +419,6 @@
                                 .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
                             
                             // Fetch car park details asynchronously
-                            console.log(`hi:${carparkNumber}`);
                             const carparkDetails = await getCarparkLotsDetails(carparkNumber);
 
                             // Optionally update the popup with car park details if available
