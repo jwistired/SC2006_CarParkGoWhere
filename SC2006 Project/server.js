@@ -114,7 +114,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // gets page to service user as response
-app.use('/', Index)
+app.use('/',Index)
 app.use('/guest', checkNotAuthenticated, Guest)
 app.use('/login', checkNotAuthenticated, Login)
 app.use('/register', checkNotAuthenticated, (req, res, next) => {req.users = users, next()}, Register)
