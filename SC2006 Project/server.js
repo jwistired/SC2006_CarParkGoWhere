@@ -70,6 +70,9 @@ const initialisePassport = require("./passport-config");
 const getToken = require('./getOneMapToken.js'); //get onemap token 
 const carparkFunctions = require('./BoundaryClasses/Hdb_Api.js'); // Ensure you have the correct path
 
+//get distance information
+const getDistanceInformation = require('./BoundaryClasses/getDistanceInformation');
+
 // In-memory users array (could be replaced with a database)
 const users = [];
 
@@ -185,6 +188,18 @@ app.get('/api/find-nearby-carparks', async (req, res) => {
     const destinationCoords = `${lat}, ${lon}`;
     const nearbyCarparks = await carparkFunctions.findNearbyCarparks_HDB(destinationCoords, 500);
     res.json(nearbyCarparks);
+});
+
+
+app.get('/calculate-distance', async (req, res) => {
+    const { lat1, lon1, lat2, lon2 } = req.query;
+    const distance = await getDistanceInformation(
+        parseFloat(lat1),
+        parseFloat(lon1),
+        parseFloat(lat2),
+        parseFloat(lon2)
+    );
+    res.json({ distance })  
 });
 
 // Start the server on port 3000
