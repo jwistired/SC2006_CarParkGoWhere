@@ -400,12 +400,12 @@
           
 
                         nearbyCarparks.forEach(lot => {
-                        // Assuming lot is a string like "1.434901737416896, 103.78661383499883"
+                        // Assuming lot is a string like "carpark_num, 1.434901737416896, 103.78661383499883"
                         const coords = lot.split(',').map(coord => parseFloat(coord.trim())); // Split the string and trim any extra spaces
 
-                        if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
-                            const carparkMarker = L.marker([coords[0], coords[1]]).addTo(map)
-                                .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
+                        if (!isNaN(coords[1]) && !isNaN(coords[2])) {  // Ensure valid coordinates
+                            const carparkMarker = L.marker([coords[1], coords[2]]).addTo(map)
+                                .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
 
                             // Store each carpark marker in the array
                             currentCarparks.push(carparkMarker);
