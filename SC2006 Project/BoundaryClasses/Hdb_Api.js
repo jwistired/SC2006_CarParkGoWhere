@@ -110,7 +110,7 @@ const getCarparkLotsDetails = async (carparkNumber) => {
   for (const item of items) {
     const carparkData = item.carpark_data;
     const carpark = carparkData.find(cp => cp.carpark_number === carparkNumber);
-
+    
     if (carpark) {
       console.log(`Lots Availability for Carpark ${carparkNumber}:`);
       console.log(`   Update Datetime: ${carpark.update_datetime}`);
