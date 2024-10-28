@@ -2,6 +2,7 @@ const passport = require('passport');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const { getByEmail } = require('./Database')
 const otpExpiryTime = 5 * 60 * 1000; // Time for OTP expiry, adjust first parameter
 const { checkAuthenticated, checkNotAuthenticated, terminateAuthentication} = require('./Authenticator.js');
 
@@ -29,7 +30,12 @@ router.post('/', async (req, res, next) => {
     
     // Check if OTP is correct
     if (userOTP == req.session.generatedOTP) {
-        req.user.password = hashedPassword
+        //console.log(req.session.email)
+        // inititate user by checking email 
+        const user = await getByEmail(req.session.email)
+        //console.log(user)
+        user.password = hashedPassword
+        user.save() // save updated password in mongoDB
         console.log('hashing password')
         req.logOut(function (err) {
             if (err) {

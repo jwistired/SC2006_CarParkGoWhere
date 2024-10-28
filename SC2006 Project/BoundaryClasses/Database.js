@@ -2,7 +2,7 @@ require('dotenv').config();  // Load environment variables from .env file
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/CarparkgoWhere')
+mongoose.connect('mongodb://sc2006_admin:carparkgoWhere@localhost:27017/CarParkGoWhere')
     .then(() => {
         console.log("MongoDB connected");
     })
@@ -28,6 +28,25 @@ const userSchema = new mongoose.Schema({
 
 const userData = mongoose.model("userData", userSchema);
 
+//get user from mongoDB through email
+const getByEmail = async (email) => {
+    try {
+        return await userData.findOne({ email: email })
+    } catch (error) {
+        console.error("Error fetching user by email:", error)
+        return null
+    }
+}
+
+//get user from mongoDB through _id
+const getByID = async (id) => {
+    try {
+        return await userData.findById(id);
+    } catch (error) {
+        console.error("Error fetching user by ID:", error);
+        return null;
+    }
+};
 // Test insertion function
 async function testInsert() {
     try {
@@ -46,6 +65,7 @@ async function testInsert() {
     }
 }
 
+
 //testInsert();
 
-module.exports = userData;
+module.exports = {userData, getByEmail, getByID}
