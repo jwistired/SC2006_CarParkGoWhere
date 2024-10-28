@@ -12,7 +12,7 @@ body {
 }
 
 /* Login container */
-.login-container, .signup-container, .forgetpwd-container {
+.login-container, .signup-container, .forgetpwd-container, .respwd-container, .pwdsuccess-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +22,7 @@ body {
 }
 
 /* Login box styling */
-.login-box, .signup-box, .forgetpwd-box {
+.login-box, .signup-box, .forgetpwd-box, .respwd-box, .pwdsuccess-box {
   background-color: rgba(188, 188, 188);
   padding: 30px;
   border-radius: 15px;
@@ -120,10 +120,10 @@ button, .btn-login {
   width: 100%;
 }
 
-.btn-login, .btn-register {
+.btn-login, .btn-register{
   flex: 1;
   width: 50%;
-  padding: 10px;
+  padding: 10px; 
   margin-top: 30px;
   box-sizing: border-box;
 }
@@ -147,9 +147,9 @@ button, .btn-login {
   margin-right: 2%;
 }
 
-.btn-register {
-  background-color: white;
-  color: rgb(0, 0, 0);
+.btn-register, .btn-submit {
+  background-color: #6A1B9A;
+  color: white;
   text-decoration: none;
   padding: 10px;
   border-radius: 5px;

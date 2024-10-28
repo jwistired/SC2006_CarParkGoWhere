@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/styles.css"> <!-- Ensure correct path to your CSS -->
 </head>
 <body>
+    <div class="signup-container">
         <div class="signup-box">
             <h1>Sign Up</h1>
             <% if (messages.error) { %>
@@ -14,7 +15,6 @@
                   <%= messages.error %>
                 </div>
               <% } %>
-            <div class="signup-container">
             <form action="/register" method="POST" class="signup-form">
                 <div class="input-group">
                     <label for="name">Name</label>
