@@ -435,13 +435,17 @@ function searchLocation() {
         const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
 
         $.get(url, function (data) {
-            if (data.results.length > 0) {
+            console.log("Data received from OneMap API:", data);
+
+            if (data.results && data.results.length > 0) {
                 const firstResult = data.results[0];
                 const lat = parseFloat(firstResult.LATITUDE);
                 const lng = parseFloat(firstResult.LONGITUDE);
                 const searchLatLng = L.latLng(lat, lng);
 
-                // Remove the old search marker if it exists
+                console.log("Location found:", lat, lng);
+
+                // Remove old search marker if it exists
                 if (searchMarker) {
                     map.removeLayer(searchMarker);
                 }
@@ -457,24 +461,26 @@ function searchLocation() {
                 // Display both URA and HDB car parks near the search location
                 displayNearbyCarParks(lat, lng);
 
-                // Call the routing function if user's location is available
+                // Call routing function if user's location is available
                 if (userLatLng) {
-                            getRoute(userLatLng, searchLatLng);
-                        } else {
-                            console.error("User location is not available.");
-                        }
-
+                    getRoute(userLatLng, searchLatLng);
+                } else {
+                    console.error("User location is not available.");
+                }
 
             } else {
                 alert("No results found.");
+                console.warn("No results returned from OneMap API.");
             }
-        }).fail(function () {
+        }).fail(function (error) {
             alert("Error fetching data from OneMap API.");
+            console.error("Error fetching data from OneMap API:", error);
         });
     } else {
         alert("Please enter a location to search for.");
     }
 }
+
 
 
 
