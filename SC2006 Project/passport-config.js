@@ -2,29 +2,36 @@ const { authenticate } = require('passport')
 
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
+const {getByEmail, getByID} = require('./BoundaryClasses/Database')
 
-function initialize(passport, getUserByEmail, getUserById) {
+function initialize(passport) {
+    // using own validators for email and id through Database.js
     const authenticateUser = async (email, password, done) => {
-        const user = getUserByEmail(email)
-        if (user == null) {
-            return done(null, false, {message: "No user with that email"})
-        }
-        try{
-            if (await bcrypt.compare(password, user.password)){
-                return done(null, user)
-            } else {
-                return done(null, false, {message: "Password incorrect"})
+        try {
+            const user = await getByEmail(email);
+            
+            if (!user) {
+                console.log("No user with that email");
+                return done(null, false, { message: "No user with that email" });
             }
-        } catch (e) {
-            return done(e)
+    
+            const isMatch = await bcrypt.compare(password, user.password);
+    
+            if (isMatch) {
+                return done(null, user);
+            } else {
+                return done(null, false, { message: "Password incorrect" });
+            }
+        } catch (error) {
+            console.error("Error in authentication:", error);
+            return done(error);
         }
-
     }
     
     const verifyUserForForgetPassword = async (req, email, done) => {
         console.log(email)
         try {
-            const user = await getUserByEmail(email);
+            const user = await getByEmail(email);
             if (user) {
                 return done(null, user)
             } else {
@@ -41,7 +48,7 @@ function initialize(passport, getUserByEmail, getUserById) {
 
     passport.serializeUser((user, done) => done(null, user.id))
     passport.deserializeUser((id, done) => { 
-        return done(null, getUserById(id))
+        return done(null, getByID(id))
     })
 }
 
