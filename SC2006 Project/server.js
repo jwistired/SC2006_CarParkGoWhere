@@ -57,7 +57,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require("express-session")
 const methodOverride = require("method-override")
-const MongoStore = require('connect-mongo')
+const mongoose = require('mongoose')
 
 const Register = require('./BoundaryClasses/Register.js')
 const Login = require('./BoundaryClasses/Login.js')
@@ -67,7 +67,7 @@ const Index = require('./BoundaryClasses/Index.js')
 const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
 const { checkAuthenticated, checkNotAuthenticated } = require('./BoundaryClasses/Authenticator.js')
 const initialisePassport = require("./passport-config")
-const Database = require('./BoundaryClasses/Datbase.js')
+const Database = require('./BoundaryClasses/Database.js')
 
 const getToken = require('./getOneMapToken.js'); //get onemap token 
 const carparkFunctions = require('./BoundaryClasses/Hdb_Api.js'); // Ensure you have the correct path
@@ -106,11 +106,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'j43hk2398f23jndfljk23nfsd23lfjksd',  // Replace with your secret
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_CONNECTION_STRING, 
-        collectionName: 'userLogin', 
-        ttl: 30 * 24 * 60 * 60 // Set session expiration in seconds, default is 30 days
-    })
+    
 }));
 
 // Initialize Passport for user authentication
