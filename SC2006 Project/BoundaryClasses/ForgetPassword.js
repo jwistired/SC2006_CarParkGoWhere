@@ -27,7 +27,7 @@ router.post('/', (req, res, next) => {
     console.log("Authentication successful, sending OTP...");
     generatedOTP = otp.generate(6,{digits: true, alphabets:false, upperCase:false, specialChars:false})
     req.session.OTPGeneratedAt = Date.now()
-    req.session.email = 
+    req.session.email = req.body.email
     req.session.generatedOTP = generatedOTP
     // create message for sending
     const message = {
@@ -43,6 +43,7 @@ router.post('/', (req, res, next) => {
             return res.status(500).send("Error sending OTP")
         }
         console.log('Email sent: ' + info.response)
+        //console.log(generatedOTP)
         res.redirect('/resetPassword')
     })
 })
