@@ -2,7 +2,7 @@ require('dotenv').config();  // Load environment variables from .env file
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/CarParkGoWhere')
+mongoose.connect('mongodb://JingWoon:nAsb4BXZmUKq@augentum.party:27017/CarParkGoWhere')
     .then(() => {
         console.log("MongoDB connected");
     })

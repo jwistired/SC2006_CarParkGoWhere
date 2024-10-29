@@ -137,7 +137,7 @@
         const uraAccessKey = '18ee826a-2210-4a40-972e-3a1e3c317ba0';
         let uraToken = 'd3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918';
 
-async function fetchURAToken() {
+    async function fetchURAToken() {
     try {
         const response = await fetch('https://www.ura.gov.sg/uraDataService/insertNewToken.action', {
             headers: { 'AccessKey': uraAccessKey }
@@ -154,7 +154,7 @@ async function fetchURAToken() {
     }
 }
 
-async function getURACarParkListAndRates() {
+    async function getURACarParkListAndRates() {
     if (!uraToken) await fetchURAToken();
 
     try {
@@ -178,7 +178,7 @@ async function getURACarParkListAndRates() {
     }
 }
 
-async function displayURACarParksOnMap(lat, lon) {
+    async function displayURACarParksOnMap(lat, lon) {
     const uraCarParks = await getURACarParkListAndRates();
 
     uraCarParks.forEach(carPark => {
@@ -212,78 +212,63 @@ async function displayURACarParksOnMap(lat, lon) {
     });
 }
 
-function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Radius of the Earth in km
-    const dLat = deg2rad(lat2 - lat1);
-    const dLon = deg2rad(lon2 - lon1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in km
-}
-
-function deg2rad(deg) {
-    return deg * (Math.PI / 180);
-}
-
-        async function getAllCarparkCoor_HDB() {
-            try {
-                const response = await fetch('/api/carpark-coordinates');
-                const data = await response.json(); // Get the coordinates data from the response
-                console.log("Carpark Coordinates:", data); // For debugging
-                return data; // Return the data for further use
-            } catch (error) {
-                console.error('Error fetching carpark coordinates:', error);
-                return [];
-            }
+    async function getAllCarparkCoor_HDB() {
+        try {
+            const response = await fetch('/api/carpark-coordinates');
+            const data = await response.json(); // Get the coordinates data from the response
+            console.log("Carpark Coordinates:", data); // For debugging
+            return data; // Return the data for further use
+        } catch (error) {
+            console.error('Error fetching carpark coordinates:', error);
+            return [];
         }
+    }
 
-        async function findNearbyCarparks_HDB(lat, lon) {
-            try {
-                const response = await fetch(`/api/find-nearby-carparks?lat=${lat}&lon=${lon}`);
-                const data = await response.json(); // Get the nearby carparks data from the response
-                console.log("Nearby Carparks:", data); // For debugging
-                return data; // Return the data for further use
-            } catch (error) {
-                console.error('Error fetching nearby carparks:', error);
-                return [];
-            }
+    async function findNearbyCarparks_HDB(lat, lon) {
+        try {
+            const response = await fetch(`/api/find-nearby-carparks?lat=${lat}&lon=${lon}`);
+            const data = await response.json(); // Get the nearby carparks data from the response
+            console.log("Nearby Carparks:", data); // For debugging
+            return data; // Return the data for further use
+        } catch (error) {
+            console.error('Error fetching nearby carparks:', error);
+            return [];
         }
-        async function getCarparkLotsDetails(carparkNum){
-            try {
-                const response = await fetch(`/api/carpark-lots-details/${carparkNum}`);
-                const carParkDetails = await response.json();
-                console.log('Detail of nearby carpark:', carParkDetails);
-            } catch (error) {
-                console.error('Error fetching details of nearby carpark', error);
-                return [];
-            }
+    }
+
+    async function getCarparkLotsDetails(carparkNum){
+        try {
+            const response = await fetch(`/api/carpark-lots-details/${carparkNum}`);
+            const carParkDetails = await response.json();
+            console.log('Detail of nearby carpark:', carParkDetails);
+        } catch (error) {
+            console.error('Error fetching details of nearby carpark', error);
+            return [];
         }
+    }
 
-        async function getDistanceInformation(lat1, lon1, lat2, lon2) {
-            try {
-                const response = await fetch(`/calculate-distance?lat1=${lat1}&lon1=${lon1}&lat2=${lat2}&lon2=${lon2}`);
-                
-                // Check if the response is ok (status code in the range 200-299)
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                console.log(`Distance: ${distance.toFixed(2)} km`);
-                return data.distance;
-            } catch (error) {
-                console.error('Error fetching distance:', error);
-                return null; // or handle the error as needed
+    async function getDistanceInformation(lat1, lon1, lat2, lon2) {
+        try {
+            const response = await fetch(`/calculate-distance?lat1=${lat1}&lon1=${lon1}&lat2=${lat2}&lon2=${lon2}`);
+            
+            // Check if the response is ok (status code in the range 200-299)
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        }
 
-        // Call fetchApiToken when the page loads
-        window.onload = function() {
-        fetchApiToken();
-        };
+            const data = await response.json();
+            console.log(`Distance: ${distance.toFixed(2)} km`);
+            return data.distance;
+        } catch (error) {
+            console.error('Error fetching distance:', error);
+            return null; // or handle the error as needed
+        }
+    }
+
+    // Call fetchApiToken when the page loads
+    window.onload = function() {
+    fetchApiToken();
+    };
 
         // Initialize the map
         $.get("https://www.onemap.gov.sg/maps/json/raster/tilejson/2.2.0/Default.json", function (data) {
@@ -311,7 +296,7 @@ function deg2rad(deg) {
         ];
 
         // Display parking lots on map
-        function displayParkingLots(parkingLots) {
+    function displayParkingLots(parkingLots) {
             if (!map) {
                 console.error("Map is not initialized yet.");
                 return;
@@ -339,7 +324,7 @@ function deg2rad(deg) {
             });
         }
         
-        function showSuggestions() {
+    function showSuggestions() {
         const searchQuery = document.getElementById('search').value.trim();
 
         if (searchQuery !== "") {
@@ -382,10 +367,10 @@ function deg2rad(deg) {
  
                         
         // Function to display both URA and HDB car parks near a specific location
-async function displayNearbyCarParks(lat, lon) {
-    // Fetch URA and HDB car park data
-    const uraCarParks = await getURACarParkAvailability();
-    const hdbCarParks = await findNearbyCarparks_HDB(lat, lon);
+    async function displayNearbyCarParks(lat, lon) {
+        // Fetch URA and HDB car park data
+        const uraCarParks = await getURACarParkAvailability();
+        const hdbCarParks = await findNearbyCarparks_HDB(lat, lon);
 
     // Clear existing parking lots in the sidebar
     document.getElementById('parking-lots').innerHTML = '';
@@ -439,7 +424,7 @@ async function displayNearbyCarParks(lat, lon) {
 }
 
 // Update the searchLocation function to use displayNearbyCarParks
-function searchLocation() {
+    function searchLocation() {
     const searchQuery = document.getElementById('search').value;
 
     if (searchQuery.trim() !== "") {
@@ -491,191 +476,183 @@ function searchLocation() {
         alert("Please enter a location to search for.");
     }
 }
-
-
-
-
         // Display parking history
-        function displayParkingHistory() {
-            const history = [
-                { id: 5, title: 'Car Park 5', price: 0.55, distance: 400, availability: 23 }
-            ];
+    function displayParkingHistory() {
+        const history = [
+            { id: 5, title: 'Car Park 5', price: 0.55, distance: 400, availability: 23 }
+        ];
 
-            history.forEach(lot => {
-                const historyDiv = document.createElement('div');
-                historyDiv.classList.add('parking-history');
-                historyDiv.innerHTML = `
-                    <h3>${lot.title}</h3>
-                    <p>Price: $${lot.price} / hour</p>
-                    <p>Distance: ${lot.distance}m</p>
-                    <p>Availability: ${lot.availability}/50 spots</p>
-                    <button>Select</button>
-                `;
-                document.getElementById('parking-history').appendChild(historyDiv);
-            });
-        }
-
-        function showUserLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
-
-                    // Add marker for user's location
-                    L.marker(userLatLng).addTo(map)
-                        .bindPopup('<p id="locationText" class="currloc">Your location</p>')
-                        .openPopup();
-
-                    // Center map on user's location
-                    map.setView(userLatLng, 16);
-                    console.log("User location retrieved:", position.coords.latitude, position.coords.longitude);
-                }, 
-                function (error) {
-                    console.error("Error getting location:", error.message);
-                    alert("Error retrieving your location. Please enable location permissions or check your browser's security settings.");
-                }
-            );
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-        }
-
-
-        // Declare a variable to store the current route
-        let currentRoute;
-        let circle = null;            // To store the circle around the destination
-        let currentCarparks = [];     // To store the current carpark markers
-
-        async function getRoute(startLatLng, endLatLng) {
-    if (!startLatLng || !endLatLng) {
-        console.error("Start or end location is missing.");
-        return;
+        history.forEach(lot => {
+            const historyDiv = document.createElement('div');
+            historyDiv.classList.add('parking-history');
+            historyDiv.innerHTML = `
+                <h3>${lot.title}</h3>
+                <p>Price: $${lot.price} / hour</p>
+                <p>Distance: ${lot.distance}m</p>
+                <p>Availability: ${lot.availability}/50 spots</p>
+                <button>Select</button>
+            `;
+            document.getElementById('parking-history').appendChild(historyDiv);
+        });
     }
 
-    // Get current date and time for the route request
-    const currentDate = new Date();
-    const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
-    const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
+    function showUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
 
-    // Construct the API URL according to the documentation
-    const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=drive`;
+                // Add marker for user's location
+                L.marker(userLatLng).addTo(map)
+                    .bindPopup('<p id="locationText" class="currloc">Your location</p>')
+                    .openPopup();
 
-    $.ajax({
-        url: routeUrl,
-        type: 'GET',
-        headers: {
-            'Authorization': apiToken // fetch oneMapToken
-        },
-        success: async function (data) { // Make the success callback async
-            if (data && data.route_geometry) {
-                // Decode the route geometry to get the polyline coordinates
-                const routeCoordinates = decodePolyline(data.route_geometry);
-
-                // If there is an existing route, remove it
-                if (currentRoute) {
-                    map.removeLayer(currentRoute);
-                }
-
-                // Remove the previous circle
-                if (circle) {
-                    map.removeLayer(circle);
-                    circle = null;
-                }
-
-                // Remove the previous carpark markers
-                currentCarparks.forEach(marker => {
-                    map.removeLayer(marker);
-                });
-                currentCarparks = []; // Reset the array
-
-                // Draw the new route on the map
-                currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
-                circle = L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);
-
-                //fetch all coordinates 
-                const carparkCoordinates = await getAllCarparkCoor_HDB();
-                // Fetch nearby carparks and add markers
-                const nearbyCarparks = await findNearbyCarparks_HDB(endLatLng.lat, endLatLng.lng);
-
-                if (nearbyCarparks.length > 0) {
-                    for (const lot of nearbyCarparks) { // Use for...of to await each iteration
-                        // Assuming lot is a string like "carpark_num, 1.434901737416896, 103.78661383499883"
-                        const coords = lot.split(',').map(coord => coord.trim());
-                        const carparkNumber = coords[0]; // Use directly as a string
-                        const latitude = parseFloat(coords[1]);
-                        const longitude = parseFloat(coords[2]);
-
-                        if (!isNaN(coords[1]) && !isNaN(coords[2])) {  // Ensure valid coordinates
-                            const carparkMarker = L.marker([coords[1], coords[2]]).addTo(map)
-                                .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
-                            
-                            // Fetch car park details asynchronously
-                            const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber);
-
-                            const carparkDistDetails = await getDistanceInformation(latitude, longitude , startLatLng.lat, startLatLng.lng);
-
-                            // Optionally update the popup with car park details if available
-                            if (carparkLotsDetails) {
-                                carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
-                                    `<br><strong>Details:</strong><br>${JSON.stringify(carparkDetails)}`);
-                            }
-
-                            // Store each carpark marker in the array
-                            currentCarparks.push(carparkMarker);
-                        } else {
-                            console.error("Invalid lat/lng for:", lot);
-                        }
-                    }
-                } else {
-                    console.log("No nearby car parks found.");
-                }
-            } else {
-                alert("No route found between the specified locations.");
+                // Center map on user's location
+                map.setView(userLatLng, 16);
+                console.log("User location retrieved:", position.coords.latitude, position.coords.longitude);
+            }, 
+            function (error) {
+                console.error("Error getting location:", error.message);
+                alert("Error retrieving your location. Please enable location permissions or check your browser's security settings.");
             }
-        },
-        error: function () {
-            alert("Error fetching route from OneMap API.");
-        }
-    });
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+    }
+
+    // Declare a variable to store the current route
+    let currentRoute;
+    let circle = null;            // To store the circle around the destination
+    let currentCarparks = [];     // To store the current carpark markers
+
+    async function getRoute(startLatLng, endLatLng) {
+if (!startLatLng || !endLatLng) {
+    console.error("Start or end location is missing.");
+    return;
 }
 
+// Get current date and time for the route request
+const currentDate = new Date();
+const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
+const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
 
+// Construct the API URL according to the documentation
+const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=drive`;
 
+$.ajax({
+    url: routeUrl,
+    type: 'GET',
+    headers: {
+        'Authorization': apiToken // fetch oneMapToken
+    },
+    success: async function (data) { // Make the success callback async
+        if (data && data.route_geometry) {
+            // Decode the route geometry to get the polyline coordinates
+            const routeCoordinates = decodePolyline(data.route_geometry);
 
-        // Function to decode polyline into an array of coordinates
-        function decodePolyline(encoded) {
-            let points = [];
-            let index = 0, len = encoded.length;
-            let lat = 0, lng = 0;
-
-            while (index < len) {
-                let b, shift = 0, result = 0;
-                do {
-                    b = encoded.charCodeAt(index++) - 63;
-                    result |= (b & 0x1f) << shift;
-                    shift += 5;
-                } while (b >= 0x20);
-                let dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
-                lat += dlat;
-
-                shift = 0;
-                result = 0;
-                do {
-                    b = encoded.charCodeAt(index++) - 63;
-                    result |= (b & 0x1f) << shift;
-                    shift += 5;
-                } while (b >= 0x20);
-                let dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
-                lng += dlng;
-
-                points.push([lat / 1E5, lng / 1E5]);
+            // If there is an existing route, remove it
+            if (currentRoute) {
+                map.removeLayer(currentRoute);
             }
 
-            return points;
+            // Remove the previous circle
+            if (circle) {
+                map.removeLayer(circle);
+                circle = null;
+            }
+
+            // Remove the previous carpark markers
+            currentCarparks.forEach(marker => {
+                map.removeLayer(marker);
+            });
+            currentCarparks = []; // Reset the array
+
+            // Draw the new route on the map
+            currentRoute = L.polyline(routeCoordinates, { color: 'blue' }).addTo(map);
+            circle = L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);
+
+            //fetch all coordinates 
+            const carparkCoordinates = await getAllCarparkCoor_HDB();
+            // Fetch nearby carparks and add markers
+            const nearbyCarparks = await findNearbyCarparks_HDB(endLatLng.lat, endLatLng.lng);
+
+            if (nearbyCarparks.length > 0) {
+                for (const lot of nearbyCarparks) { // Use for...of to await each iteration
+                    // Assuming lot is a string like "carpark_num, 1.434901737416896, 103.78661383499883"
+                    const coords = lot.split(',').map(coord => coord.trim());
+                    const carparkNumber = coords[0]; // Use directly as a string
+                    const latitude = parseFloat(coords[1]);
+                    const longitude = parseFloat(coords[2]);
+
+                    if (!isNaN(coords[1]) && !isNaN(coords[2])) {  // Ensure valid coordinates
+                        const carparkMarker = L.marker([coords[1], coords[2]]).addTo(map)
+                            .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
+                        
+                        // Fetch car park details asynchronously
+                        const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber);
+
+                        const carparkDistDetails = await getDistanceInformation(latitude, longitude , startLatLng.lat, startLatLng.lng);
+
+                        // Optionally update the popup with car park details if available
+                        if (carparkLotsDetails) {
+                            carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
+                                `<br><strong>Details:</strong><br>${JSON.stringify(carparkDetails)}`);
+                        }
+
+                        // Store each carpark marker in the array
+                        currentCarparks.push(carparkMarker);
+                    } else {
+                        console.error("Invalid lat/lng for:", lot);
+                    }
+                }
+            } else {
+                console.log("No nearby car parks found.");
+            }
+        } else {
+            alert("No route found between the specified locations.");
+        }
+    },
+    error: function () {
+        alert("Error fetching route from OneMap API.");
+    }
+});
+}
+
+    // Function to decode polyline into an array of coordinates
+    function decodePolyline(encoded) {
+        let points = [];
+        let index = 0, len = encoded.length;
+        let lat = 0, lng = 0;
+
+        while (index < len) {
+            let b, shift = 0, result = 0;
+            do {
+                b = encoded.charCodeAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            let dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charCodeAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            let dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            points.push([lat / 1E5, lng / 1E5]);
         }
 
-        // Attach event listener to the search button or input field
-        document.getElementById('search').addEventListener('keypress', function (e) {
+        return points;
+    }
+
+    // Attach event listener to the search button or input field
+    document.getElementById('search').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 searchLocation();
             }

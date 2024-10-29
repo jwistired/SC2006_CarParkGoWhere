@@ -102,7 +102,30 @@ button:hover {
   font-size: 14px; /* Change to your desired font size */
   padding-left: 20px;
   color: #333;
+  position: absolute; 
+}
+
+#autocomplete-list {
   position: absolute;
+  top: calc(100% + 5px);
+  width: calc(100% - 40px);
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 2000;
+}
+
+#autocomplete-list div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+#autocomplete-list div:hover {
+  background-color: #e9e9e9;
 }
 
  /* Style for the placeholder text */
@@ -516,28 +539,6 @@ input:checked + .slider:before {
   color: black;
 }
 
-#autocomplete-list {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  max-height: 150px;
-  overflow-y: auto;
-  z-index: 2000;
-}
-
-#autocomplete-list div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
-}
-
-#autocomplete-list div:hover {
-  background-color: #e9e9e9;
-}
-
-
 /* Map related icons */
   .marker {
     z-index: 1001;
@@ -547,7 +548,6 @@ input:checked + .slider:before {
   /* Make sure all Leaflet marker icons have a uniform z-index */
   
   .leaflet-marker-icon {
-
     z-index: 1000 !important; /* Use !important to override any conflicting styles */
     position: absolute; /* Required for z-index to take effect */
   } 
