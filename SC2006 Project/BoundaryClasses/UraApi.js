@@ -5,8 +5,8 @@ const SVY21 = 'EPSG:3414';
 proj4.defs(SVY21, "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
 const WGS84 = 'EPSG:4326'; // WGS 84
 
-const accessKey = '9a02a848-daa6-453f-9dc6-6567446d2e66'; 
-const token = '+dBCEcada6xW647TB28W7edMaZ-69-3GfC4q8a7G-4D472XS6Bnxe2d6aDJngNdzd4V48c6Pbjae-69fdQ49Ey6DNdKSsrj0G4mC' // daily usage
+const accessKey = '18ee826a-2210-4a40-972e-3a1e3c317ba0'; 
+const token = 'd3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918' // daily usage
 /*
 // Function to refresh the token
 async function refreshToken() {
