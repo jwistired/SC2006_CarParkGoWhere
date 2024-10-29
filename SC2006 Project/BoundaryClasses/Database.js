@@ -2,7 +2,7 @@ require('dotenv').config();  // Load environment variables from .env file
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://sc2006_admin:carparkgoWhere@localhost:27017/CarParkGoWhere')
+mongoose.connect('mongodb://user:sc2006@localhost:27017/CarParkGoWhere')
     .then(() => {
         console.log("MongoDB connected");
     })
@@ -24,14 +24,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-}, { collection: 'userData' });  // Explicit collection name
+}, { collection: 'userLogin' });  // Explicit collection name
 
-const userData = mongoose.model("userData", userSchema);
+const userLogin = mongoose.model("userLogin", userSchema);
 
 //get user from mongoDB through email
 const getByEmail = async (email) => {
     try {
-        return await userData.findOne({ email: email })
+        return await userLogin.findOne({ email: email })
     } catch (error) {
         console.error("Error fetching user by email:", error)
         return null
@@ -41,7 +41,7 @@ const getByEmail = async (email) => {
 //get user from mongoDB through _id
 const getByID = async (id) => {
     try {
-        return await userData.findById(id);
+        return await userLogin.findById(id);
     } catch (error) {
         console.error("Error fetching user by ID:", error);
         return null;
@@ -50,7 +50,7 @@ const getByID = async (id) => {
 // Test insertion function
 async function testInsert() {
     try {
-        const testUser = new userData({
+        const testUser = new userLogin({
             name: 'Test User',
             email: 'testuser@example.com',
             password: 'testpassword'
@@ -68,4 +68,4 @@ async function testInsert() {
 
 //testInsert();
 
-module.exports = {userData, getByEmail, getByID}
+module.exports = {userLogin, getByEmail, getByID}

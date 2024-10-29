@@ -26,6 +26,7 @@ router.post('/', (req, res, next) => {
     }, (req, res) => {
     console.log("Authentication successful, sending OTP...");
     generatedOTP = otp.generate(6,{digits: true, alphabets:false, upperCase:false, specialChars:false})
+    console.log(generatedOTP)
     req.session.OTPGeneratedAt = Date.now()
     req.session.email = req.body.email
     req.session.generatedOTP = generatedOTP
