@@ -135,7 +135,7 @@
 
                 // Access key for URA API
         const uraAccessKey = '18ee826a-2210-4a40-972e-3a1e3c317ba0';
-        let uraToken = 'NaH6a1ha3a6ae3j+-39JPcVTsP73zx0-8ewj1U-3BuQB3e3cmNha923-a35mcjTcgY-BAq9XsF6+t2yY@Suc23YBBe42184Kpz8Z';
+        let uraToken = 'd3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918';
 
         // Function to fetch URA token
         async function fetchURAToken() {
@@ -504,10 +504,10 @@ function searchLocation() {
             });
         }
 
-        // Get user's location
         function showUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
                     userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
 
                     // Add marker for user's location
@@ -517,13 +517,18 @@ function searchLocation() {
 
                     // Center map on user's location
                     map.setView(userLatLng, 16);
-                }, function (error) {
-                    console.error("Error getting location: ", error.message);
-                });
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
+                    console.log("User location retrieved:", position.coords.latitude, position.coords.longitude);
+                }, 
+                function (error) {
+                    console.error("Error getting location:", error.message);
+                    alert("Error retrieving your location. Please enable location permissions or check your browser's security settings.");
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
         }
+        }
+
 
         // Declare a variable to store the current route
         let currentRoute;
