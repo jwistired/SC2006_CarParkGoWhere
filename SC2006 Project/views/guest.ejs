@@ -31,34 +31,43 @@
         </div>
 
         <!-- Filter dropdown -->
-        <button  class="filter-button w3-button" onclick="toggleFilterDropdown()">
-            <img src="\css\images\icons\filter.png" class="filter-icon" >
+        <button class="filter-button w3-button" onclick="toggleFilterDropdown()">
+            <img src="\css\images\icons\filter.png" class="filter-icon">
             <span class="filter-caption">Filter</span>
-            <div class="filter-dropdown" id="filterDropdown">  
-                <div >
-                <label class="switch">
-                    <input type="checkbox">
-                        <span class="slider round">
-                        </span> 
-                </label>
+            <div class="filter-dropdown" id="filterDropdown">
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Distance</span>
+                    </div>
                 </div>
-                <div class="slider-text" >Distance</div>
-                <div >
-                <label class="switch">
-                    <input type="checkbox">
-                        <span class="slider round">
-                        </span> 
-                </label>
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Cheapest Carpark</span>
+                    </div>
                 </div>
-                <div class="slider-text">Cheapest Carpark</div>
-                <div >
-                <label class="switch">
-                    <input type="checkbox">
-                        <span class="slider round">
-                        </span> 
-                </label>
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Parking Lots</span>
+                    </div>
                 </div>
-                <div class="slider-text">Parking Lots</div>
             </div>
         </button>
 
