@@ -112,7 +112,7 @@ const getCarparkLotsDetails = async (carparkNumber) => {
     const carpark = carparkData.find(cp => cp.carpark_number === carparkNumber);
     
     if (carpark) {
-      console.log(`Lots Availability for Carpark ${carparkNumber}:`);
+      console.log(`Lots Availability for HDB Carpark ${carparkNumber}:`);
       console.log(`   Update Datetime: ${carpark.update_datetime}`);
       carpark.carpark_info.forEach((info) => {
         console.log(`   Lot Type: ${info.lot_type}`);
@@ -180,7 +180,7 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 // Fetch all car park coordinates within a 500m radius
 const findNearbyCarparks_HDB = async (destinationCoords, radius = 500) => {
   const coordinates = await getAllCarparkCoor_HDB(); // Get all car park coordinates
-  console.log('Fetched HDB coordinates:', coordinates);
+  //console.log('Fetched HDB coordinates:', coordinates);
   const nearbyCarparks = [];
 
   const [destLat, destLon] = destinationCoords.split(', ').map(Number); // Parse destination coordinates

@@ -289,7 +289,7 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
             }
         }
 
-        console.log('Nearby Carparks:', nearbyCarparks);
+        console.log('Nearby URA Carparks:', nearbyCarparks);
         return nearbyCarparks; // Return the formatted nearby car parks
     } catch (error) {
         console.error('Error finding nearby car parks:', error);

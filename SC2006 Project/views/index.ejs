@@ -598,14 +598,14 @@ async function displayNearbyCarparks_URA(lat, lon) {
                     .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${latitude}, ${longitude}`);
 
                 // Fetch car park lots details asynchronously for URA
-                const carparkLotsDetails_HDB = await getCarparkLotsDetails_URA(carparkNumber);
+                const carparkLotsDetails_URA = await getCarparkLotsDetails_URA(carparkNumber);
                 const carparkPriceDetails_URA = await getCarparkPriceDetails_URA(carparkNumber);
                 const carparkDistDetails_URA= await getDistanceInformation(latitude, longitude , lat, lon);
 
                 // Optionally update the popup with car park details if available
-                if (carparkLotsDetails_HDB) {
+                if (carparkLotsDetails_URA) {
                     carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
-                        `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_HDB)}`);
+                        `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_URA)}`);
                 }
 
                 if (carparkPriceDetails_URA) {
