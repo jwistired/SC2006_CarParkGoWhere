@@ -19,12 +19,12 @@ function togglePrice(){
 }
 
 // Hide dropdown when clicking outside
-document.addEventListener('click', function (event) {
-    const dropdown = document.getElementById('filterDropdown');
-    if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
-        dropdown.style.display = 'none';
-    }
-});
+// document.addEventListener('click', function (event) {
+//     const dropdown = document.getElementById('filterDropdown');
+//     if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
+//         dropdown.style.display = 'none';
+//     }
+// });
 
 // Side bar functions
 // Open and close sidebar
