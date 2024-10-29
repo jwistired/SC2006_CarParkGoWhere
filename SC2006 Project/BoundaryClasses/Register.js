@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
-const userData = require('./Database')
+const {userLogin} = require('./Database')
 
 router.get('/', (req, res) => {
     res.render('register.ejs')
@@ -10,13 +10,13 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
     //creating new user input and adding to database
     try {
-        const existingUser = await userData.findOne({ email: req.body.email });
+        const existingUser = await userLogin.findOne({ email: req.body.email });
         if (existingUser) {
             return res.render('register', { messages: { error: "Email already registered. Please use another email." } });
         }
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const newUser = new userData({
+        const newUser = new userLogin({
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword
