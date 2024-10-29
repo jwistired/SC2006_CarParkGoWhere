@@ -104,14 +104,17 @@ const getAllCarparkNumbers = async () => {
 };
 
 // Get details of a specific car park
-const getCarparkLotsDetails = async (carparkNumber) => {
+const getCarparkLotsDetails = async (carparkNumber,carparkName) => {
   const items = await fetchCarparkAvailability();
 
   for (const item of items) {
     const carparkData = item.carpark_data;
     const carpark = carparkData.find(cp => cp.carpark_number === carparkNumber);
-    
+    carpark.Name=carparkName;
+    carpark.Distance="enter distance";
+    carpark.price="enter price";
     if (carpark) {
+      console.log(`Name of Carpark: ${carparkName}:`);
       console.log(`Lots Availability for Carpark ${carparkNumber}:`);
       console.log(`   Update Datetime: ${carpark.update_datetime}`);
       carpark.carpark_info.forEach((info) => {
@@ -145,9 +148,10 @@ const getAllCarparkCoor_HDB = async () => {
         const x_coord = parseFloat(record.x_coord);
         const y_coord = parseFloat(record.y_coord);
         const carparkNumber=record.car_park_no;
+        const carparkName=record.address;
         if (!isNaN(x_coord) && !isNaN(y_coord)) {
           const [longitude, latitude] = proj4(SVY21, WGS84, [x_coord, y_coord]);
-          carparkCoordinates.add(`${carparkNumber},${latitude}, ${longitude}`); // Add formatted coordinates to the Set
+          carparkCoordinates.add(`${carparkNumber},${latitude}, ${longitude},${carparkName}`); // Add formatted coordinates to the Set
         }
       });
 
