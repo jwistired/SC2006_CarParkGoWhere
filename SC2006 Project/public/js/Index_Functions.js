@@ -9,17 +9,46 @@ function toggleFilterDropdown() {
 }
 
 function toggleDistance(){
-    //code to toggle distance filter
+    var boolDistance;
+    if (document.getElementById("toggle-distance").value == "true")
+    {
+        bool = true;
+    }
+    else
+    {
+        bool = false;
+    }
 }
 
 function toggleAvailableLots(){
-    //code to toggle available lots filter
+    var boolLots;
+    if (document.getElementById("toggle-availableLots").value == "true")
+    {
+        boolLots = true;
+    }
+    else
+    {
+        boolLots = false;
+    }
 }
 
 function togglePrice(){
-    //code to toggle price filter
+    var boolPrice;
+    if (document.getElementById("toggle-price").value == "true")
+    {
+        boolPrice = true;
+    }
+    else
+    {
+        boolPrice = false;
+    }
 }
 
+function filtering(){
+    //Code to filter sidebar display
+}
+
+//Sidebar Related Functions
 
 // Open and close Parking sidebar
 function opensideBar() {
@@ -132,3 +161,9 @@ function changeLanguage() {
     document.querySelector(".currloc").innerText = translations[selectedLang]["yourLocation"];
 }
 
+// Attach event listener to the search button or input field
+document.getElementById('search').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        searchLocation();
+    }
+});
