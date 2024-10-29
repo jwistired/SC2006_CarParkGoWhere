@@ -184,14 +184,27 @@ app.get('/api/carpark-numbers', async (req, res) => {
 });
 
 app.get('/api/carpark-lots-details/:carparkNumber', async (req, res) => {
-    const carparkNumber = req.params.carparkNumber;
-    const lotsDetails = await carparkFunctions.getCarparkLotsDetails(carparkNumber);
-    if (lotsDetails) {
-        res.json(lotsDetails);
-    } else {
-        res.status(404).json({ error: `Details for car park number ${carparkNumber} not found.` });
+    const carparkNumber = req.params.carparkNumber; // Get carpark number from URL parameters
+    const carparkName = req.query.carparkName; // Get carpark name from query parameters
+
+    // Log the request details for debugging
+    console.log(`Server requesting details for carpark: ${carparkNumber}, Name: ${carparkName}`);
+
+    try {
+        // Pass both carparkNumber and carparkName to the function
+        const lotsDetails = await carparkFunctions.getCarparkLotsDetails(carparkNumber, carparkName);
+
+        if (lotsDetails) {
+            res.json(lotsDetails); // Send back the details in JSON format
+        } else {
+            res.status(404).json({ error: `Details for car park number ${carparkNumber} not found.` });
+        }
+    } catch (error) {
+        console.error('Error fetching carpark lots details:', error);
+        res.status(500).json({ error: 'Internal server error' }); // Handle any errors gracefully
     }
 });
+
 
 app.get('/api/carpark-coordinates', async (req, res) => {
     const coordinates = await carparkFunctions.getAllCarparkCoor_HDB();
