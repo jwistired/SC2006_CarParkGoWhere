@@ -254,9 +254,9 @@ function deg2rad(deg) {
                 return [];
             }
         }
-        async function getCarparkLotsDetails(carparkNum){
+        async function getCarparkLotsDetails(carparkNum,carparkName){
             try {
-                const response = await fetch(`/api/carpark-lots-details/${carparkNum}`);
+                const response = await fetch(`/api/carpark-lots-details/${carparkNum}?carparkName=${encodeURIComponent(carparkName)}`);
                 const carParkDetails = await response.json();
                 console.log('Detail of nearby carpark:', carParkDetails);
             } catch (error) {
@@ -607,13 +607,14 @@ function searchLocation() {
                         const carparkNumber = coords[0]; // Use directly as a string
                         const latitude = parseFloat(coords[1]);
                         const longitude = parseFloat(coords[2]);
+                        const carparkName=coords[3];
 
                         if (!isNaN(coords[1]) && !isNaN(coords[2])) {  // Ensure valid coordinates
                             const carparkMarker = L.marker([coords[1], coords[2]]).addTo(map)
                                 .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
                             
                             // Fetch car park details asynchronously
-                            const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber);
+                            const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber,carparkName);
 
                             const carparkDistDetails = await getDistanceInformation(latitude, longitude , startLatLng.lat, startLatLng.lng);
 
