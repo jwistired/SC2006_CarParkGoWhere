@@ -1,0 +1,44 @@
+[{
+  "_id": {
+    "$oid": "671f9b049767ad4b26ce0ecb"
+  },
+  "email": "test@gmail.com",
+  "name": "TestUser",
+  "password": "test"
+},
+{
+  "_id": {
+    "$oid": "67204b01adc232b59ef26ca0"
+  },
+  "name": "w",
+  "email": "test2@gmail.com",
+  "password": "$2b$10$KidotcjeqYW1cHhZ95PvYekT38GW8AOtbR5meHuS8EsOsElrrWgqC",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67204d059ee282dd62ac5a09"
+  },
+  "name": "Haoren",
+  "email": "hr@gmail.com",
+  "password": "$2b$10$0K8wHWanL.m8kVWnf7zR5.refLCzLVNUA/71.agZC.n7F3P9iidS6",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67204d1a9ee282dd62ac5a18"
+  },
+  "name": "jumana",
+  "email": "jumanajhaseen@gmail.com",
+  "password": "$2b$10$vDQYAeuNqi/MFbzXNVd3X.wGxjIYYdT5xkf9LX0tzAmhL3d49x0fy",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672053089afbbe6b488118ce"
+  },
+  "name": "seow",
+  "email": "seow@gmail.com",
+  "password": "$2b$10$uE1Na4UvQrquqq1dFS542.J1MnwdRLOKhzHw5i4LWXUQIyKl23Sa2",
+  "__v": 0
+}]
