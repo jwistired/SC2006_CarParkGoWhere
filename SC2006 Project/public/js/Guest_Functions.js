@@ -1,6 +1,4 @@
-//Filter Related Functions
-// Toggle filter dropdown visibility
-//Filter Related Functions
+// Filter functions
 // Toggle filter dropdown visibility
 function toggleFilterDropdown() {
     const dropdown = document.getElementById('filtersDropdown');
@@ -47,7 +45,6 @@ function togglePrice(){
 function filtering(){
     //Code to filter sidebar display
 }
-
 // Hide dropdown when clicking outside
 document.addEventListener('click', function (event) {
     const dropdown = document.getElementById('filterDropdown');
