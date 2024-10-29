@@ -111,7 +111,8 @@ const getCarparkLotsDetails = async (carparkNumber,carparkName) => {
     const carparkData = item.carpark_data;
     const carpark = carparkData.find(cp => cp.carpark_number === carparkNumber);
     carpark.Name=carparkName;
-    carpark
+    carpark.Distance="enter distance";
+    carpark.price="enter price";
     if (carpark) {
       console.log(`Name of Carpark: ${carparkName}:`);
       console.log(`Lots Availability for Carpark ${carparkNumber}:`);
