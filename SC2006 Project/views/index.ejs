@@ -182,6 +182,8 @@ async function getURACarParkListAndRates() {
 async function displayURACarParksOnMap(lat, lon) {
     const uraCarParks = await getURACarParkListAndRates();
 
+    console.log("Retrieved URA Car Park List:", uraCarParks);
+
     uraCarParks.forEach(carPark => {
         const carParkLat = parseFloat(carPark.coordinates[0].latitude);
         const carParkLon = parseFloat(carPark.coordinates[0].longitude);
