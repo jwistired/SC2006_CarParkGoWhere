@@ -702,6 +702,53 @@
                     //     const coords = lot.split(',').map(coord => parseFloat(coord.trim())); // Split the string and trim any extra spaces
 
                     //     if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
+
+                    //         var carparkicon= L.icon({
+                    //         iconUrl: "/css/images/parkingicon.png",
+                    //         iconSize: [30, 30],
+                    //         })
+
+                    //         const carparkMarker = L.marker([coords[0], coords[1]],{icon:carparkicon}).addTo(map)
+                    //             .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
+
+                    //         // Store each carpark marker in the array
+                    //         currentCarparks.push(carparkMarker);
+                    //     } else {
+                    //         console.error("Invalid lat/lng for:", lot);
+                    //     }
+                    // });
+                    
+                        if (nearbyCarparks.length > 0) {
+                            for (const lot of nearbyCarparks) { // Use for...of to await each iteration
+                                // Assuming lot is a string like "carpark_num, 1.434901737416896, 103.78661383499883"
+                                const coords = lot.split(',').map(coord => coord.trim());
+                                const carparkNumber = coords[0]; // Use directly as a string
+                                const latitude = parseFloat(coords[1]);
+                                const longitude = parseFloat(coords[2]);
+
+                                if (!isNaN(coords[1]) && !isNaN(coords[2])) {  // Ensure valid coordinates
+
+                                    //Icon for carpark
+                                    var carparkicon= L.icon({
+                                        iconUrl: "/css/images/parkingicon.png",
+                                        iconSize: [30, 30],
+                                    })
+                                    
+                                    //Place markers on map
+                                    const carparkMarker = L.marker([coords[1], coords[2]], {icon:carparkicon}).addTo(map)
+                                        .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
+                                    
+                                    // Fetch car park details asynchronously
+                                    const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber);
+
+                                    const carparkDistDetails = await getDistanceInformation(latitude, longitude , startLatLng.lat, startLatLng.lng);
+
+                                    // Optionally update the popup with car park details if available
+                                    if (carparkLotsDetails) {
+                                        carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
+                                            `<br><strong>Details:</strong><br>${JSON.stringify(carparkDetails)}`);
+                                    }
+                    //     if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
                     //         const carparkMarker = L.marker([coords[0], coords[1]]).addTo(map)
                     //             .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
 

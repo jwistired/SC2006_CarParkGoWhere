@@ -187,3 +187,8 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 function deg2rad(deg) {
     return deg * (Math.PI / 180);
 }
+
+function clickTest(e)
+{
+    alert("hi. you clicked the marker at " + e.latlng);
+}
