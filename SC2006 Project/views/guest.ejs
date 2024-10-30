@@ -31,10 +31,10 @@
         </div>
 
         <!-- Filter dropdown -->
-        <button class="filter-button w3-button" onclick="toggleFilterDropdown()">
+        <button class="filter-button" onclick="toggleFilterDropdown()">
             <img src="\css\images\icons\filter.png" class="filter-icon">
             <span class="filter-caption">Filter</span>
-            <div class="filter-dropdown" id="filterDropdown">
+            <div class="filter-dropdown" id="filtersDropdown">
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
@@ -87,7 +87,7 @@
     <div class="content">
         
         <!-- Sidebar for parking lots -->
-        <div class="sidebar">
+        <div id="sidebar" class="sidebar sidebar-hidden">
             <h2 class="parkinglotsHeader">Parking Lots Found</h2>
             <div id="parking-lots">
                 <!-- Parking lot info will be dynamically added here -->
@@ -136,13 +136,33 @@
             apiToken = data.token; // Store the token
         } catch (error) {
             console.error('Error fetching token:', error);
+        }}
+
+        // Access key for URA API
+        const uraAccessKey = '18ee826a-2210-4a40-972e-3a1e3c317ba0';
+        const token = 'd3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918';
+
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the Earth in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // Distance in km
         }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180);
         }
+
         async function getAllCarparkCoor_HDB() {
             try {
                 const response = await fetch('/api/carpark-coordinates');
                 const data = await response.json(); // Get the coordinates data from the response
-                console.log("Carpark Coordinates:", data); // For debugging
+                console.log("HDB Carpark Coordinates:", data); // For debugging
                 return data; // Return the data for further use
             } catch (error) {
                 console.error('Error fetching carpark coordinates:', error);
@@ -154,11 +174,191 @@
             try {
                 const response = await fetch(`/api/find-nearby-carparks?lat=${lat}&lon=${lon}`);
                 const data = await response.json(); // Get the nearby carparks data from the response
-                console.log("Nearby Carparks:", data); // For debugging
+                console.log("HDB Nearby Carparks:", data); // For debugging
                 return data; // Return the data for further use
             } catch (error) {
                 console.error('Error fetching nearby carparks:', error);
                 return [];
+            }
+        }
+
+        async function getCarparkLotsDetails_HDB(carparkNum,carparkName){
+            try {
+                const response = await fetch(`/api/carpark-lots-details/${carparkNum}?carparkName=${encodeURIComponent(carparkName)}`);
+                const carParkDetails = await response.json();
+                console.log('HDB Lots Detail of nearby carpark:', carParkDetails);
+                return carParkDetails;
+            } catch (error) {
+                console.error('Error fetching details of nearby carpark', error);
+                return [];
+            }
+        }
+
+        async function getDistanceInformation(lat1, lon1, lat2, lon2) {
+            try {
+                const response = await fetch(`/calculate-distance?lat1=${lat1}&lon1=${lon1}&lat2=${lat2}&lon2=${lon2}`);
+                
+                // Check if the response is ok (status code in the range 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                console.log(`Distance: ${data.distance.toFixed(2)} km`);
+                return data.distance;
+            } catch (error) {
+                console.error('Error fetching distance:', error);
+                return null; // or handle the error as needed
+            }
+        }
+
+        // Function to fetch carpark price details
+        async function getCarparkPriceDetails_URA(ppCode) {
+            try {
+                const response = await fetch(`/api/ura/carpark-price/${ppCode}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                console.log('URA Carpark Price Details:', data); // Log the data instead of updating the DOM
+            } catch (error) {
+                console.error('Error fetching carpark price details:', error);
+            }
+        }
+
+        // Function to fetch carpark lots details
+        async function getCarparkLotsDetails_URA(carparkNo) {
+            try {
+                const response = await fetch(`/api/ura/carpark-lots/${carparkNo}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                console.log('URA Carpark Lots Details:', data); // Log the data instead of updating the DOM
+            } catch (error) {
+                console.error('Error fetching carpark lot details:', error);
+            }
+        }
+
+        // Function to fetch all URA carpark coordinates
+        async function getAllCarparkCoor_URA() {
+            try {
+                const response = await fetch('/api/ura/carpark-coordinates');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                //console.log('URA Carpark coordinates:', data); // Log the data fetched
+                return data; // Ensure it returns the data correctly
+            } catch (error) {
+                console.error('Error fetching carpark coordinates:', error);
+                return []; // Return an empty array on error
+            }
+        }
+
+
+
+        // Function to find nearby carparks
+        async function findNearbyCarparks_URA(lat, lon, radius = 500) {
+            try {
+                const response = await fetch(`/api/ura/find-nearby-carparks?lat=${lat}&lon=${lon}&radius=${radius}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                return data; // Return the fetched data
+            } catch (error) {
+                console.error('Error finding nearby carparks:', error);
+                return []; // Return an empty array on error
+            }
+        }
+
+        // Marker color change function
+        function setMarkerStyle(marker, isSelected) {
+            if (!isSelected) {
+                marker.setIcon(L.icon({
+                    iconUrl: '/css/images/parkingicon.png',  // URL for selected marker icon
+                    iconSize: [40, 40],
+                    iconAnchor: [12, 41]
+                }));
+            } else {
+                marker.setIcon(L.icon({
+                    iconUrl: '/css/images/parkingicon-selected.png',  // URL for default marker icon
+                    iconSize: [55, 55],
+                    iconAnchor: [12, 41]
+                }));
+            }
+        }
+
+        function populateCarparkSidebar(carparks, markers) {
+            const sidebar = document.getElementById('parking-lots');
+            sidebar.innerHTML = '';  // Clear existing content
+            
+            // Define default and active icons as instances of L.icon
+            const defaultIcon = L.icon({
+                iconUrl: '/css/images/parkingicon.png', // Set your path here
+                iconSize: [40, 40], // Size of the icon
+                iconAnchor: [12, 41], // Point of the icon which will correspond to marker's location
+                popupAnchor: [1, -34], // Point from which the popup should open relative to the iconAnchor
+            });
+
+            const activeIcon = L.icon({
+                iconUrl: '/css/images/parkingicon-selected.png', // Set your path here
+                iconSize: [60, 60],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+            });
+
+            if (carparks.length > 0) {
+                for (let i = 0; i < carparks.length; i++) {
+                    const carpark = carparks[i].split(',').map(coord => coord.trim());
+                    const carparkNumber = carpark[0];
+                    const carparkName = carpark[3];
+                    const dist = carpark[4];
+                    const price = carpark[5];
+                    const parkinglots = carpark[6];
+                    
+                    // Create collapsible element
+                    const collapsible = document.createElement('div');
+                    collapsible.className = 'collapsible';
+                    collapsible.innerHTML = `
+                        <button class="collapsible-btn ${i === 0 ? 'active' : ''}" style="${i === 0 ? 'background-color: green;' : ''}">Carpark ${carparkNumber}: ${carparkName}</button>
+                        <div class="collapsible-content ${i === 0 ? 'active' : ''}" style="${i === 0 ? 'display: block; background-color: #c2ffcd;' : 'display: none;'}">
+                            <p>Distance from destination: <strong>${parseFloat(dist).toFixed(2)}km</strong></p>
+                            <p>Price: <strong>${price}</strong></p>
+                            <p>Available Parking Lots: <strong>${parkinglots.substring(1)}</strong></p>
+                        </div>`;
+
+                    // Toggle content visibility and style
+                    collapsible.querySelector('.collapsible-btn').addEventListener('click', () => {
+                        const content = collapsible.querySelector('.collapsible-content');
+                        const button = collapsible.querySelector('.collapsible-btn');
+                        
+                        // Check if the content is currently active (visible)
+                        const isActive = content.classList.contains('active');
+
+                        // Toggle visibility
+                        if (content.style.display === 'block') {
+                            content.style.display = 'none';
+                            button.classList.remove('active'); // Remove active class
+                            content.classList.remove('active'); // Remove active class from content
+                            button.style.backgroundColor = ''; // Reset button color
+                            content.style.backgroundColor = ''; // Reset content color
+                        } else {
+                            content.style.display = 'block';
+                            button.classList.add('active'); // Add active class
+                            content.classList.add('active'); // Add active class to content
+                            button.style.backgroundColor = 'green'; // Change button color to green
+                            content.style.backgroundColor = '#c2ffcd'; // Change content color to green
+                        }
+
+                        // Set marker icons based on open state of collapsibles
+                        markers.forEach((marker, markerIndex) => {
+                            const collapsibleContent = sidebar.querySelectorAll('.collapsible-content')[markerIndex];
+                            const isContentActive = collapsibleContent.classList.contains('active');
+                            marker.setIcon(isContentActive ? activeIcon : defaultIcon);
+                        });
+                    });
+
+                    sidebar.appendChild(collapsible);
+
+                    // Set marker to activeIcon if it’s the first carpark
+                    if (markers[i]) {
+                        markers[i].setIcon(i === 0 ? activeIcon : defaultIcon);
+                    }
+                }
             }
         }
 
@@ -178,90 +378,184 @@
 
             // Add attribution
             map.attributionControl.setPrefix('<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener noreferrer">Singapore Land Authority</a>');
-
+            
             // Call functions that need the map to be initialized
             showUserLocation();
-            displayParkingLots(parkingLots);
+            // displayParkingLots(parkingLots);
         });
 
         // Parking lot data
-        const parkingLots = [
-            { id: 1, lat: 1.3521, lng: 103.8198, title: 'Car Park 1', price: 0.50, distance: 200, availability: 37 },
-            { id: 2, lat: 1.3531, lng: 103.8190, title: 'Car Park 2', price: 0.60, distance: 300, availability: 25 },
-            { id: 3, lat: 1.3541, lng: 103.8185, title: 'Car Park 3', price: 0.55, distance: 400, availability: 23 }
-        ];
+        // const parkingLots = [
+        //     { id: 1, lat: 1.3521, lng: 103.8198, title: 'Car Park 1', price: 0.50, distance: 200, availability: 37 },
+        //     { id: 2, lat: 1.3531, lng: 103.8190, title: 'Car Park 2', price: 0.60, distance: 300, availability: 25 },
+        //     { id: 3, lat: 1.3541, lng: 103.8185, title: 'Car Park 3', price: 0.55, distance: 400, availability: 23 }
+        // ];
 
-        // Display parking lots on map
-        function displayParkingLots(parkingLots) {
-            if (!map) {
-                console.error("Map is not initialized yet.");
-                return;
-            }
+        // // Display parking lots on map
+        // function displayParkingLots(parkingLots) {
+        //     if (!map) {
+        //         console.error("Map is not initialized yet.");
+        //         return;
+        //     }
 
-            parkingLots.forEach(lot => {
-                if (lot.lat && lot.lng) {
-                    const marker = L.marker([lot.lat, lot.lng]).addTo(map)
-                        .bindPopup(`<strong>${lot.title}</strong><br>Price: $${lot.price}/hour<br>Distance: ${lot.distance}m<br>Availability: ${lot.availability}/50`);
+        //     parkingLots.forEach(lot => {
+        //         if (lot.lat && lot.lng) {
+        //             const marker = L.marker([lot.lat, lot.lng]).addTo(map)
+        //                 .bindPopup(`<strong>${lot.title}</strong><br>Price: $${lot.price}/hour<br>Distance: ${lot.distance}m<br>Availability: ${lot.availability}/50`);
 
-                    // Append parking lot info to sidebar
-                    const parkingLotDiv = document.createElement('div');
-                    parkingLotDiv.classList.add('parking-lot');
-                    parkingLotDiv.innerHTML = `
-                        <h3>${lot.title}</h3>
-                        <p>Price: $${lot.price} / hour</p>
-                        <p>Distance: ${lot.distance}m</p>
-                        <p>Availability: ${lot.availability}/50 spots</p>
-                        <button>Select</button>
-                    `;
-                    document.getElementById('parking-lots').appendChild(parkingLotDiv);
-                } else {
-                    console.error("Invalid parking lot data: missing latitude or longitude.", lot);
-                }
-            });
-        }
+        //             // Append parking lot info to sidebar
+        //             const parkingLotDiv = document.createElement('div');
+        //             parkingLotDiv.classList.add('parking-lot');
+        //             parkingLotDiv.innerHTML = `
+        //                 <h3>${lot.title}</h3>
+        //                 <p>Price: $${lot.price} / hour</p>
+        //                 <p>Distance: ${lot.distance}m</p>
+        //                 <p>Availability: ${lot.availability}/50 spots</p>
+        //                 <button>Select</button>
+        //             `;
+        //             document.getElementById('parking-lots').appendChild(parkingLotDiv);
+        //         } else {
+        //             console.error("Invalid parking lot data: missing latitude or longitude.", lot);
+        //         }
+        //     });
+        // }
         
         function showSuggestions() {
-        const searchQuery = document.getElementById('search').value.trim();
+            const searchQuery = document.getElementById('search').value.trim();
 
-        if (searchQuery !== "") {
-            const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
+            if (searchQuery !== "") {
+                const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
 
-            $.get(url, function (data) {
-                // Clear previous suggestions
-                let autocompleteList = document.getElementById("autocomplete-list");
-                autocompleteList.innerHTML = "";
+                $.get(url, function (data) {
+                    // Clear previous suggestions
+                    let autocompleteList = document.getElementById("autocomplete-list");
+                    autocompleteList.innerHTML = "";
 
-                if (data.results.length > 0) {
-                    // Create and display suggestions
-                    data.results.forEach(result => {
-                        let suggestionItem = document.createElement("div");
-                        suggestionItem.innerHTML = result.SEARCHVAL;
-                        suggestionItem.classList.add("autocomplete-suggestion");
+                    if (data.results.length > 0) {
+                        // Create and display suggestions
+                        data.results.forEach(result => {
+                            let suggestionItem = document.createElement("div");
+                            suggestionItem.innerHTML = result.SEARCHVAL;
+                            suggestionItem.classList.add("autocomplete-suggestion");
 
-                        // Add click event to use the clicked suggestion
-                        suggestionItem.addEventListener("click", function () {
-                            document.getElementById('search').value = result.SEARCHVAL;
-                            autocompleteList.innerHTML = ""; // Clear the suggestions
-                            searchLocation(); // Trigger the search function
+                            // Add click event to use the clicked suggestion
+                            suggestionItem.addEventListener("click", function () {
+                                document.getElementById('search').value = result.SEARCHVAL;
+                                autocompleteList.innerHTML = ""; // Clear the suggestions
+                                searchLocation(); // Trigger the search function
+                                opensideBar();
+                            });
+
+                            // Append the suggestion to the list
+                            autocompleteList.appendChild(suggestionItem);
                         });
-
-                        // Append the suggestion to the list
-                        autocompleteList.appendChild(suggestionItem);
-                    });
-                }
-            }).fail(function () {
-                console.error("Error fetching autocomplete suggestions from OneMap API.");
-            });
-        } else {
-            // Clear suggestions if no input
-            document.getElementById("autocomplete-list").innerHTML = "";
+                    }
+                }).fail(function () {
+                    console.error("Error fetching autocomplete suggestions from OneMap API.");
+                });
+            } else {
+                // Clear suggestions if no input
+                document.getElementById("autocomplete-list").innerHTML = "";
         }}
-        
+
+        async function displayNearbyCarparks_HDB(lat, lon) {
+            const central = [
+                { code: "ACB", name: "Block 270, 271 Albert Centre" },
+                { code: "BBB", name: "Block 232 Bras Basah Complex" },
+                { code: "BRB1", name: "Block 665 Tekka Centre" },
+                { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
+                { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
+                { code: "HLM", name: "Block 531A Upper Cross Street" },
+                { code: "KAB", name: "Block 334 Kreta Ayer Road" },
+                { code: "KAM", name: "Block 335 Kreta Ayer Road" },
+                { code: "KAS", name: "Block 333 Kreta Ayer Road" },
+                { code: "PRM", name: "Block 33 Park Crescent" },
+                { code: "SLS", name: "Block 4 Sago Lane" },
+                { code: "SR1", name: "Block 10 Selegie Road" },
+                { code: "SR2", name: "Block 8, 9 Selegie Road" },
+                { code: "TPM", name: "Tanjong Pagar Plaza" },
+                { code: "UCS", name: "Block 34 Upper Cross Street" },
+                { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
+            ];
+
+            // Remove the previous circle
+            if (circle) {
+                map.removeLayer(circle);
+                circle = null;
+            }
+
+            // Remove the previous carpark markers
+            currentCarparks.forEach(marker => {
+                map.removeLayer(marker);
+            });
+            currentCarparks = []; // Reset the array
+
+            // Create a new circle at the destination
+            circle = L.circle([lat, lon], 500).addTo(map); // Circle radius is set to 500 meters
+
+            console.log('Fetching HDB carpark coordinates...');
+            // Fetch nearby carparks from HDB
+            const nearbyCarparksHDB = await findNearbyCarparks_HDB(lat, lon); // Ensure this function fetches data correctly
+            
+            if (nearbyCarparksHDB.length > 0) {
+                for (let i = 0; i < nearbyCarparksHDB.length; i++) {
+                    const coords = nearbyCarparksHDB[i].split(',').map(coord => coord.trim());
+                    const carparkNumber = coords[0];
+                    const latitude = parseFloat(coords[1]);
+                    const longitude = parseFloat(coords[2]);
+                    const carparkName = coords[3];
+
+                    if (!isNaN(latitude) && !isNaN(longitude)) {
+                        
+                        const carparkMarker = L.marker([latitude, longitude]).addTo(map)
+                            .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${latitude}, ${longitude}`);
+
+                        // Initial marker style
+                        setMarkerStyle(carparkMarker, false);
+
+                        let carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber, carparkName);
+                        let availableLots = "N/A"; // Default value if details not found
+                        let carparkDistDetails_HDB = await getDistanceInformation(latitude, longitude, userLatLng.lat, userLatLng.lng);
+                        carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
+                        coords[4] = carparkDistDetails_HDB;
+                        const isCentral = central.some(c => c.code === carparkNumber);
+                        coords[5] = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
+                        coords[6] = carparkLotsDetails_HDB; // Store available lots in coords[6]
+
+                        nearbyCarparksHDB[i] = coords.join(',');
+
+                        carparkMarker.bindPopup(
+                            carparkMarker.getPopup().getContent() +
+                            `<br><strong>Details:</strong> ${JSON.stringify(carparkLotsDetails_HDB)}` +
+                            `<br><strong>Distance:</strong> ${carparkDistDetails_HDB} meters` +
+                            `<br><strong>Pricing:</strong> ${coords[5]}` +
+                            `<br><strong>Available Lots:</strong> ${availableLots}`
+                        );
+                        
+                        // Click event listener
+                        // carparkMarker.on('click', function () {
+                        //     setMarkerStyle(carparkMarker, true); // Change color on click
+                        //     carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
+                        //             `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_HDB)}`);
+                        // });
+                        
+                        // Store each carpark marker in the array
+                        currentCarparks.push(carparkMarker);
+                        
+                    }
+                }
+                console.log("HDB Carpark Coordinates with Distance, Pricing, and Availability:", nearbyCarparksHDB);
+            } else {
+                console.log('No nearby HDB carparks found.');
+            }
+
+            populateCarparkSidebar(nearbyCarparksHDB, currentCarparks);
+        }
+
         //store searchMarker
         let searchMarker = null;
 
-        // Function to search for locations using OneMap API
-        // Function to search for locations using OneMap API
+        // Update the searchLocation function to use displayNearbyCarParks
         function searchLocation() {
             const searchQuery = document.getElementById('search').value;
 
@@ -269,15 +563,24 @@
                 const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
 
                 $.get(url, function (data) {
-                    if (data.results.length > 0) {
+                    console.log("Data received from OneMap API:", data);
+
+                    if (data.results && data.results.length > 0) {
                         const firstResult = data.results[0];
                         const lat = parseFloat(firstResult.LATITUDE);
                         const lng = parseFloat(firstResult.LONGITUDE);
                         const searchLatLng = L.latLng(lat, lng);
 
-                        // Remove the old search marker if it exists
+                        console.log("Location found:", lat, lng);
+
+                        // Remove old search marker if it exists
                         if (searchMarker) {
                             map.removeLayer(searchMarker);
+                        }
+
+                        if (circle) {
+                            map.removeLayer(circle);
+                            circle = null;
                         }
 
                         // Add marker for the searched location
@@ -288,8 +591,9 @@
                         // Center the map to the search result location
                         map.setView([lat, lng], 16);
 
-                        // Call the routing function if user's location is available
+                        // Call routing function if user's location is available
                         if (userLatLng) {
+                            displayNearbyCarparks_HDB(lat, lng);
                             getRoute(userLatLng, searchLatLng);
                         } else {
                             console.error("User location is not available.");
@@ -297,9 +601,11 @@
 
                     } else {
                         alert("No results found.");
+                        console.warn("No results returned from OneMap API.");
                     }
-                }).fail(function () {
+                }).fail(function (error) {
                     alert("Error fetching data from OneMap API.");
+                    console.error("Error fetching data from OneMap API:", error);
                 });
             } else {
                 alert("Please enter a location to search for.");
@@ -319,8 +625,11 @@
 
                     // Center map on user's location
                     map.setView(userLatLng, 16);
+                    console.log("User location retrieved:", position.coords.latitude, position.coords.longitude);
+                    
                 }, function (error) {
                     console.error("Error getting location: ", error.message);
+                    alert("Error retrieving your location. Please enable location permissions or check your browser's security settings.");
                 });
             } else {
                 alert("Geolocation is not supported by this browser.");
@@ -379,29 +688,29 @@
                         currentRoute = L.polyline(routeCoordinates, { color: 'blue', opacity: 0.6, weight: 8 }).addTo(map);
                         circle = L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);
 
-                        // Fetch all car park coordinates and display in the map
-                        const carparkCoordinates = await getAllCarparkCoor_HDB();
-                        //console.log("Carpark Coordinates:", carparkCoordinates); // For debugging
+                    //     // Fetch all car park coordinates and display in the map
+                    //     const carparkCoordinates = await getAllCarparkCoor_HDB();
+                    //     //console.log("Carpark Coordinates:", carparkCoordinates); // For debugging
 
-                        // Fetch nearby carparks and add markers
-                        const nearbyCarparks = await findNearbyCarparks_HDB(endLatLng.lat, endLatLng.lng);
-                        //console.log("Nearby Carparks:", nearbyCarparks); // For debugging
+                    //     // Fetch nearby carparks and add markers
+                    //     const nearbyCarparks = await findNearbyCarparks_HDB(endLatLng.lat, endLatLng.lng);
+                    //     //console.log("Nearby Carparks:", nearbyCarparks); // For debugging
           
 
-                        nearbyCarparks.forEach(lot => {
-                        // Assuming lot is a string like "1.434901737416896, 103.78661383499883"
-                        const coords = lot.split(',').map(coord => parseFloat(coord.trim())); // Split the string and trim any extra spaces
+                    //     nearbyCarparks.forEach(lot => {
+                    //     // Assuming lot is a string like "1.434901737416896, 103.78661383499883"
+                    //     const coords = lot.split(',').map(coord => parseFloat(coord.trim())); // Split the string and trim any extra spaces
 
-                        if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
-                            const carparkMarker = L.marker([coords[0], coords[1]]).addTo(map)
-                                .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
+                    //     if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
+                    //         const carparkMarker = L.marker([coords[0], coords[1]]).addTo(map)
+                    //             .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
 
-                            // Store each carpark marker in the array
-                            currentCarparks.push(carparkMarker);
-                        } else {
-                            console.error("Invalid lat/lng for:", lot);
-                        }
-                    });
+                    //         // Store each carpark marker in the array
+                    //         currentCarparks.push(carparkMarker);
+                    //     } else {
+                    //         console.error("Invalid lat/lng for:", lot);
+                    //     }
+                    // });
                     } else {
                         alert("No route found between the specified locations.");
                     }
