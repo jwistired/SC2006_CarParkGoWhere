@@ -255,11 +255,12 @@ function deg2rad(deg) {
                 return [];
             }
         }
-        async function getCarparkLotsDetails_HDB(carparkNum){
+        async function getCarparkLotsDetails_HDB(carparkNum,carparkName){
             try {
-                const response = await fetch(`/api/carpark-lots-details/${carparkNum}`);
+                const response = await fetch(`/api/carpark-lots-details/${carparkNum}?carparkName=${encodeURIComponent(carparkName)}`);
                 const carParkDetails = await response.json();
                 console.log('HDB Lots Detail of nearby carpark:', carParkDetails);
+                return carParkDetails;
             } catch (error) {
                 console.error('Error fetching details of nearby carpark', error);
                 return [];
@@ -499,61 +500,82 @@ async function displayNearbyCarParks(lat, lon) {
 }
 */
 async function displayNearbyCarparks_HDB(lat, lon) {
-    // Remove the previous circle
+    const central = [
+        { code: "ACB", name: "Block 270, 271 Albert Centre" },
+        { code: "BBB", name: "Block 232 Bras Basah Complex" },
+        { code: "BRB1", name: "Block 665 Tekka Centre" },
+        { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
+        { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
+        { code: "HLM", name: "Block 531A Upper Cross Street" },
+        { code: "KAB", name: "Block 334 Kreta Ayer Road" },
+        { code: "KAM", name: "Block 335 Kreta Ayer Road" },
+        { code: "KAS", name: "Block 333 Kreta Ayer Road" },
+        { code: "PRM", name: "Block 33 Park Crescent" },
+        { code: "SLS", name: "Block 4 Sago Lane" },
+        { code: "SR1", name: "Block 10 Selegie Road" },
+        { code: "SR2", name: "Block 8, 9 Selegie Road" },
+        { code: "TPM", name: "Tanjong Pagar Plaza" },
+        { code: "UCS", name: "Block 34 Upper Cross Street" },
+        { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
+    ];
+
     if (circle) {
         map.removeLayer(circle);
         circle = null;
     }
+    currentCarparks.forEach(marker => map.removeLayer(marker));
+    currentCarparks = [];
 
-    // Remove the previous carpark markers
-    currentCarparks.forEach(marker => {
-        map.removeLayer(marker);
-    });
-    currentCarparks = []; // Reset the array
-
-    // Create a new circle at the destination
-    circle = L.circle([lat, lon], 500).addTo(map); // Circle radius is set to 500 meters
-
-    console.log('Fetching HDB carpark coordinates...');
-    // Fetch nearby carparks from HDB
-    const nearbyCarparksHDB = await findNearbyCarparks_HDB(lat, lon); // Ensure this function fetches data correctly
+    circle = L.circle([lat, lon], 500).addTo(map);
     
+    console.log('Fetching HDB carpark coordinates...');
+    let nearbyCarparksHDB = await findNearbyCarparks_HDB(lat, lon);
 
     if (nearbyCarparksHDB.length > 0) {
-        for (const lot of nearbyCarparksHDB) {
-            const coords = lot.split(',').map(coord => coord.trim());
+        for (let i = 0; i < nearbyCarparksHDB.length; i++) {
+            const coords = nearbyCarparksHDB[i].split(',').map(coord => coord.trim());
             const carparkNumber = coords[0];
             const latitude = parseFloat(coords[1]);
             const longitude = parseFloat(coords[2]);
+            const carparkName = coords[3];
 
             if (!isNaN(latitude) && !isNaN(longitude)) {
                 const carparkMarker = L.marker([latitude, longitude]).addTo(map)
                     .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${latitude}, ${longitude}`);
 
-                // Fetch car park lots details asynchronously for HDB
-                const carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber);
+                let carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber, carparkName);
+                let availableLots = "N/A"; // Default value if details not found
+                
 
-                const carparkDistDetails_HDB= await getDistanceInformation(latitude, longitude , lat, lon);
+                let carparkDistDetails_HDB = await getDistanceInformation(latitude, longitude, lat, lon);
+                carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
 
-                // Optionally update the popup with car park details if available
-                if (carparkLotsDetails_HDB) {
-                    carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
-                        `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_HDB)}`);
-                }
+                coords[4] = carparkDistDetails_HDB;
+                const isCentral = central.some(c => c.code === carparkNumber);
+                coords[5] = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
+                coords[6] = carparkLotsDetails_HDB; // Store available lots in coords[6]
 
-                if (carparkDistDetails_HDB) {
-                    carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
-                        `<br><strong>Details:</strong><br>${JSON.stringify(carparkDistDetails_HDB)}`);
-                }
+                nearbyCarparksHDB[i] = coords.join(',');
 
-                // Store each carpark marker in the array
+                carparkMarker.bindPopup(
+                    carparkMarker.getPopup().getContent() +
+                    `<br><strong>Details:</strong> ${JSON.stringify(carparkLotsDetails_HDB)}` +
+                    `<br><strong>Distance:</strong> ${carparkDistDetails_HDB} meters` +
+                    `<br><strong>Pricing:</strong> ${coords[5]}` +
+                    `<br><strong>Available Lots:</strong> ${availableLots}`
+                );
+
                 currentCarparks.push(carparkMarker);
             }
         }
+        console.log("HDB Carpark Coordinates with Distance, Pricing, and Availability:", nearbyCarparksHDB);
     } else {
         console.log('No nearby HDB carparks found.');
     }
 }
+
+
+
 
 async function displayNearbyCarparks_URA(lat, lon) {
     // Remove the previous circle
