@@ -547,7 +547,7 @@ async function displayNearbyCarparks_HDB(lat, lon) {
                 let availableLots = "N/A"; // Default value if details not found
                 
 
-                let carparkDistDetails_HDB = await getDistanceInformation(latitude, longitude, lat, lon);
+                let carparkDistDetails_HDB = await getDistanceInformation(latitude, longitude, userLatLng.lat, userLatLng.lng);
                 carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
 
                 coords[4] = carparkDistDetails_HDB;
@@ -576,7 +576,7 @@ async function displayNearbyCarparks_HDB(lat, lon) {
 
 
 
-
+/*
 async function displayNearbyCarparks_URA(lat, lon) {
     // Remove the previous circle
     if (circle) {
@@ -620,14 +620,14 @@ async function displayNearbyCarparks_URA(lat, lon) {
                     .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${latitude}, ${longitude}`);
 
                 // Fetch car park lots details asynchronously for URA
-                const carparkLotsDetails_HDB = await getCarparkLotsDetails_URA(carparkNumber);
+                const carparkLotsDetails_URA = await getCarparkLotsDetails_URA(carparkNumber);
                 const carparkPriceDetails_URA = await getCarparkPriceDetails_URA(carparkNumber);
                 const carparkDistDetails_URA= await getDistanceInformation(latitude, longitude , lat, lon);
 
                 // Optionally update the popup with car park details if available
-                if (carparkLotsDetails_HDB) {
+                if (carparkLotsDetails_URA) {
                     carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
-                        `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_HDB)}`);
+                        `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_URA)}`);
                 }
 
                 if (carparkPriceDetails_URA) {
@@ -648,6 +648,7 @@ async function displayNearbyCarparks_URA(lat, lon) {
         console.log('No nearby URA carparks found.');
     }
 }
+*/
 
 // Update the searchLocation function to use displayNearbyCarParks
 function searchLocation() {
@@ -685,12 +686,13 @@ function searchLocation() {
                 // Center the map to the search result location
                 map.setView([lat, lng], 16);
 
-                // Display both URA and HDB car parks near the search location
-                displayNearbyCarparks_HDB(lat, lng);
-                displayNearbyCarparks_URA(lat, lng);
+                
+                //displayNearbyCarparks_URA(lat, lng);
 
                 // Call routing function if user's location is available
                 if (userLatLng) {
+                    // Display both URA and HDB car parks near the search location
+                    displayNearbyCarparks_HDB(lat, lng);
                     getRoute(userLatLng, searchLatLng);
                 } else {
                     console.error("User location is not available.");
