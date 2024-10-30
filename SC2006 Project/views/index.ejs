@@ -499,24 +499,39 @@ async function displayNearbyCarParks(lat, lon) {
 }
 */
 async function displayNearbyCarparks_HDB(lat, lon) {
-    // Remove the previous circle
+    // List of central carparks
+    const central = [
+        { code: "ACB", name: "Block 270, 271 Albert Centre" },
+        { code: "BBB", name: "Block 232 Bras Basah Complex" },
+        { code: "BRB1", name: "Block 665 Tekka Centre" },
+        { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
+        { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
+        { code: "HLM", name: "Block 531A Upper Cross Street" },
+        { code: "KAB", name: "Block 334 Kreta Ayer Road" },
+        { code: "KAM", name: "Block 335 Kreta Ayer Road" },
+        { code: "KAS", name: "Block 333 Kreta Ayer Road" },
+        { code: "PRM", name: "Block 33 Park Crescent" },
+        { code: "SLS", name: "Block 4 Sago Lane" },
+        { code: "SR1", name: "Block 10 Selegie Road" },
+        { code: "SR2", name: "Block 8, 9 Selegie Road" },
+        { code: "TPM", name: "Tanjong Pagar Plaza" },
+        { code: "UCS", name: "Block 34 Upper Cross Street" },
+        { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
+    ];
+
+    // Remove previous circle and carpark markers
     if (circle) {
         map.removeLayer(circle);
         circle = null;
     }
-
-    // Remove the previous carpark markers
-    currentCarparks.forEach(marker => {
-        map.removeLayer(marker);
-    });
+    currentCarparks.forEach(marker => map.removeLayer(marker));
     currentCarparks = []; // Reset the array
 
     // Create a new circle at the destination
-    circle = L.circle([lat, lon], 500).addTo(map); // Circle radius is set to 500 meters
-
+    circle = L.circle([lat, lon], 500).addTo(map); // Circle radius is 500 meters
+    
     console.log('Fetching HDB carpark coordinates...');
-    // Fetch nearby carparks from HDB
-    let nearbyCarparksHDB = await findNearbyCarparks_HDB(lat, lon); // Ensure this function fetches data correctly
+    let nearbyCarparksHDB = await findNearbyCarparks_HDB(lat, lon);
 
     if (nearbyCarparksHDB.length > 0) {
         for (let i = 0; i < nearbyCarparksHDB.length; i++) {
@@ -533,12 +548,16 @@ async function displayNearbyCarparks_HDB(lat, lon) {
                 // Fetch car park lots details asynchronously for HDB
                 const carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber, carparkName);
 
-                // Fetch distance asynchronously
+                // Fetch distance asynchronously and round to 2 decimal places
                 let carparkDistDetails_HDB = await getDistanceInformation(latitude, longitude, lat, lon);
-                carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB).toFixed(2);
+                carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
 
                 // Update coords[4] with the distance value
                 coords[4] = carparkDistDetails_HDB;
+
+                // Check if the carpark is in the central list and set the pricing accordingly
+                const isCentral = central.some(c => c.code === carparkNumber);
+                coords[5] = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
 
                 // Replace the original entry with the updated one
                 nearbyCarparksHDB[i] = coords.join(',');
@@ -549,19 +568,21 @@ async function displayNearbyCarparks_HDB(lat, lon) {
                         `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_HDB)}`);
                 }
 
-                // Add distance information to the popup
+                // Add distance and pricing information to the popup
                 carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
-                    `<br><strong>Distance:</strong> ${carparkDistDetails_HDB} meters`);
+                    `<br><strong>Distance:</strong> ${carparkDistDetails_HDB} meters` +
+                    `<br><strong>Pricing:</strong> ${coords[5]}`);
 
                 // Store each carpark marker in the array
                 currentCarparks.push(carparkMarker);
             }
         }
-        console.log("HDB Carpark Coordinates with Distance:", nearbyCarparksHDB);
+        console.log("HDB Carpark Coordinates with Distance and Pricing:", nearbyCarparksHDB);
     } else {
         console.log('No nearby HDB carparks found.');
     }
 }
+
 
 
 async function displayNearbyCarparks_URA(lat, lon) {
