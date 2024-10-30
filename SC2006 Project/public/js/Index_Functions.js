@@ -1,5 +1,3 @@
-console.log('Index_Functions.js loaded');
-
 //Filter Related Functions
 // Toggle filter dropdown visibility
 function toggleFilterDropdown() {
@@ -7,6 +5,17 @@ function toggleFilterDropdown() {
     dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
     dropdown.style.flexDirection = 'column';
 }
+
+// Hide dropdown when clicking outside
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('filterDropdown');
+    if (!event.target.closest('.filter-button') 
+        && !event.target.closest('.filter-dropdown') 
+        && !event.target.closest('.switch') 
+        && !event.target.closest('.slider')) {
+        dropdown.style.display = 'none';
+    }
+});
 
 function toggleDistance(){
     var boolDistance;

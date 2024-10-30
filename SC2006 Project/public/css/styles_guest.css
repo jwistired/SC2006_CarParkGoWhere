@@ -384,7 +384,7 @@ nav {
 
 /* Parking lots Sidebar styling */
 .sidebar{
-  display: flex;
+  display: none;
   flex-direction: column;
   position: absolute;
   flex: 1; /* Use flex to allow them to shrink and grow */
