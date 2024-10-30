@@ -554,7 +554,7 @@ const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${
 
 $.ajax({
     url: routeUrl,
-    type: 'GET',
+    type: 'GET',    
     headers: {
         'Authorization': apiToken // fetch oneMapToken
     },
@@ -607,7 +607,7 @@ $.ajax({
                         
                         //Place markers on map
                         const carparkMarker = L.marker([coords[1], coords[2]], {icon:carparkicon}).addTo(map)
-                            .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
+                            .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`).on('click', clickTest);
                         
                         // Fetch car park details asynchronously
                         const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber);
@@ -622,6 +622,13 @@ $.ajax({
 
                         // Store each carpark marker in the array
                         currentCarparks.push(carparkMarker);
+
+                        function clickTest(e){
+                            console.log("clicked"); 
+                        }
+
+                        
+
                     } else {
                         console.error("Invalid lat/lng for:", lot);
                     }
