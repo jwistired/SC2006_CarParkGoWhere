@@ -27,6 +27,23 @@ html, body {
   margin-left: 10px;
 }
 
+/* Search bar and button styling */
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 45px;
+  width: 65%;
+  position: relative;
+  margin-left: 30px;
+  background-color: white; /* Add background color */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 15px; /* Add border radius */
+  padding: 5px; /* Add padding */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+  z-index: 2000; /* Ensure it has a higher z-index */
+}
+
 /* Button styling */
 button {
   background-color: #6a1b9a;
@@ -42,24 +59,6 @@ button:hover {
 }
 
 /*Search Bar*/
-
-/* Search bar and button styling */
-.search-bar {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  height: 40px;
-  width: 65vw; /* Fill the width of the container */
-  position: relative;
-  margin-left: 30px;
-  background-color: white; /* Add background color */
-  border: 1px solid #ccc; /* Add border */
-  border-radius: 15px; /* Add border radius */
-  padding: 5px; /* Add padding */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
-  z-index: 2000; /* Ensure it has a higher z-index */
-}
-
 .search-icon-btn{
   background-color: transparent;
   border: none;
@@ -78,10 +77,29 @@ button:hover {
   scale: 0.5;
 }
 
-.search-input { 
-  margin-top: 18px;
-  height: 30px;
-  width: calc(65vw - 70px);
+.search-icon {
+  width: 60px;
+  height: 60px;
+}
+
+.search {
+  --padding: 14px;
+  position: absolute;
+  width: max-content;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  border-radius: 28px;
+  background-color: rgb(156, 156, 156);
+  padding: var(--padding);
+  border-radius: 10px;
+  transition: box-shadow 0.25s;
+}
+
+.search-input {
+  display: flex;
+  width: 150%;
+  height: 50px;
   box-sizing: border-box;
   border: none;
   border-radius: 5px;
@@ -91,29 +109,6 @@ button:hover {
   padding-left: 20px;
   color: #333;
   position: relative; 
-}
-
-#autocomplete-list {
-  position: absolute;
-  top: calc(100% + 5px);
-  width: calc(100% - 50px);
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  max-height: 150px;
-  overflow-y: auto;
-  z-index: 2000;
-}
-
-#autocomplete-list div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
-}
-
-#autocomplete-list div:hover {
-  background-color: #e9e9e9;
 }
 
 #autocomplete-list {
@@ -156,13 +151,16 @@ button:hover {
 /* Filter Related styles */
 
 .filter-button {
-  display :flex;
-  align-items: center;
-  flex-direction: column;
-  text-decoration: none;
+  background-color: #6a1b9a;
   color: white;
-  margin: 0 10px;
-  scale: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  /* margin-right: 25px; */
+  position: relative;
 }
 
 .filter-caption {
@@ -180,8 +178,8 @@ button:hover {
 .filter-dropdown {
   display: none; /* Hidden by default */
   position: absolute; /* Position it below the filter button */
-  top: calc(105%); /* Align with the header */
-  right: calc(50px+ 100%); /*Align right with filter button */
+  top: calc(100%); /* Position below the filter button with some spacing */
+  right: calc(50px+ 100%); /* Align right with filter button */
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -190,6 +188,10 @@ button:hover {
   padding: 10px;
   width: 170px; /* Width of the dropdown */
   flex-basis: 100%; /* Allow it to grow to full width */
+}
+
+.filter-button:hover{
+  opacity: 1;
 }
 
 /* Style for each filter item */
@@ -210,7 +212,8 @@ button:hover {
 /* Container for the text, aligned to the right */
 .filter-text {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  margin-right: 15px;
   flex: 2; /* Adjust flex value for desired spacing */
 }
 
@@ -279,8 +282,7 @@ input:checked + .slider:before {
   font: Arial, sans-serif;
   font-size: 14px;
   color: black;
-  text-align: center;
-  align-items: center;
+  text-align: right;
 }
 
 /* Login/Register/Logout Related Styles */
@@ -337,7 +339,6 @@ input:checked + .slider:before {
 
 /* profile and Setting bar related Styles*/
 .profile-sidebar{
-  top: (100%-30px);
   display: none;
   column-count: 1;
   column-gap: 15px;
@@ -345,11 +346,12 @@ input:checked + .slider:before {
   grid-template-rows: repeat(6  , auto); /* Repeat 'auto' for 6 rows */
   position: fixed;
   right: 0px; /* Position the sidebar on the right */
+  top: (100%-30px); /* Position the sidebar at the top */
   height: 100%;
   width: 360px;
   background-color: white;
   z-index: 1000;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 /* Profile Settings Header Text*/
@@ -522,7 +524,6 @@ input:checked + .slider:before {
 
 /* Map Container */
 #mapdiv {
-  margin-top: 20px;
   height: 100vh; /* Full height minus header */
   width: 100%; /* Full width */
   position: absolute; /* Position absolute to cover the entire viewport */
@@ -561,81 +562,12 @@ input:checked + .slider:before {
   'opsz' 24
 }
 
- /* The switch - the box around the slider */
- .switch {
-  position: relative;
-  display: flex;
-  width: 40px;
-  height: 22px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-  height: 30px; /* Increase height */
-  width: 50px; /* Increase width */
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px; /* Increase height */
-  width: 26px; /* Increase width */
-  left: 2px;
-  bottom: 2px; /* Adjust bottom position */
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(20px); /* Adjust translateX */
-  -ms-transform: translateX(20px); /* Adjust translateX */
-  transform: translateX(20px); /* Adjust translateX */
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-} 
-
-.slider-text{
-  position: relative;
-  bottom: 20px; /*Adjust bottom position */
-  font: Arial, sans-serif;
-  font-size: 14px;
-  text-align: right;
-  color: black;
-}
-
 /* Map related icons */
+  .marker {
+    z-index: 1001;
+    position: absolute;
+  }
+  
   /* Make sure all Leaflet marker icons have a uniform z-index */
   
   .leaflet-marker-icon {
