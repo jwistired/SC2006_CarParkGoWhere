@@ -56,7 +56,27 @@
                     <div class="filter-text">
                         <span class="slider-text">Cheapest Carpark</span>
                     </div>
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Cheapest Carpark</span>
+                    </div>
                 </div>
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Parking Lots</span>
+                    </div>
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
@@ -702,13 +722,7 @@
                     //     const coords = lot.split(',').map(coord => parseFloat(coord.trim())); // Split the string and trim any extra spaces
 
                     //     if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
-
-                    //         var carparkicon= L.icon({
-                    //         iconUrl: "/css/images/parkingicon.png",
-                    //         iconSize: [30, 30],
-                    //         })
-
-                    //         const carparkMarker = L.marker([coords[0], coords[1]],{icon:carparkicon}).addTo(map)
+                    //         const carparkMarker = L.marker([coords[0], coords[1]]).addTo(map)
                     //             .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
 
                     //         // Store each carpark marker in the array

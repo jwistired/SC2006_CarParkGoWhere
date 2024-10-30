@@ -47,6 +47,7 @@ function togglePrice(){
 function filtering(){
     //Code to filter sidebar display
 }
+
 // Hide dropdown when clicking outside
 document.addEventListener('click', function (event) {
     const dropdown = document.getElementById('filterDropdown');
