@@ -98,7 +98,8 @@ button:hover {
 
 .search-input {
   display: flex;
-  width: 150%;
+  width: 180%;
+  margin-top: 20px;
   height: 50px;
   box-sizing: border-box;
   border: none;
