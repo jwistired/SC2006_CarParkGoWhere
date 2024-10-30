@@ -277,5 +277,3 @@ module.exports = {
   findNearbyCarparks_HDB,
   haversineDistance
 };
-
-

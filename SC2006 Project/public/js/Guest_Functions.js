@@ -1,4 +1,4 @@
-// Filter functions
+//Filter Related Functions
 // Toggle filter dropdown visibility
 function toggleFilterDropdown() {
     const dropdown = document.getElementById('filtersDropdown');
