@@ -196,16 +196,16 @@ async function fetchURAToken() {
         const distance = getDistanceFromLatLonInKm(lat, lon, carParkLat, carParkLon);
 
         if (distance <= 0.5) {  // Display car parks within 500 meters
-            const marker = L.marker([carParkLat, carParkLon]).addTo(map)
-                .bindPopup(`
-                    <strong>URA Car Park</strong><br>
-                    Car Park No: ${carPark.carparkNo}<br>
-                    Weekday Rate: ${carPark.weekdayRate}<br>
-                    Saturday Rate: ${carPark.saturdayRate}<br>
-                    Sunday/PH Rate: ${carPark.sundayPublicHolidayRate}<br>
-                    Parking System: ${carPark.parkingSystem}<br>
-                    Location: ${carPark.gpsName}
-                `);
+                const marker = L.marker([carParkLat, carParkLon]).addTo(map)
+                    .bindPopup(`
+                        <strong>URA Car Park</strong><br>
+                        Car Park No: ${carPark.carparkNo}<br>
+                        Weekday Rate: ${carPark.weekdayRate}<br>
+                        Saturday Rate: ${carPark.saturdayRate}<br>
+                        Sunday/PH Rate: ${carPark.sundayPublicHolidayRate}<br>
+                        Parking System: ${carPark.parkingSystem}<br>
+                        Location: ${carPark.gpsName}
+                    `);
 
             const parkingLotDiv = document.createElement('div');
             parkingLotDiv.classList.add('parking-lot');
@@ -1044,7 +1044,15 @@ $.ajax({
                     const longitude = parseFloat(coords[2]);
 
                     if (!isNaN(coords[1]) && !isNaN(coords[2])) {  // Ensure valid coordinates
-                        const carparkMarker = L.marker([coords[1], coords[2]]).addTo(map)
+
+                        //Icon for carpark
+                        var carparkicon= L.icon({
+                            iconUrl: "/css/images/parkingicon.png",
+                            iconSize: [30, 30],
+                        })
+                        
+                        //Place markers on map
+                        const carparkMarker = L.marker([coords[1], coords[2]], {icon:carparkicon}).addTo(map)
                             .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
                         
                         // Fetch car park details asynchronously
