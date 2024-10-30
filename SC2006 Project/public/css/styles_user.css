@@ -563,11 +563,6 @@ input:checked + .slider:before {
 }
 
 /* Map related icons */
-  .marker {
-    z-index: 1001;
-    position: absolute;
-  }
-  
   /* Make sure all Leaflet marker icons have a uniform z-index */
   
   .leaflet-marker-icon {
