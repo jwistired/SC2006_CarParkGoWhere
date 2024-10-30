@@ -255,9 +255,9 @@ function deg2rad(deg) {
                 return [];
             }
         }
-        async function getCarparkLotsDetails_HDB(carparkNum){
+        async function getCarparkLotsDetails_HDB(carparkNum,carparkName){
             try {
-                const response = await fetch(`/api/carpark-lots-details/${carparkNum}`);
+                const response = await fetch(`/api/carpark-lots-details/${carparkNum}?carparkName=${encodeURIComponent(carparkName)}`);
                 const carParkDetails = await response.json();
                 console.log('HDB Lots Detail of nearby carpark:', carParkDetails);
             } catch (error) {
@@ -525,13 +525,14 @@ async function displayNearbyCarparks_HDB(lat, lon) {
             const carparkNumber = coords[0];
             const latitude = parseFloat(coords[1]);
             const longitude = parseFloat(coords[2]);
+            const carparkName = coords[3];
 
             if (!isNaN(latitude) && !isNaN(longitude)) {
                 const carparkMarker = L.marker([latitude, longitude]).addTo(map)
                     .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${latitude}, ${longitude}`);
 
                 // Fetch car park lots details asynchronously for HDB
-                const carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber);
+                const carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber,carparkName);
 
                 const carparkDistDetails_HDB= await getDistanceInformation(latitude, longitude , lat, lon);
 
