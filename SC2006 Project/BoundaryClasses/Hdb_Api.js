@@ -104,7 +104,7 @@ const getAllCarparkNumbers = async () => {
 };
 
 // Get details of a specific car park
-const getCarparkLotsDetails = async (carparkNumber,carparkName) => {
+/*const getCarparkLotsDetails = async (carparkNumber,carparkName) => {
   const items = await fetchCarparkAvailability();
 
   for (const item of items) {
@@ -128,7 +128,36 @@ const getCarparkLotsDetails = async (carparkNumber,carparkName) => {
 
   console.log(`No details found for carpark number: ${carparkNumber}`);
   return null; 
+};*/
+const getCarparkLotsDetails = async (carparkNumber) => {
+  const items = await fetchCarparkAvailability();
+
+  for (const item of items) {
+      const carparkData = item.carpark_data;
+      const carpark = carparkData.find(cp => cp.carpark_number === carparkNumber);
+
+      if (carpark) {
+          // Extract available lots from carpark information
+          const availableLotsInfo = carpark.carpark_info.map(info => ({
+              lot_type: info.lot_type,
+              available: info.lots_available
+          }));
+
+          console.log(`Available Lots for Carpark ${carparkNumber}:`);
+          availableLotsInfo.forEach(info => {
+              console.log(`   Lot Type: ${info.lot_type}, Available: ${info.available}`);
+          });
+
+          // Return only the total available lots
+          const totalAvailableLots = availableLotsInfo.reduce((total, info) => total + info.available, 0);
+          return totalAvailableLots; // Return total available lots only
+      }
+  }
+
+  console.log(`No details found for carpark number: ${carparkNumber}`);
+  return null; // Return null if no carpark is found
 };
+
 
 // Fetch all car park coordinates
 const getAllCarparkCoor_HDB = async () => {
