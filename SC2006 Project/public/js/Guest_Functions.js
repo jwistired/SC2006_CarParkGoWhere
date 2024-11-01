@@ -1,27 +1,58 @@
-// Filter functions
+//Filter Related Functions
 // Toggle filter dropdown visibility
 function toggleFilterDropdown() {
-    const dropdown = document.getElementById('filterDropdown');
+    const dropdown = document.getElementById('filtersDropdown');
     dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
     dropdown.style.flexDirection = 'column';
 }
 
 function toggleDistance(){
-    //code to toggle distance filter
+    var boolDistance;
+    if (document.getElementById("toggle-distance").value == "true")
+    {
+        bool = true;
+    }
+    else
+    {
+        bool = false;
+    }
 }
 
 function toggleAvailableLots(){
-    //code to toggle available lots filter
+    var boolLots;
+    if (document.getElementById("toggle-availableLots").value == "true")
+    {
+        boolLots = true;
+    }
+    else
+    {
+        boolLots = false;
+    }
 }
 
 function togglePrice(){
-    //code to toggle price filter
+    var boolPrice;
+    if (document.getElementById("toggle-price").value == "true")
+    {
+        boolPrice = true;
+    }
+    else
+    {
+        boolPrice = false;
+    }
+}
+
+function filtering(){
+    //Code to filter sidebar display
 }
 
 // Hide dropdown when clicking outside
 document.addEventListener('click', function (event) {
     const dropdown = document.getElementById('filterDropdown');
-    if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
+    if (!event.target.closest('.filter-button') 
+        && !event.target.closest('.filter-dropdown') 
+        && !event.target.closest('.switch') 
+        && !event.target.closest('.slider')) {
         dropdown.style.display = 'none';
     }
 });
@@ -52,26 +83,7 @@ document.addEventListener('click', function (event) {
     }
 });
 
-// Language settings
-// const translations = {
-//     en: {
-//         welcome: "Welcome",
-//         description: "This is the guest map interface."
-//     },
-//     zh: {
-//         welcome: "欢迎",
-//         description: "这是访客地图界面。"
-//     },
-//     ms: {
-//         welcome: "Selamat Datang",
-//         description: "Ini adalah antara muka peta tetamu."
-//     },
-//     ta: {
-//         welcome: "வரவேற்கிறோம்",
-//         description: "இது விருந்தினர்களின் வரைபட இடைமுகம்."
-//     }
-// };
-
+// Language translations
 const translations = {
     en: {
         "header": "Guest Map View",
@@ -115,13 +127,6 @@ const translations = {
     }
 };
 
-
-// function changeLanguage() {
-//     const language = document.getElementById('languageDropdown').value;
-//     document.getElementById('welcomeText').innerText = translations[language].welcome;
-//     document.getElementById('descriptionText').innerText = translations[language].description;
-// }
-
 function changeLanguage() {
     const selectedLang = document.getElementById("languageDropdown").value;
 
@@ -134,4 +139,14 @@ function changeLanguage() {
     document.querySelector(".parkinglotsHeader").innerText = translations[selectedLang]["parkingLotsHeader"];
     document.querySelector(".selectLanguage").innerText = translations[selectedLang]["selectLanguage"];
     document.querySelector(".currloc").innerText = translations[selectedLang]["yourLocation"];
+}
+
+
+// Hide sidebar initially
+document.getElementById('sidebar').classList.add('sidebar-hidden');
+
+// Event to open sidebar when searchlocation is triggered
+function opensideBar() {
+    document.getElementById('sidebar').classList.remove('sidebar-hidden');
+    // Any additional actions upon search trigger
 }

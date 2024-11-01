@@ -61,7 +61,9 @@ button:hover {
 /*Search Bar*/
 .search-icon-btn{
   background-color: transparent;
+  border: none;
   cursor: pointer;
+  outline: none;
   position: absolute;
   right: 20px;
   top: 30%;
@@ -75,29 +77,9 @@ button:hover {
   scale: 0.5;
 }
 
-.search-icon {
-  width: 60px;
-  height: 60px;
-}
-
-.search {
-  --padding: 14px;
-  position: absolute;
-  width: max-content;
-  margin: 20px 0;
-  display: flex;
-  align-items: center;
-  border-radius: 28px;
-  background-color: rgb(156, 156, 156);
-  padding: var(--padding);
-  border-radius: 10px;
-  transition: box-shadow 0.25s;
-}
-
-.search-input {
-  display: flex;
-  width: 100vh;
+.search-input { 
   height: 50px;
+  width: calc(65vw - 70px);
   box-sizing: border-box;
   border: none;
   border-radius: 5px;
@@ -106,7 +88,7 @@ button:hover {
   font-size: 14px; /* Change to your desired font size */
   padding-left: 20px;
   color: #333;
-  position: relative;
+  position: relative; 
 }
 
 /* Style for the placeholder text */
@@ -159,6 +141,97 @@ button:hover {
   padding: 10px;
   width: 170px; /* Width of the dropdown */
   flex-basis: 100%; /* Allow it to grow to full width */
+}
+
+/* Style for each filter item */
+.filter-item {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+/* Container for the slider, aligned to the left */
+.filter-slider {
+  display: flex;
+  margin-top: 28px;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+/* Container for the text, aligned to the right */
+.filter-text {
+  display: flex;
+  justify-content: center;
+  flex: 2; /* Adjust flex value for desired spacing */
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: flex;
+  width: 70px; /* Increase width for larger clickable area */
+  height: 60px; /* Increase height for larger clickable area */
+}
+
+/* Hide default HTML checkbox but make it fill the switch container */
+.switch input {
+  opacity: 0;
+  width: 0; /* Ensure input covers the full switch container */
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  height: 30px; /* Increase height */
+  width: 50px; /* Increase width */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; /* Increase height */
+  width: 26px; /* Increase width */
+  left: 2px;
+  bottom: 2px; /* Adjust bottom position */
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px); /* Adjust translateX */
+  -ms-transform: translateX(20px); /* Adjust translateX */
+  transform: translateX(20px); /* Adjust translateX */
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+} 
+
+.slider-text{ /*Adjust bottom position */
+  font: Arial, sans-serif;
+  font-size: 14px;
+  color: black;
+  text-align: center;
+  align-items: center;
 }
 
 /* Login/Register/Logout Related Styles */
@@ -326,9 +399,13 @@ nav {
   overflow-y: auto;
 }
 
-.sidebar h2 {
-  padding-top: 10px;
+.sidebar-hidden {
+  display: none;
 }
+
+/* .parkinglotsHeader {
+  margin-top: 140px;
+} */
 
 .parking-lot {
   margin: 4px 15px;
@@ -360,7 +437,6 @@ nav {
 .map-container {
   flex-grow: 1;
   margin-top: 60px ;
-  margin-left: 400px;
   position: relative;
   z-index: 0; /* Lower z-index for the map */
 }
@@ -387,78 +463,24 @@ nav {
   'opsz' 24
 }
 
- /* The switch - the box around the slider */
- .switch {
-  position: relative;
-  display: flex;
-  width: 40px;
-  height: 22px;
+@keyframes slideIn {
+  from {
+      width: 0;
+  }
+
+  to {
+      width: 200px;
+  }
 }
 
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
+@keyframes slideOut {
 
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 34px; /* Rounded corners */
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px; /* Adjust height to fit within the slider */
-  width: 18px; /* Adjust width to fit within the slider */
-  left: 2px;
-  bottom: 2px; /* Adjust bottom to fit within the slider */
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%; /* Rounded corners */
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(18px);
-  -ms-transform: translateX(18px);
-  transform: translateX(18px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-} 
-
-.slider-text{
-  position: relative;
-  bottom: 20px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  text-align: right;
-  color: #000;
+  from {
+      width: 200px;
+  }
+  to {
+      width: 0;
+  }
 }
 
 #autocomplete-list {
@@ -492,9 +514,41 @@ input:checked + .slider:before {
 .leaflet-marker-icon {
   z-index: 1000 !important; /* Use !important to override any conflicting styles */
   position: absolute; /* Required for z-index to take effect */
+  pointer-events: auto;
 }
 
 /* Optional: higher z-index for popups */
 .leaflet-popup {
   z-index: 1500; /* Make sure popups are above markers */
+}
+
+
+/*Styles for sidebar*/
+.collapsible-btn {
+  height: 90px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 10px 0px 10px;
+  padding: 0px 8px;
+
+}
+
+/* Hide content by default */
+.collapsible-content {
+  display: none;
+}
+
+/* Show content when active */
+.collapsible-content.active {
+  display: block;
+  margin: 0px 10px;
+  padding: 0;
+  border-radius: 5px;
+}
+
+.collapsible-content p {
+  margin: 0; /* Remove margin from paragraphs */
+  padding: 8px 20px; /* Optional: Remove padding as well if needed */
+  font-size: 16px;
+  text-align: left;
 }
