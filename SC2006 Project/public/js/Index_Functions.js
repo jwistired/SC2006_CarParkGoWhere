@@ -1,5 +1,3 @@
-console.log('Index_Functions.js loaded');
-
 //Filter Related Functions
 // Toggle filter dropdown visibility
 function toggleFilterDropdown() {
@@ -7,6 +5,17 @@ function toggleFilterDropdown() {
     dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
     dropdown.style.flexDirection = 'column';
 }
+
+// Hide dropdown when clicking outside
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('filterDropdown');
+    if (!event.target.closest('.filter-button') 
+        && !event.target.closest('.filter-dropdown') 
+        && !event.target.closest('.switch') 
+        && !event.target.closest('.slider')) {
+        dropdown.style.display = 'none';
+    }
+});
 
 function toggleDistance(){
     var boolDistance;
@@ -186,4 +195,36 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 
 function deg2rad(deg) {
     return deg * (Math.PI / 180);
+}
+
+ // Function to decode polyline into an array of coordinates
+ function decodePolyline(encoded) {
+    let points = [];
+    let index = 0, len = encoded.length;
+    let lat = 0, lng = 0;
+
+    while (index < len) {
+        let b, shift = 0, result = 0;
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result |= (b & 0x1f) << shift;
+            shift += 5;
+        } while (b >= 0x20);
+        let dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+        lat += dlat;
+
+        shift = 0;
+        result = 0;
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result |= (b & 0x1f) << shift;
+            shift += 5;
+        } while (b >= 0x20);
+        let dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+        lng += dlng;
+
+        points.push([lat / 1E5, lng / 1E5]);
+    }
+
+    return points;
 }

@@ -1,5 +1,3 @@
-// Filter functions
-// Toggle filter dropdown visibility
 //Filter Related Functions
 // Toggle filter dropdown visibility
 function toggleFilterDropdown() {
@@ -47,10 +45,14 @@ function togglePrice(){
 function filtering(){
     //Code to filter sidebar display
 }
+
 // Hide dropdown when clicking outside
 document.addEventListener('click', function (event) {
     const dropdown = document.getElementById('filterDropdown');
-    if (!event.target.closest('.filter-button') && !event.target.closest('.filter-dropdown') && !event.target.closest('.switch') && !event.target.closest('.slider')) {
+    if (!event.target.closest('.filter-button') 
+        && !event.target.closest('.filter-dropdown') 
+        && !event.target.closest('.switch') 
+        && !event.target.closest('.slider')) {
         dropdown.style.display = 'none';
     }
 });
@@ -137,4 +139,14 @@ function changeLanguage() {
     document.querySelector(".parkinglotsHeader").innerText = translations[selectedLang]["parkingLotsHeader"];
     document.querySelector(".selectLanguage").innerText = translations[selectedLang]["selectLanguage"];
     document.querySelector(".currloc").innerText = translations[selectedLang]["yourLocation"];
+}
+
+
+// Hide sidebar initially
+document.getElementById('sidebar').classList.add('sidebar-hidden');
+
+// Event to open sidebar when searchlocation is triggered
+function opensideBar() {
+    document.getElementById('sidebar').classList.remove('sidebar-hidden');
+    // Any additional actions upon search trigger
 }

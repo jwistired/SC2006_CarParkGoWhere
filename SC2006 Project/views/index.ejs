@@ -19,8 +19,7 @@
         <div class="search-bar">
             <form autocomplete="off" onsubmit="event.preventDefault(); searchLocation();">
                 <input class="search-input" type="search" id="search" placeholder="Search for parking lots" oninput="showSuggestions()" autocomplete="off">
-                <!-- Autocomplete suggestion list -->
-                <div id="autocomplete-list" class="autocomplete-items"></div>
+                <div id="autocomplete-list" class="autocomplete-items"></div> <!-- Autocomplete suggestion list -->
                 <button type="submit" class="search-icon-btn">
                     <img src="\css\images\icons\search.png" alt="Search">
                 </button>
@@ -28,33 +27,45 @@
         </div>
         
         <!-- Filter dropdown -->
-        <button class="filter-button w3-button" onclick="toggleFilterDropdown()">
+        <button class="filter-button" onclick="toggleFilterDropdown()">
             <img src="\css\images\icons\filter.png" class="filter-icon">
             <span class="filter-caption">Filter</span>
             <div class="filter-dropdown" id="filtersDropdown">
-                <div>
-                    <label class="switch">
-                        <input type="checkbox" id="toggle-distance" onchange="toggleDistance()">
-                        <span class="slider round"></span>
-                    </label>
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Distance</span>
+                    </div>
                 </div>
-                <div class="slider-text">Distance</div>
-                <div>
-                    <label class="switch">
-                        <input type="checkbox" id="toggle-price" onchange="togglePrice()">
-                        <span class="slider round"></span>
-                    </label>
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Cheapest Carpark</span>
+                    </div>
                 </div>
-                <div class="slider-text">Cheapest Carpark</div>
-                <div>
-                    <label class="switch" >
-                        <input type="checkbox" id="toggle-avaliableLots" onchange="toggleAvailableLots()">
-                        <span class="slider round"></span>
-                    </label>
+                <div class="filter-item">
+                    <div class="filter-slider">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="filter-text">
+                        <span class="slider-text">Parking Lots</span>
+                    </div>
                 </div>
-                <div class="slider-text">Parking Lots</div>
             </div>
-        </button>   
+        </button>
         
         <!-- Profile and Language Setting -->
         <button class="profile-settings" onclick="openprofileBar()">
@@ -187,16 +198,16 @@
         const distance = getDistanceFromLatLonInKm(lat, lon, carParkLat, carParkLon);
 
         if (distance <= 0.5) {  // Display car parks within 500 meters
-            const marker = L.marker([carParkLat, carParkLon]).addTo(map)
-                .bindPopup(`
-                    <strong>URA Car Park</strong><br>
-                    Car Park No: ${carPark.carparkNo}<br>
-                    Weekday Rate: ${carPark.weekdayRate}<br>
-                    Saturday Rate: ${carPark.saturdayRate}<br>
-                    Sunday/PH Rate: ${carPark.sundayPublicHolidayRate}<br>
-                    Parking System: ${carPark.parkingSystem}<br>
-                    Location: ${carPark.gpsName}
-                `);
+                const marker = L.marker([carParkLat, carParkLon]).addTo(map)
+                    .bindPopup(`
+                        <strong>URA Car Park</strong><br>
+                        Car Park No: ${carPark.carparkNo}<br>
+                        Weekday Rate: ${carPark.weekdayRate}<br>
+                        Saturday Rate: ${carPark.saturdayRate}<br>
+                        Sunday/PH Rate: ${carPark.sundayPublicHolidayRate}<br>
+                        Parking System: ${carPark.parkingSystem}<br>
+                        Location: ${carPark.gpsName}
+                    `);
 
             const parkingLotDiv = document.createElement('div');
             parkingLotDiv.classList.add('parking-lot');
@@ -542,7 +553,7 @@ const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${
 
 $.ajax({
     url: routeUrl,
-    type: 'GET',
+    type: 'GET',    
     headers: {
         'Authorization': apiToken // fetch oneMapToken
     },
@@ -586,8 +597,16 @@ $.ajax({
                     const longitude = parseFloat(coords[2]);
 
                     if (!isNaN(coords[1]) && !isNaN(coords[2])) {  // Ensure valid coordinates
-                        const carparkMarker = L.marker([coords[1], coords[2]]).addTo(map)
-                            .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`);
+
+                        //Icon for carpark
+                        var carparkicon= L.icon({
+                            iconUrl: "/css/images/parkingicon.png",
+                            iconSize: [30, 30],
+                        })
+                        
+                        //Place markers on map
+                        const carparkMarker = L.marker([coords[1], coords[2]], {icon:carparkicon}).addTo(map)
+                            .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[1]}, ${coords[2]}`).on('click', clickTest);
                         
                         // Fetch car park details asynchronously
                         const carparkLotsDetails = await getCarparkLotsDetails(carparkNumber);
@@ -602,6 +621,13 @@ $.ajax({
 
                         // Store each carpark marker in the array
                         currentCarparks.push(carparkMarker);
+
+                        function clickTest(e){
+                            console.log("clicked"); 
+                        }
+
+                        
+
                     } else {
                         console.error("Invalid lat/lng for:", lot);
                     }
@@ -618,38 +644,6 @@ $.ajax({
     }
 });
 }
-
-    // Function to decode polyline into an array of coordinates
-    function decodePolyline(encoded) {
-        let points = [];
-        let index = 0, len = encoded.length;
-        let lat = 0, lng = 0;
-
-        while (index < len) {
-            let b, shift = 0, result = 0;
-            do {
-                b = encoded.charCodeAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            let dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
-            lat += dlat;
-
-            shift = 0;
-            result = 0;
-            do {
-                b = encoded.charCodeAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            let dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
-            lng += dlng;
-
-            points.push([lat / 1E5, lng / 1E5]);
-        }
-
-        return points;
-    }
 
     // Attach event listener to the search button or input field
     document.getElementById('search').addEventListener('keypress', function (e) {
