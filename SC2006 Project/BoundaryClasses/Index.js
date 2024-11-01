@@ -6,7 +6,6 @@ const database = require('./Database.js')
 router.get('/', checkAuthenticated, (req, res) => {
     console.log('User object:', req.user)
     history = database.getHistory(req.user.email);
-    database.updateHistory(newHistory.email, newHistory)
     res.render('index.ejs', { name: req.user.name, email: req.user.email, history: history })
 })
 
