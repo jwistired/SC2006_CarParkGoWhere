@@ -24,7 +24,19 @@ const initialisePassport = require("./passport-config")
 const Database = require('./BoundaryClasses/Database.js')
 
 const getToken = require('./getOneMapToken.js'); //get onemap token 
-const carparkFunctions = require('./BoundaryClasses/Hdb_Api.js'); // Ensure you have the correct path
+
+const token = "d3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918";
+
+//HDB API
+const carparkFunctions = require('./BoundaryClasses/Hdb_Api.js'); 
+
+//URA API
+const {
+    getCarparkPriceDetails_URA,
+    getCarparkLotsDetails_URA,
+    findNearbyCarparks_URA,
+    getAllCarparkCoor_URA
+} = require('./BoundaryClasses/UraApi.js'); 
 
 //get distance information
 const getDistanceInformation = require('./BoundaryClasses/getDistanceInformation');
@@ -126,14 +138,27 @@ app.get('/api/carpark-numbers', async (req, res) => {
 });
 
 app.get('/api/carpark-lots-details/:carparkNumber', async (req, res) => {
-    const carparkNumber = req.params.carparkNumber;
-    const lotsDetails = await carparkFunctions.getCarparkLotsDetails(carparkNumber);
-    if (lotsDetails) {
-        res.json(lotsDetails);
-    } else {
-        res.status(404).json({ error: `Details for car park number ${carparkNumber} not found.` });
+    const carparkNumber = req.params.carparkNumber; // Get carpark number from URL parameters
+    const carparkName = req.query.carparkName; // Get carpark name from query parameters
+
+    // Log the request details for debugging
+    console.log(`Server requesting details for carpark: ${carparkNumber}, Name: ${carparkName}`);
+
+    try {
+        // Pass both carparkNumber and carparkName to the function
+        const lotsDetails = await carparkFunctions.getCarparkLotsDetails(carparkNumber, carparkName);
+
+        if (lotsDetails) {
+            res.json(lotsDetails); // Send back the details in JSON format
+        } else {
+            res.status(404).json({ error: `Details for car park number ${carparkNumber} not found.` });
+        }
+    } catch (error) {
+        console.error('Error fetching carpark lots details:', error);
+        res.status(500).json({ error: 'Internal server error' }); // Handle any errors gracefully
     }
 });
+
 
 app.get('/api/carpark-coordinates', async (req, res) => {
     const coordinates = await carparkFunctions.getAllCarparkCoor_HDB();
@@ -157,6 +182,57 @@ app.get('/calculate-distance', async (req, res) => {
         parseFloat(lon2)
     );
     res.json({ distance })  
+});
+
+app.get('/api/ura/carpark-price/:ppCode', async (req, res) => {
+    const ppCode = req.params.ppCode;
+    try {
+        const data = await getCarparkPriceDetails_URA(ppCode, token);
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching URA carpark price details:', error);
+        res.status(500).json({ error: 'Failed to fetch carpark price details' });
+    }
+});
+
+app.get('/api/ura/carpark-lots/:carparkNo', async (req, res) => {
+    const carparkNo = req.params.carparkNo;
+    try {
+        const data = await getCarparkLotsDetails_URA(carparkNo, token);
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching URA carpark lot details:', error);
+        res.status(500).json({ error: 'Failed to fetch carpark lot details' });
+    }
+});
+
+app.get('/api/ura/carpark-coordinates', async (req, res) => {
+    try {
+        const data = await getAllCarparkCoor_URA(token);
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching URA carpark coordinates:', error);
+        res.status(500).json({ error: 'Failed to fetch carpark coordinates' });
+    }
+});
+
+app.get('/api/ura/find-nearby-carparks', async (req, res) => {
+    const { lat, lon, radius = 500 } = req.query; // Default radius to 500 if not provided
+
+    // Validate latitude and longitude
+    if (!lat || !lon || isNaN(lat) || isNaN(lon)) {
+        return res.status(400).json({ error: 'Invalid latitude or longitude' });
+    }
+
+    try {
+        const coordinates = await getAllCarparkCoor_URA(token); // Fetch the coordinates here
+        const data = await findNearbyCarparks_URA(coordinates, `${lat},${lon}`, radius);
+        
+        res.json(data);
+    } catch (error) {
+        console.error('Error finding nearby URA carparks:', error);
+        res.status(500).json({ error: 'Failed to find nearby carparks' });
+    }
 });
 
 // Start the server on port 3000

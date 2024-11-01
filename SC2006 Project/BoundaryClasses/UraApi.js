@@ -5,8 +5,8 @@ const SVY21 = 'EPSG:3414';
 proj4.defs(SVY21, "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
 const WGS84 = 'EPSG:4326'; // WGS 84
 
-const accessKey = '9a02a848-daa6-453f-9dc6-6567446d2e66'; 
-const token = '+dBCEcada6xW647TB28W7edMaZ-69-3GfC4q8a7G-4D472XS6Bnxe2d6aDJngNdzd4V48c6Pbjae-69fdQ49Ey6DNdKSsrj0G4mC' // daily usage
+const accessKey = '18ee826a-2210-4a40-972e-3a1e3c317ba0'; 
+const token = 'd3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918' // daily usage
 /*
 // Function to refresh the token
 async function refreshToken() {
@@ -36,7 +36,7 @@ async function refreshToken() {
 }
 */
 // Function to fetch car park data
-async function fetchCarParkData(token) {
+async function fetchCarParkData_URA(token) {
     return fetch('https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Availability', {
         method: 'GET',
         headers: {
@@ -53,7 +53,7 @@ async function fetchCarParkData(token) {
 }
 
 // Function to fetch car park data with pricing rates
-async function fetchCarParkPriceData(token) {
+async function fetchCarParkPriceData_URA(token) {
     const response = await fetch('https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details', {
         method: 'GET',
         headers: {
@@ -78,41 +78,9 @@ async function fetchCarParkPriceData(token) {
 }
 
 
-
-// Function to fetch car park availability data and list all carparkNos
-async function listAllCarparkNos(token) {
-    try {
-        const response = await fetch("https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Availability", {
-            method: 'GET',
-            headers: {
-                'AccessKey': accessKey,
-                'Token': token
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.Status === "Success") {
-            const carparkNos = data.Result.map(carpark => carpark.carparkNo); 
-            console.log('List of Carpark Numbers:', JSON.stringify(carparkNos, null, 2)); 
-            return carparkNos; // Return the array of carpark numbers
-        } else {
-            console.warn('Failed to retrieve data:', data.Message);
-            return []; // Return an empty array if failed
-        }
-    } catch (error) {
-        console.error('Error fetching car park data:', error);
-        return []; // Return an empty array on error
-    }
-}
-
 // Function to get the number of lots available for a specific carpark
-async function getLotsAvailable(carparkNo, token) {
-    return fetchCarParkData(token)
+async function getCarparkLotsDetails_URA(carparkNo, token) {
+    return fetchCarParkData_URA(token)
         .then(data => {
             const carpark = data.Result.find(cp => cp.carparkNo === carparkNo); 
             if (carpark) {
@@ -130,7 +98,7 @@ async function getLotsAvailable(carparkNo, token) {
 
 // Function to get the coordinates in WGS84 for a specific carpark using ppCode
 async function getCoordinates_URA(ppCode, token) {
-    return fetchCarParkPriceData(token)
+    return fetchCarParkPriceData_URA(token)
         .then(data => {
             const carpark = data.Result.find(cp => cp.ppCode === ppCode);
             if (carpark && carpark.geometries && carpark.geometries.length > 0) {
@@ -160,7 +128,7 @@ async function getCoordinates_URA(ppCode, token) {
 
 // Function to get all details of a specific carpark using ppCode
 async function getAllCarparksDetail(ppCode, token) {
-    return fetchCarParkPriceData(token)
+    return fetchCarParkPriceData_URA(token)
         .then(data => {
             const carpark = data.Result.find(cp => cp.ppCode === ppCode);
             if (carpark && carpark.geometries && carpark.geometries.length > 0) {
@@ -205,24 +173,14 @@ async function getAllCarparksDetail(ppCode, token) {
 }
 
 // Function to get pricing rates for a specific carpark using ppCode
-async function getPricingRate(ppCode, token) {
-    return fetchCarParkPriceData(token)
+async function getCarparkPriceDetails_URA(ppCode, token) {
+    return fetchCarParkPriceData_URA(token)
         .then(data => {
             const carpark = data.Result.find(cp => cp.ppCode === ppCode);
             if (carpark) {
                 const pricing = {
                     ppName: carpark.ppName,
-                    weekdayPricing: {
-                        endTime: carpark.endTime,
-                        weekdayRate: carpark.weekdayRate,
-                        weekdayMin: carpark.weekdayMin,
-                        startTime: carpark.startTime,
-                    },
-                    weekendPricing: {
-                        sunPHRate: carpark.sunPHRate,
-                        satdayMin: carpark.satdayMin,
-                        sunPHMin: carpark.sunPHMin,
-                    }
+                    weekdayRate: carpark.weekdayRate,
                 };
                 
                 console.log(`Pricing for ${ppCode}:`, JSON.stringify(pricing, null, 2));
@@ -238,48 +196,42 @@ async function getPricingRate(ppCode, token) {
 }
 
 
-// Function to get all car park coordinates from URA
-const getAllCoor_URA = async (token) => {
+const getAllCarparkCoor_URA = async (token) => {
     try {
-        // Step 1: Fetch all carpark data
-        const carparkData = await fetchCarParkPriceData(token);
-        const coordinatesPromises = []; // Array to hold promises for coordinates fetching
+        const carparkData = await fetchCarParkPriceData_URA(token);
+        const carparkCoordinates = new Set(); // Using a Set to store unique coordinates
 
-        // Step 2: Loop through each carpark and get its coordinates
         for (const carpark of carparkData.Result) {
             if (carpark.geometries && carpark.geometries.length > 0) {
                 const geometry = carpark.geometries[0];
-                const coordinates = geometry.coordinates.split(','); // Split the coordinates string into an array
-                
-                // Parse the coordinates to floats
+                const coordinates = geometry.coordinates.split(',');
+
                 const easting = parseFloat(coordinates[0]);
                 const northing = parseFloat(coordinates[1]);
 
-                // Convert SVY21 to WGS84
                 const wgs84Coordinates = proj4(SVY21, WGS84, [easting, northing]);
-                const longitude = wgs84Coordinates[0]; // Longitude
-                const latitude = wgs84Coordinates[1]; // Latitude
-                
-                // Store the formatted coordinates
-                coordinatesPromises.push(`${latitude}, ${longitude}`);
+                const longitude = wgs84Coordinates[0];
+                const latitude = wgs84Coordinates[1];
+
+                // Format and add the coordinates as a single string
+                carparkCoordinates.add(`${carpark.ppCode},${latitude},${longitude}`);
             }
         }
 
-        // Step 3: Wait for all coordinates to be fetched
-        const formattedCoordinates = await Promise.all(coordinatesPromises);
-        
-        // Step 4: Filter out duplicates
-        const uniqueCoordinates = [...new Set(formattedCoordinates)];
+        // Convert Set to Array
+        const uniqueCoordinatesArray = Array.from(carparkCoordinates);
 
-        // Step 5: Format the output as desired
-        const output = uniqueCoordinates.join('\n');
-        console.log('All Car Park Coordinates in WGS84:\n', output);
-        return output; // Return the formatted string
+        // Log the unique car park coordinates
+        //console.log("URA Car park coordinates:", JSON.stringify(uniqueCoordinatesArray, null, 2));
+
+
+        return uniqueCoordinatesArray;
     } catch (error) {
         console.error('Error fetching car park coordinates:', error);
-        return ''; // Return empty string on error
+        return [];
     }
 };
+
 
 
 
@@ -298,32 +250,47 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
     return R * c; // Distance in meters
   }
 
-  const findNearbyCarparks_URA = async (coordinates , destinationCoords, token, radius = 500) => {
+  const findNearbyCarparks_URA = async (coordinates, destinationCoords, radius = 500) => {
     try {
-        //const coordinates = await getAllCoor_URA(token); // Ensure we await the result here
         const nearbyCarparks = [];
 
-        if (!coordinates || coordinates.length === 0) {
+        // Check if coordinates array is valid
+        if (!Array.isArray(coordinates) || coordinates.length === 0) {
             console.warn('No coordinates found. Exiting function.');
             return nearbyCarparks; // Return empty array if no coordinates
         }
 
-        const coordArray = coordinates.split('\n'); // Split the coordinates string into an array
-        const [destLat, destLon] = destinationCoords.split(', ').map(Number); // Parse destination coordinates
+        // Check if destinationCoords is a string
+        if (typeof destinationCoords !== 'string') {
+            throw new TypeError('destinationCoords must be a string');
+        }
 
-        coordArray.forEach(coord => {
-            const [lat, lon] = coord.split(', ').map(Number); // Parse car park coordinates
-            if (lat && lon) { // Ensure lat and lon are valid numbers
+        // Parse the destination coordinates
+        const [destLat, destLon] = destinationCoords.split(',').map(Number); // Parse destination coordinates
+
+        // Iterate through the coordinates to find nearby car parks
+        for (const coord of coordinates) {
+            // Parse ppCode, latitude, and longitude
+            const [ppCode, latStr, lonStr] = coord.split(','); 
+            const lat = parseFloat(latStr);
+            const lon = parseFloat(lonStr);
+
+            // Ensure lat and lon are valid numbers
+            if (!isNaN(lat) && !isNaN(lon) && ppCode) { 
                 const distance = haversineDistance(destLat, destLon, lat, lon); // Calculate distance
 
-                if (distance <= radius) { // Check if within radius
-                    nearbyCarparks.push(coord); // Add to nearby car parks
+                // Check if the calculated distance is within the specified radius
+                if (distance <= radius) { 
+                    // Format as a string and add to nearby car parks
+                    nearbyCarparks.push(`${ppCode},${lat},${lon}`);
                 }
+            } else {
+                console.warn(`Invalid coordinates for ppCode ${ppCode}: Latitude = ${lat}, Longitude = ${lon}`);
             }
-        });
+        }
 
-        console.log('Nearby Carparks:', nearbyCarparks);
-        return nearbyCarparks; // Return the filtered nearby car parks
+        console.log('Nearby URA Carparks:', nearbyCarparks);
+        return nearbyCarparks; // Return the formatted nearby car parks
     } catch (error) {
         console.error('Error finding nearby car parks:', error);
         return [];
@@ -331,28 +298,29 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 };
 
 
-
-
-
-
-
 // Example usage
 (async () => {
     // Call the refreshToken function to get the token
     //const token = await refreshToken(); // Store the token string
-    console.log("Token" , token);
+    //console.log("Token" , token);
     if (token) {
         // Uncomment to get list of all carparkNo.
-        //await listAllCarparkNos(token); 
-        const coordinates = await getAllCoor_URA(token);
-        const destinationCoords = '1.2924784591778997, 103.83047442762206'; // Example destination coordinates
-        const nearbyCarparks = await findNearbyCarparks_URA(coordinates, destinationCoords, 500);
+        //const coordinates = await getAllCarparkCoor_URA(token);
+        //const destinationCoords = '1.2924784591778997, 103.83047442762206'; // Example destination coordinates
+        //const nearbyCarparks = await findNearbyCarparks_URA(coordinates , destinationCoords, 500);
 
-        //await getLotsAvailable('E0027', token); 
+        //await getCarparkLotsDetails_URA('Y0013', token); 
         //await getCoordinates_URA('C0148', token);
-        //await getPricingRate('E0027', token);
+        //await getCarparkPriceDetails_URA('Y0013', token);
         //await getAllCarparksDetail('E0027', token);
     } else {
         console.error('Failed to retrieve the token.');
     }
 })();
+
+module.exports = {
+    getCarparkPriceDetails_URA,
+    getCarparkLotsDetails_URA,
+    findNearbyCarparks_URA,
+    getAllCarparkCoor_URA
+};
