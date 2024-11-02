@@ -47,9 +47,14 @@ function initialize(passport) {
     passport.use('local-forget-password', new LocalStrategy({ usernameField: 'email', passwordField: 'email', passReqToCallBack: true}, verifyUserForForgetPassword))
 
     passport.serializeUser((user, done) => done(null, user.id))
-    passport.deserializeUser((id, done) => { 
-        return done(null, getByID(id))
-    })
+    passport.deserializeUser(async (id, done) => {
+        try {
+            const user = await getByID(id); // Await the result of getByID
+            done(null, user); // Pass the resolved user object
+        } catch (error) {
+            done(error, null); // Handle errors appropriately
+        }
+    });
 }
 
 module.exports = initialize

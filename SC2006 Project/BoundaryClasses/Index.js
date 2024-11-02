@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const {checkAuthenticated, checkNotAuthenticated} = require('./Authenticator.js')
-const database = require('./Database.js')
+const database = require('./Database.js') // imports the database "class"
 
 router.get('/', checkAuthenticated, (req, res) => {
-    console.log('User object:', req.user)
-    history = database.getHistory(req.user.email);
-    res.render('index.ejs', { name: req.user.name, email: req.user.email, history: history })
+    //console.log('User object:', req.user)
+    history = database.getHistory(req.user.email); // loading of the history from mongoDB based on user email using req.user.email
+    res.render('index.ejs', { name: req.user.name, email: req.user.email, history: history }) 
 })
 
 //get user name
