@@ -430,11 +430,99 @@ input:checked + .slider:before {
 
 /* Parking lots Sidebar */
 
-.sidebar {
+.sidebar{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
   flex: 1; /* Use flex to allow them to shrink and grow */
+  width: 400px; /* Optional maximum width */
+  height: 100vh; 
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
-  margin-top: 30px;
+  margin-top: 60px;
   overflow-y: auto; /* Allow scrolling */
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 5000;
+  overflow-y: auto;
+}
+
+.sidebar-hidden {
+  display: none;
+}
+
+/* .parkinglotsHeader {
+  margin-top: 140px;
+} */
+
+.parking-lot {
+  justify-content: center;
+  margin: 4px 15px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.collapsible {
+  justify-content: center;
+}
+
+/*Styles for sidebar*/
+.collapsible-btn {
+  height: 90px;
+  width: 350px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 10px 0px 10px;
+  padding: 0px 8px;
+}
+
+/* Hide content by default */
+.collapsible-content {
+  display: none;
+}
+
+/* Show content when active */
+.collapsible-content.active {
+  display: flex;
+  width: 350px;
+  margin: auto;
+  padding: 0px;
+  border-radius: 5px;
+}
+
+.collapsible-content p {
+  margin: 0; /* Remove margin from paragraphs */
+  padding: 10px 10px; /* Optional: Remove padding as well if needed */
+  font-size: 16px;
+  text-align: left;
+}
+
+.info-item {
+  display: flex;
+  align-items: center; /* Vertically center the icon and text */
+  margin-bottom: 10px; /* Add some space between items */
+}
+
+.info-icon {
+  width: 30px; /* Set the width of the icon */
+  height: 30px; /* Set the height of the icon */
+  margin: 0px 5px 0px 20px; /* Space between the icon and text */
+}
+
+.select-carpark {
+  margin-right: 30px;
+  background-color: #2196F3;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+/* .sidebar {
+  flex: 1; 
+  background-color: rgba(255, 255, 255, 0.9); 
+  margin-top: 30px;
+  overflow-y: auto;
   background-color: white;
   padding: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -447,10 +535,10 @@ input:checked + .slider:before {
 }
 
 #sidebar {
-  flex: 1; /* Use flex to allow them to shrink and grow */
-  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.9); 
   margin-top: 30px;
-  overflow-y: auto; /* Allow scrolling */
+  overflow-y: auto;
   background-color: white;
   padding: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -459,7 +547,7 @@ input:checked + .slider:before {
   height: 95%; 
   position: fixed;
   animation-duration: 5s;
-}
+} */
 
 .exit-button {
   background-color: #6a1b9a;
@@ -549,6 +637,7 @@ input:checked + .slider:before {
   /* Optional: higher z-index for popups */
   .leaflet-popup {
     z-index: 1500; /* Make sure popups are above markers */
+    pointer-events: auto;
   }
 
 /* Animations */
