@@ -88,6 +88,7 @@
         
         <!-- Sidebar for parking lots -->
         <div id="sidebar" class="sidebar sidebar-hidden">
+            <!-- <img src="\css\images\icons\close.png" class="close-icon" onclick="closesideBar()"> -->
             <h2 class="parkinglotsHeader">Parking Lots Found</h2>
             <div id="parking-lots">
                 <!-- Parking lot info will be dynamically added here -->
@@ -250,8 +251,6 @@
             }
         }
 
-
-
         // Function to find nearby carparks
         async function findNearbyCarparks_URA(lat, lon, radius = 500) {
             try {
@@ -316,9 +315,18 @@
                     collapsible.innerHTML = `
                         <button class="collapsible-btn ${i === 0 ? 'active' : ''}" style="${i === 0 ? 'background-color: green;' : ''}">Carpark ${carparkNumber}: ${carparkName}</button>
                         <div class="collapsible-content ${i === 0 ? 'active' : ''}" style="${i === 0 ? 'display: block; background-color: #c2ffcd;' : 'display: none;'}">
-                            <p>Distance from destination: <strong>${parseFloat(dist).toFixed(2)}km</strong></p>
-                            <p>Price: <strong>${price}</strong></p>
-                            <p>Available Parking Lots: <strong>${parkinglots.substring(1)}</strong></p>
+                            <div class="info-item">
+                                <img src="/css/images/distance.png" alt="Distance Icon" class="info-icon">
+                                <p>Distance from destination: <strong>${parseFloat(dist).toFixed(2)}km</strong></p>
+                            </div>
+                            <div class="info-item">
+                                <img src="/css/images/price.png" alt="Price Icon" class="info-icon">
+                                <p>Price: <strong>${price}</strong></p>
+                            </div>
+                            <div class="info-item">
+                                <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
+                                <p>Available Parking Lots: <strong>${parkinglots.substring(1)}</strong></p>
+                            </div>
                         </div>`;
 
                     // Toggle content visibility and style
@@ -384,42 +392,6 @@
             // displayParkingLots(parkingLots);
         });
 
-        // Parking lot data
-        // const parkingLots = [
-        //     { id: 1, lat: 1.3521, lng: 103.8198, title: 'Car Park 1', price: 0.50, distance: 200, availability: 37 },
-        //     { id: 2, lat: 1.3531, lng: 103.8190, title: 'Car Park 2', price: 0.60, distance: 300, availability: 25 },
-        //     { id: 3, lat: 1.3541, lng: 103.8185, title: 'Car Park 3', price: 0.55, distance: 400, availability: 23 }
-        // ];
-
-        // // Display parking lots on map
-        // function displayParkingLots(parkingLots) {
-        //     if (!map) {
-        //         console.error("Map is not initialized yet.");
-        //         return;
-        //     }
-
-        //     parkingLots.forEach(lot => {
-        //         if (lot.lat && lot.lng) {
-        //             const marker = L.marker([lot.lat, lot.lng]).addTo(map)
-        //                 .bindPopup(`<strong>${lot.title}</strong><br>Price: $${lot.price}/hour<br>Distance: ${lot.distance}m<br>Availability: ${lot.availability}/50`);
-
-        //             // Append parking lot info to sidebar
-        //             const parkingLotDiv = document.createElement('div');
-        //             parkingLotDiv.classList.add('parking-lot');
-        //             parkingLotDiv.innerHTML = `
-        //                 <h3>${lot.title}</h3>
-        //                 <p>Price: $${lot.price} / hour</p>
-        //                 <p>Distance: ${lot.distance}m</p>
-        //                 <p>Availability: ${lot.availability}/50 spots</p>
-        //                 <button>Select</button>
-        //             `;
-        //             document.getElementById('parking-lots').appendChild(parkingLotDiv);
-        //         } else {
-        //             console.error("Invalid parking lot data: missing latitude or longitude.", lot);
-        //         }
-        //     });
-        // }
-        
         function showSuggestions() {
             const searchQuery = document.getElementById('search').value.trim();
 
@@ -531,13 +503,6 @@
                             `<br><strong>Pricing:</strong> ${coords[5]}` +
                             `<br><strong>Available Lots:</strong> ${availableLots}`
                         );
-                        
-                        // Click event listener
-                        // carparkMarker.on('click', function () {
-                        //     setMarkerStyle(carparkMarker, true); // Change color on click
-                        //     carparkMarker.bindPopup(carparkMarker.getPopup().getContent() + 
-                        //             `<br><strong>Details:</strong><br>${JSON.stringify(carparkLotsDetails_HDB)}`);
-                        // });
                         
                         // Store each carpark marker in the array
                         currentCarparks.push(carparkMarker);
@@ -687,30 +652,6 @@
                         // Draw the new route on the map
                         currentRoute = L.polyline(routeCoordinates, { color: 'blue', opacity: 0.6, weight: 8 }).addTo(map);
                         circle = L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);
-
-                    //     // Fetch all car park coordinates and display in the map
-                    //     const carparkCoordinates = await getAllCarparkCoor_HDB();
-                    //     //console.log("Carpark Coordinates:", carparkCoordinates); // For debugging
-
-                    //     // Fetch nearby carparks and add markers
-                    //     const nearbyCarparks = await findNearbyCarparks_HDB(endLatLng.lat, endLatLng.lng);
-                    //     //console.log("Nearby Carparks:", nearbyCarparks); // For debugging
-          
-
-                    //     nearbyCarparks.forEach(lot => {
-                    //     // Assuming lot is a string like "1.434901737416896, 103.78661383499883"
-                    //     const coords = lot.split(',').map(coord => parseFloat(coord.trim())); // Split the string and trim any extra spaces
-
-                    //     if (!isNaN(coords[0]) && !isNaN(coords[1])) {  // Ensure valid coordinates
-                    //         const carparkMarker = L.marker([coords[0], coords[1]]).addTo(map)
-                    //             .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${coords[0]}, ${coords[1]}`);
-
-                    //         // Store each carpark marker in the array
-                    //         currentCarparks.push(carparkMarker);
-                    //     } else {
-                    //         console.error("Invalid lat/lng for:", lot);
-                    //     }
-                    // });
                     } else {
                         alert("No route found between the specified locations.");
                     }

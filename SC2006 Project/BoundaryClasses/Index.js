@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const {checkAuthenticated, checkNotAuthenticated} = require('./Authenticator.js')
+const database = require('./Database.js')
 
 router.get('/', checkAuthenticated, (req, res) => {
     console.log('User object:', req.user)
-    res.render('index.ejs', { name: req.user.name })
+    history = database.getHistory(req.user.email);
+    res.render('index.ejs', { name: req.user.name, email: req.user.email, history: history })
 })
 
 //get user name

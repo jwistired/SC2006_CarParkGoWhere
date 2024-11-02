@@ -99,6 +99,15 @@ document.addEventListener('click', function (event) {
     }
 });
 
+// Hide sidebar initially
+document.getElementById('sidebar').classList.add('sidebar-hidden');
+
+// Event to open sidebar when searchlocation is triggered
+function opensideBar() {
+    document.getElementById('sidebar').classList.remove('sidebar-hidden');
+    // Any additional actions upon search trigger
+}
+
 //logout function
 
 function logout() {
