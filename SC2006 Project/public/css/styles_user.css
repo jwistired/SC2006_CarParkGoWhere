@@ -372,8 +372,9 @@ input:checked + .slider:before {
   display: flex; /* Ensure it is a block-level element */
   font-size: 12px;
   color: white;
-  background-color: #888;
+  background-color: #1b1b1b;
   padding: 8px;
+  margin: 8px;
   border-radius: 5px;
   z-index: 1000;
 }
@@ -412,6 +413,26 @@ input:checked + .slider:before {
   color: #f9f9f9;
 }
 
+.user-hist {
+  align-items: center;
+  justify-content: center;
+}
+
+.user-history-btn {
+  display: flex; /* Ensure it is a block-level element */
+  height: 50px;
+  width: 95%;
+  align-items: center;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: left;
+  color: white;
+  padding: 8px 8px 8px 15px;
+  margin: 8px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
 /* Main Body styles */
 
 /* Content layout */
@@ -428,7 +449,7 @@ input:checked + .slider:before {
   font-size: 14px;
 }
 
-/* Parking lots Sidebar */
+/* Parking lots and parking history Sidebar styles*/
 
 .sidebar{
   display: flex;
@@ -446,15 +467,27 @@ input:checked + .slider:before {
   overflow-y: auto;
 }
 
-.sidebar-hidden {
+.history-sidebar{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  flex: 1; /* Use flex to allow them to shrink and grow */
+  right: 0;
+  width: 400px; /* Optional maximum width */
+  height: 100vh; 
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+  margin-top: 60px;
+  overflow-y: auto; /* Allow scrolling */
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 5000;
+}
+
+.sidebar-hidden, .histbar-hidden {
   display: none;
 }
 
-/* .parkinglotsHeader {
-  margin-top: 140px;
-} */
-
-.parking-lot {
+.parking-lot, .parking-history {
   justify-content: center;
   margin: 4px 15px;
   background-color: #f9f9f9;
@@ -480,6 +513,11 @@ input:checked + .slider:before {
 /* Hide content by default */
 .collapsible-content {
   display: none;
+  width: 350px;
+  margin: auto;
+  padding: 0px;
+  border-radius: 5px;
+  background-color: #e5bbff;
 }
 
 /* Show content when active */
@@ -510,12 +548,29 @@ input:checked + .slider:before {
   margin: 0px 5px 0px 20px; /* Space between the icon and text */
 }
 
-.select-carpark {
-  margin-right: 30px;
+.select-carpark, .select-history {
+  margin-right: 25px;
   background-color: #2196F3;
   font-weight: bold;
   font-size: 18px;
   border-radius: 10px;
+}
+
+.remove-history {
+  margin-right: 25px;
+  background-color: #f32121;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.history-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-left: 30px;
 }
 
 /* .sidebar {
@@ -558,21 +613,20 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-.history-sidebar{
+/* .history-sidebar{
   display: grid;
   grid-template-columns: 4;
   grid-template-rows: auto auto auto auto auto auto;
 
 }
 
-/* Parking lot info styling */
 .parking-lot, .parking-history {
   margin-bottom: 15px;
   background-color: #f9f9f9;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-}
+} */
 
 
 /*Map Related Styles*/

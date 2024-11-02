@@ -88,10 +88,10 @@ const getHistory = async (email) => {
     }
 }
 
-
 const updateHistory = async (email, newHistory) => {
     try {
         // Get user history sorted by time in ascending order (oldest first)
+        console.log("New History Object:", newHistory);
         const history = await userHistory.find({ email: email }).sort({ time: 1 });
 
         if (history.length >= 3) {

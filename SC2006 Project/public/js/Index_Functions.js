@@ -105,7 +105,16 @@ document.getElementById('sidebar').classList.add('sidebar-hidden');
 // Event to open sidebar when searchlocation is triggered
 function opensideBar() {
     document.getElementById('sidebar').classList.remove('sidebar-hidden');
-    // Any additional actions upon search trigger
+}
+
+// Event to open history bar when searchlocation is triggered
+function openhistBar() {
+    document.getElementById('histbar').classList.remove('histbar-hidden');
+}
+
+// Event to open history bar when searchlocation is triggered
+function closehistBar() {
+    document.getElementById('histbar').classList.add('histbar-hidden');
 }
 
 //logout function

@@ -57,6 +57,7 @@ const cookieParser = require('cookie-parser');
 
 // Use cookie-parser middleware
 app.use(cookieParser());
+app.use(express.json())
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
