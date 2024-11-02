@@ -463,6 +463,14 @@ nav {
   margin: 0px 5px 0px 20px; /* Space between the icon and text */
 }
 
+.select-carpark {
+  margin-right: 25px;
+  background-color: #2196F3;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
 /*Map Related Styles*/
 /* Map zoom control styling */
 .fixed-control-zoom {

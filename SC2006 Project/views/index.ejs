@@ -359,7 +359,7 @@
                     // Add event listener for the select button
                     const selectButton = collapsible.querySelector('.select-carpark');
                     selectButton.addEventListener('click', () => {
-                        selectCarpark(carpark, markers, i);
+                        selectCarpark(carpark, markers);
                         selectedCarparkId = `Carpark-${carparkNumber}`;
                         synchronizeButtons();
                     });
@@ -432,8 +432,7 @@
             const selectHistoryButton = historyEntry.querySelector('.select-history');
             selectHistoryButton.addEventListener('click', function() {
                 const carparkNum = carparkNumber; // Get the carpark number
-                const markerIndex = [...document.querySelectorAll('.select-carpark')].findIndex(btn => btn.dataset.carparkId === selectHistoryButton.dataset.carparkId);
-                selectCarpark(carparkInfo, markers, markerIndex); // Call selectCarpark function
+                selectCarpark(carparkInfo, markers); // Call selectCarpark function
                 selectedCarparkId = `Carpark-${carparkNumber}`;
                 synchronizeButtons();
             });
@@ -527,8 +526,9 @@
         // Variables to keep track of the currently selected button and collapsible
         let lastSelectedButton = null;
         let lastSelectedCollapsible = null;
+        let currentMarker = null;
 
-        function selectCarpark(carpark, markers, ind) {
+        function selectCarpark(carpark, markers) {
            
             // Get the button and collapsible content associated with the clicked carpark
             const button = document.querySelector(`[data-carpark-id="Carpark-${carpark[0]}"]`);
@@ -563,14 +563,27 @@
 
             });
 
-            markers.forEach((marker, i) => {
-                if (i === ind) {
-                    map.addLayer(marker); 
-                } else {
-                    map.removeLayer(marker); // Hide other markers
-                }
+            // remove all markers
+            markers.forEach(marker => {
+                map.removeLayer(marker);
             });
 
+            // Remove the current marker if it exists
+            if (currentMarker) {
+                map.removeLayer(currentMarker);
+            }
+
+            // Add marker for selected carpark
+            currentMarker = L.marker([lat, long]).addTo(map);
+            setMarkerStyle(currentMarker, true);
+
+            // Center map create bounds to encompass both points
+            const carparkLatLng = L.latLng(lat, long);
+            // const bounds = L.latLngBounds([searchLatLng,carparkLatLng]);
+            map.setView(carparkLatLng, 16);
+            // map.fitBounds(bounds);
+            getRouteDestToCarPark(searchLatLng,carparkLatLng);
+            
             // Toggle the current button to "selected" state
             button.style.backgroundColor = 'grey';
             button.textContent = 'Selected';
@@ -731,6 +744,7 @@
 
         //store searchMarker
         let searchMarker = null;
+        let searchLatLng = null;
 
         // Update the searchLocation function to use displayNearbyCarParks
         function searchLocation() {
@@ -746,7 +760,7 @@
                         const firstResult = data.results[0];
                         const lat = parseFloat(firstResult.LATITUDE);
                         const lng = parseFloat(firstResult.LONGITUDE);
-                        const searchLatLng = L.latLng(lat, lng);
+                        searchLatLng = L.latLng(lat, lng);
 
                         console.log("Location found:", lat, lng);
 
@@ -884,6 +898,61 @@
                         // Draw the new route on the map
                         currentRoute = L.polyline(routeCoordinates, { color: 'blue', opacity: 0.6, weight: 8 }).addTo(map);
                         circle = L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);
+                    } else {
+                        alert("No route found between the specified locations.");
+                    }
+                },
+                error: function () {
+                    alert("Error fetching route from OneMap API.");
+                }
+            });
+        }
+
+        // Function to get the route between user location and searched location
+        async function getRouteDestToCarPark(startLatLng, endLatLng) {
+            if (!startLatLng || !endLatLng) {
+                console.error("Start or end location is missing.");
+                return;
+            }
+
+            // Get current date and time for the route request
+            const currentDate = new Date();
+            const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
+            const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}00`;
+
+            // Construct the API URL according to the documentation
+            const routeUrl = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${startLatLng.lat},${startLatLng.lng}&end=${endLatLng.lat},${endLatLng.lng}&routeType=drive`;
+
+            $.ajax({
+                url: routeUrl,
+                type: 'GET',
+                headers: {
+                    'Authorization': apiToken //fetch oneMapToken
+                },
+                success: async function (data) { // Make the success callback async
+                    if (data && data.route_geometry) {
+                        // Decode the route geometry to get the polyline coordinates
+                        const routeCoordinates = decodePolyline(data.route_geometry);
+
+                        // If there is an existing route, remove it
+                        if (currentRoute) {
+                            map.removeLayer(currentRoute);
+                        }
+
+                        // Remove the previous circle
+                        if (circle) {
+                            map.removeLayer(circle);
+                            circle = null;
+                        }
+
+                        // Remove the previous carpark markers
+                        currentCarparks.forEach(marker => {
+                            map.removeLayer(marker);
+                        });
+                        currentCarparks = []; // Reset the array
+
+                        // Draw the new route on the map
+                        currentRoute = L.polyline(routeCoordinates, { color: '#3BCF00', opacity: 0.8, weight: 8 }).addTo(map);
                     } else {
                         alert("No route found between the specified locations.");
                     }
