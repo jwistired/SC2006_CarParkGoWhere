@@ -257,32 +257,15 @@
             }
         }
 
-        // Marker color change function
-        function setMarkerStyle(marker, isSelected) {
-            if (!isSelected) {
-                marker.setIcon(L.icon({
-                    iconUrl: '/css/images/parkingicon.png',  // URL for selected marker icon
-                    iconSize: [40, 40],
-                    iconAnchor: [12, 41]
-                }));
-            } else {
-                marker.setIcon(L.icon({
-                    iconUrl: '/css/images/parkingicon-selected.png',  // URL for default marker icon
-                    iconSize: [55, 55],
-                    iconAnchor: [12, 41]
-                }));
-            }
-        }
-
         // Variable to keep track of the currently selected carpark ID
         let selectedCarparkId = null; 
 
-        function populateCarparkSidebar(carparks, markers) {
+        async function populateCarparkSidebar(carparks, markers) {
 
             const checkDistance = document.getElementById('filter-distance').checked;
             const checkPrice = document.getElementById('filter-price').checked;
             const checkLots = document.getElementById('filter-lots').checked;
-
+    
             if (checkDistance) carparks = filterByDistance(carparks);
             if (checkPrice) carparks = filterByPrice(carparks);
             if (checkLots) carparks = filterByLots(carparks);
@@ -307,13 +290,30 @@
 
             if (carparks.length > 0) {
                 for (let i = 0; i < carparks.length; i++) {
-                    const carpark = carparks[i].split(',').map(coord => coord.trim());
+
+                    const carpark = carparks[i]//.split(',').map(coord => coord.trim());
                     const carparkNumber = carpark[0];
                     const carparkName = carpark[3];
                     const dist = carpark[4];
                     const price = carpark[5];
                     const parkinglots = carpark[6];
-                    
+                    let formattedParkingLots = '';
+
+                    try {
+                        formattedParkingLots = parkinglots
+                            .map(lot => {
+                                if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
+                                    return `Lot Type ${lot.lot_type}: ${lot.available}`;
+                                } else {
+                                    throw new Error('Invalid lot data');
+                                }
+                            })
+                            .join('<br>');
+                    } catch (error) {
+                        console.error("Error formatting parking lots:", error.message);
+                        formattedParkingLots = 'Info not available';
+                    }
+
                     // Create collapsible element
                     const collapsible = document.createElement('div');
                     collapsible.className = 'collapsible';
@@ -330,7 +330,7 @@
                             </div>
                             <div class="info-item" style="padding-bottom: 15px;">
                                 <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                                <p>Available Parking Lots: <strong>${parkinglots.substring(1)}</strong></p>
+                                <p>Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
                                 <button class="select-carpark" data-carpark-id="Carpark-${carparkNumber}">Select</button>
                             </div>
                         </div>`;
@@ -384,12 +384,14 @@
             }
         }
 
-        function populateHistSidebar(carparkInfo, markers) {
+        let historyRecord = [];
+        async function populateHistSidebar(carparkInfo, markers) {
             const historySidebar = document.getElementById('parking-history');
 
             // Create collapsible element for the history item
             const historyEntry = document.createElement('div');
             historyEntry.className = 'history-entry';
+
             // Log carparkInfo to ensure it has the correct structure
             console.log("Carpark Info:", carparkInfo);
             const [carparkNumber, lat, long, carparkName, distance, price, parkingLots] = carparkInfo;
@@ -402,6 +404,27 @@
                     return; // Exit if the carpark is already in history
                 }
             }
+
+            console.log("HIST PARKING DETAILS: ", parkingLots);
+            let formattedParkingLots='';
+            try {
+                formattedParkingLots = parkingLots
+                    .map(lot => {
+                        if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
+                            return `Lot Type ${lot.lot_type}: ${lot.available}`;
+                        } else {
+                            throw new Error('Invalid lot data');
+                        }
+                    })
+                    .join('<br>');
+            } catch (error) {
+                console.error("Error formatting parking lots:", error.message);
+                formattedParkingLots = 'Info not available';
+            }
+
+            // const formattedParkingLots = parkingLots
+            // .map(lot => `Lot Type ${lot.lot_type}: ${lot.available}`) // Create formatted strings
+            // .join('<br>'); // Join with line breaks for HTML
 
             // Create collapsible button and content
             historyEntry.innerHTML = `
@@ -417,7 +440,7 @@
                     </div>
                     <div class="info-item">
                         <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                        <p style="padding-bottom: 20px;">Available Parking Lots: <strong>${parkingLots.substring(1)}</strong></p>
+                        <p style="padding-bottom: 20px;">Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
                     </div>
                     <div class="history-buttons">
                         <button class="select-history" data-carpark-id="Carpark-${carparkNumber}" style="width: 100px;">Select</button>
@@ -425,6 +448,21 @@
                     </div>
                 </div>
             `;
+
+            // Update history to database
+            const newHistoryEntry = {email: '<%=email%>',
+                                    car_park_no: carparkNumber, 
+                                    address: carparkName, 
+                                    x_cord: lat, 
+                                    y_cord: long};
+
+            const newHistoryID = await updateHistToDB(newHistoryEntry);
+            
+            // Set the ID as a data attribute on the historyEntry
+            historyEntry.dataset.historyId = newHistoryID; // Store the history ID in the entry
+
+            // Append the new entry to the history sidebar
+            historySidebar.appendChild(historyEntry);
 
             // Toggle collapsible content visibility
             historyEntry.querySelector('.collapsible-btn').addEventListener('click', () => {
@@ -447,25 +485,51 @@
                 synchronizeButtons();
             });
 
-            // Append the new entry to the history sidebar
-            historySidebar.appendChild(historyEntry);
-            // console.log("Values:", { carparkNumber, lat, long, carparkName, distance, price, parkingLots });
-            // console.log("EMAIL: ", '<%= email %>');
-            // Update history to database
-            // const testemail = 'test@gmail.com';
-            // const newHistoryEntry = {email: email,
-            //                         car_park_no: carparkNumber, 
-            //                         address: carparkName, 
-            //                         x_cord: lat, 
-            //                         y_cord: long};
+            historyRecord.push(newHistoryID);
+        }
 
-            // updateHistToDB(newHistoryEntry)
+        async function populateCarparkDataFromDB(carparks) {
+            if (carparks.length > 0) {
+                for (let i = 0; i < carparks.length; i++) {
+                    const carpark = carparks[i];
+                    console.log("CARPARK: ", carpark);
+                    const carparkNumber = carpark.car_park_no;
+                    const carparkName = carpark.address;
+                    const latitude = carpark.x_cord; 
+                    const longitude = carpark.y_cord;
+                    let parkingLots = "N/A";
+                    let distance = "N/A";
+                    let price = "N/A";
+                    let carparkMarker 
+                
+                    if (!isNaN(latitude) && !isNaN(longitude)) {
+
+                        // Initialise marker
+                        carparkMarker = L.marker([latitude, longitude]);
+                        setMarkerStyle(carparkMarker, false);
+
+                        parkingLots = await getCarparkLotsDetails_HDB(carparkNumber, carparkName);
+                        distance = await getDistanceInformation(latitude, longitude, userLatLng.lat, userLatLng.lng);
+                        distance = parseFloat(distance);
+                        const isCentral = central.some(c => c.code === carparkNumber);
+                        price = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
+                    }
+
+                    console.log("DIST: ", distance);
+                    console.log("PRICE: ", price);
+                    console.log("LOTS: ", parkingLots);
+
+                    // Push the results for the current carpark into the results array
+                    populateHistSidebar([carparkNumber, latitude, longitude, carparkName, distance, price, parkingLots], [carparkMarker]);
+                    
+                }
+            }
         }
 
         // Update carpark history to database
         async function updateHistToDB(carpark) {
             try {
-                console.log("EMAIL: ", email);
+                // console.log("EMAIL: ", email);
                 const response = await fetch('/updateHistory', {
                     method: 'POST',
                     headers: {
@@ -473,24 +537,56 @@
                     },
                     body: JSON.stringify(carpark)
                 });
-                
-                const data = await response.json();
-                if (response.ok) {
-                    console.log("Successfully added carpark to history database!");  // Success message
-                } else {
-                    console.error("Error adding carpark to history database.");  // Error message
-                }
+                const result = await response.json(); // Assuming your API returns the new history record
+                console.log("New history record ID:", result._id);
+                return result._id; // Store this ID for future reference
             } catch (error) {
                 console.error("Error updating carpark history:", error);
             }
         }
 
-
         // Function to remove an entry from the parking history
-        function removeFromHistory(button) {
+        async function removeFromHistory(button) {
             const historyEntry = button.closest('.history-entry');
             if (historyEntry) {
+                const historyId = historyEntry.dataset.historyId; // Retrieve the history ID
+                console.log("Removing history record ID:", historyId);
+
+                // Call your API to delete the history entry from the database
+                await deleteHistoryEntryFromDB(historyId); // Assuming this function handles deletion
+
                 historyEntry.remove(); // Remove the history entry from the sidebar
+            }
+        }
+
+        // Delete carpark history from database
+        async function deleteHistoryEntryFromDB(id) {
+            try {
+                const response = await fetch('/deleteHistory/' + id, {
+                    method: 'DELETE', // Use DELETE method for deletion
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id }) // Send the ID to delete
+                });
+
+                const result = await response.json();
+                console.log(result.message); // Log success message
+
+            } catch (error) {
+                console.error("Error deleting history entry:", error);
+            }
+        }
+
+        async function fetchUserHistory(email) {
+            try {
+                const response = await fetch(`/userHistory/${email}`); // Adjust the URL as necessary
+                const historyData = await response.json(); // Parse the JSON response
+                console.log("FETCHED USER HIST: ", historyData);
+                // Process the history data (you may want to call another function to display it)
+                populateCarparkDataFromDB(historyData);
+            } catch (error) {
+                console.error("Error fetching user history:", error);
             }
         }
 
@@ -589,9 +685,7 @@
 
             // Center map create bounds to encompass both points
             const carparkLatLng = L.latLng(lat, long);
-            // const bounds = L.latLngBounds([searchLatLng,carparkLatLng]);
             map.setView(carparkLatLng, 16);
-            // map.fitBounds(bounds);
             getRouteDestToCarPark(userLatLng,carparkLatLng);
             
             // Toggle the current button to "selected" state
@@ -649,6 +743,7 @@
                                 document.getElementById('search').value = result.SEARCHVAL;
                                 autocompleteList.innerHTML = ""; // Clear the suggestions
                                 searchLocation(); // Trigger the search function
+                                fetchUserHistory('<%=email%>');
                                 opensideBar();
                                 openhistBar();
                             });
@@ -665,26 +760,26 @@
                 document.getElementById("autocomplete-list").innerHTML = "";
         }}
 
-        async function displayNearbyCarparks_HDB(lat, lon) {
-            const central = [
-                { code: "ACB", name: "Block 270, 271 Albert Centre" },
-                { code: "BBB", name: "Block 232 Bras Basah Complex" },
-                { code: "BRB1", name: "Block 665 Tekka Centre" },
-                { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
-                { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
-                { code: "HLM", name: "Block 531A Upper Cross Street" },
-                { code: "KAB", name: "Block 334 Kreta Ayer Road" },
-                { code: "KAM", name: "Block 335 Kreta Ayer Road" },
-                { code: "KAS", name: "Block 333 Kreta Ayer Road" },
-                { code: "PRM", name: "Block 33 Park Crescent" },
-                { code: "SLS", name: "Block 4 Sago Lane" },
-                { code: "SR1", name: "Block 10 Selegie Road" },
-                { code: "SR2", name: "Block 8, 9 Selegie Road" },
-                { code: "TPM", name: "Tanjong Pagar Plaza" },
-                { code: "UCS", name: "Block 34 Upper Cross Street" },
-                { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
-            ];
+        let central = [
+            { code: "ACB", name: "Block 270, 271 Albert Centre" },
+            { code: "BBB", name: "Block 232 Bras Basah Complex" },
+            { code: "BRB1", name: "Block 665 Tekka Centre" },
+            { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
+            { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
+            { code: "HLM", name: "Block 531A Upper Cross Street" },
+            { code: "KAB", name: "Block 334 Kreta Ayer Road" },
+            { code: "KAM", name: "Block 335 Kreta Ayer Road" },
+            { code: "KAS", name: "Block 333 Kreta Ayer Road" },
+            { code: "PRM", name: "Block 33 Park Crescent" },
+            { code: "SLS", name: "Block 4 Sago Lane" },
+            { code: "SR1", name: "Block 10 Selegie Road" },
+            { code: "SR2", name: "Block 8, 9 Selegie Road" },
+            { code: "TPM", name: "Tanjong Pagar Plaza" },
+            { code: "UCS", name: "Block 34 Upper Cross Street" },
+            { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
+        ];
 
+        async function displayNearbyCarparks_HDB(lat, lon) {
             // Remove the previous circle
             if (circle) {
                 map.removeLayer(circle);
@@ -726,11 +821,19 @@
                         carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
                         coords[4] = carparkDistDetails_HDB;
                         const isCentral = central.some(c => c.code === carparkNumber);
-                        coords[5] = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
+                        let pricing = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
                         coords[6] = carparkLotsDetails_HDB; // Store available lots in coords[6]
 
-                        nearbyCarparksHDB[i] = coords.join(',');
-
+                        nearbyCarparksHDB[i] = [
+                            carparkNumber,
+                            latitude,
+                            longitude,
+                            carparkName,
+                            carparkDistDetails_HDB,
+                            pricing,
+                            carparkLotsDetails_HDB
+                        ];
+                        
                         carparkMarker.bindPopup(
                             carparkMarker.getPopup().getContent() +
                             `<br><strong>Details:</strong> ${JSON.stringify(carparkLotsDetails_HDB)}` +
