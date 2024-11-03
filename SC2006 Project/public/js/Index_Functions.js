@@ -17,45 +17,20 @@ document.addEventListener('click', function (event) {
     }
 });
 
-function toggleDistance(){
-    var boolDistance;
-    if (document.getElementById("toggle-distance").value == "true")
-    {
-        bool = true;
-    }
-    else
-    {
-        bool = false;
-    }
+// Sorting functions for filter
+
+function filterByDistance(carparks) {
+    return carparks.sort((a, b) => parseFloat(a.split(',')[4]) - parseFloat(b.split(',')[4]));
 }
 
-function toggleAvailableLots(){
-    var boolLots;
-    if (document.getElementById("toggle-availableLots").value == "true")
-    {
-        boolLots = true;
-    }
-    else
-    {
-        boolLots = false;
-    }
+function filterByPrice(carparks) {
+    return carparks.sort((a, b) => parseFloat(a.split(',')[5]) - parseFloat(b.split(',')[5]));
 }
 
-function togglePrice(){
-    var boolPrice;
-    if (document.getElementById("toggle-price").value == "true")
-    {
-        boolPrice = true;
-    }
-    else
-    {
-        boolPrice = false;
-    }
+function filterByLots(carparks) {
+    return carparks.sort((a, b) => parseInt(b.split(',')[6]) - parseInt(a.split(',')[6]));
 }
 
-function filtering(){
-    //Code to filter sidebar display
-}
 
 //Sidebar Related Functions
 
