@@ -1,7 +1,7 @@
 require('dotenv').config();  // Load environment variables from .env file
 const mongoose = require('mongoose');
 
-const LOCAL_CONNECTION = "mongodb://localhost:27017/CarparkgoWhere"
+const LOCAL_CONNECTION = "mongodb://JingWoon:nAsb4BXZmUKq@augentum.party:27017/CarParkGoWhere"
 const USER_LOGIN = "userData"
 const USER_HISTORY = "userHistory"
 
@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
         required: true
     }
 }, { collection: USER_LOGIN});  // Explicit collection name
-const userLogin = mongoose.model(USER_LOGIN, userSchema)
 
 const historySchema = new mongoose.Schema({
     email: {
@@ -57,6 +56,7 @@ const historySchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
 const userHistory = mongoose.model(USER_HISTORY, historySchema);
 // get user from mongoDB through email
 const getByEmail = async (email) => {
