@@ -20,15 +20,26 @@ document.addEventListener('click', function (event) {
 // Sorting functions for filter
 
 function filterByDistance(carparks) {
-   return carparks.sort((a, b) => parseFloat(a.split(',')[4]) - parseFloat(b.split(',')[4]));
+   return carparks.sort((a, b) => parseFloat(a[4]) - parseFloat(b[4]));
 }
 
 function filterByPrice(carparks) {
-    return carparks.sort((a, b) => parseFloat(a.split(',')[5]) - parseFloat(b.split(',')[5]));
+    return carparks.sort((a, b) => parseFloat(a[5]) - parseFloat(b[5]));
 }
 
 function filterByLots(carparks) {
-    return carparks.sort((a, b) => parseInt(b.split(',')[6]) - parseInt(a.split(',')[6]));
+    return carparks.sort((a, b) => {        
+        // Calculate the sum of available parking lots for each carpark
+        const sumAvailableLotsA = Array.isArray(a[6])
+            ? a[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;  // Assign 0 if a[6] is not an array
+        const sumAvailableLotsB = Array.isArray(b[6])
+            ? b[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;  // Assign 0 if b[6] is not an array
+
+        // Sort in descending order of available lots (largest first)
+        return sumAvailableLotsB - sumAvailableLotsA;
+    });
 }
 
 //Sidebar Related Functions
@@ -219,4 +230,21 @@ function deg2rad(deg) {
     }
 
     return points;
+}
+
+// Marker color change function
+function setMarkerStyle(marker, isSelected) {
+    if (!isSelected) {
+        marker.setIcon(L.icon({
+            iconUrl: '/css/images/parkingicon.png',  // URL for selected marker icon
+            iconSize: [40, 40],
+            iconAnchor: [12, 41]
+        }));
+    } else {
+        marker.setIcon(L.icon({
+            iconUrl: '/css/images/parkingicon-selected.png',  // URL for default marker icon
+            iconSize: [55, 55],
+            iconAnchor: [12, 41]
+        }));
+    }
 }

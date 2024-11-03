@@ -89,7 +89,7 @@ const getHistory = async (email) => {
     }
 }
 
-
+// update new user history
 const updateHistory = async (email, newHistory) => {
     try {
         // Get user history sorted by time in ascending order (oldest first)
@@ -111,11 +111,37 @@ const updateHistory = async (email, newHistory) => {
 
         await historyRecord.save();
         console.log("History updated successfully");
+        
+        // Return the newly created history record including its ID
+        return historyRecord; // Now includes the generated _id
 
     } catch (error) {
         console.error("Error updating history:", error);
     }
 };
+
+// Delete a history entry from DB
+const removeHistory = async (historyId) => {
+    try {
+        console.log("Current records before deletion:");
+        const allRecordsBefore = await userHistory.find();
+        console.log(allRecordsBefore);
+
+        const deletedRecord = await userHistory.findByIdAndDelete(historyId);
+
+        console.log("Deleted record:", deletedRecord);
+
+        console.log("Current records after deletion:");
+        const allRecordsAfter = await userHistory.find();
+        console.log(allRecordsAfter);
+
+        return deletedRecord;
+    } catch (error) {
+        console.error("Error removing history by ID:", error);
+        return null;
+    }
+};
+
 
 // Test insertion function
 async function testInsert() {
@@ -138,4 +164,4 @@ async function testInsert() {
 
 //testInsert();
 
-module.exports = {userLogin, getByEmail, getByID, getHistory, updateHistory}
+module.exports = {userLogin, getByEmail, getByID, getHistory, updateHistory, removeHistory}
