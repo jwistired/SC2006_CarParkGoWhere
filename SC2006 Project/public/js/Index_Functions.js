@@ -20,7 +20,7 @@ document.addEventListener('click', function (event) {
 // Sorting functions for filter
 
 function filterByDistance(carparks) {
-    return carparks.sort((a, b) => parseFloat(a.split(',')[4]) - parseFloat(b.split(',')[4]));
+   return carparks.sort((a, b) => parseFloat(a.split(',')[4]) - parseFloat(b.split(',')[4]));
 }
 
 function filterByPrice(carparks) {
@@ -30,13 +30,6 @@ function filterByPrice(carparks) {
 function filterByLots(carparks) {
     return carparks.sort((a, b) => parseInt(b.split(',')[6]) - parseInt(a.split(',')[6]));
 }
-//refresh sidebar on change
-function updateSidebar(carparks, markers) {
-    const sidebar = document.getElementById('parking-lots');
-    sidebar.innerHTML = '';
-    populateCarparkSideBar(carparks, markers);    
-}
-
 
 //Sidebar Related Functions
 
