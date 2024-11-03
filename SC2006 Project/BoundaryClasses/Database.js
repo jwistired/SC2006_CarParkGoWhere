@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
         required: true
     }
 }, { collection: USER_LOGIN});  // Explicit collection name
-const userLogin = mongoose.model(USER_LOGIN, userSchema)
 
 const historySchema = new mongoose.Schema({
     email: {
@@ -57,37 +56,7 @@ const historySchema = new mongoose.Schema({
         default: Date.now
     }
 })
-const userHistory = mongoose.model(USER_HISTORY, historySchema);
-// get user from mongoDB through email
-}, { collection: USER_LOGIN});  // Explicit collection name
-const userLogin = mongoose.model(USER_LOGIN, userSchema)
 
-const historySchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true
-    },
-    car_park_no: {
-        type: String,
-        required: true
-    },
-    address: {
-        type: String,
-        required: true
-    },
-    x_cord: {
-        type: Number,
-        require: true
-    },
-    y_cord: {
-        type: Number,
-        require: true
-    },
-    time: { 
-        type: Date, 
-        default: Date.now
-    }
-})
 const userHistory = mongoose.model(USER_HISTORY, historySchema);
 // get user from mongoDB through email
 const getByEmail = async (email) => {
