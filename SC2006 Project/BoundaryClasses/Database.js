@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
         required: true
     }
 }, { collection: USER_LOGIN});  // Explicit collection name
+const userLogin = mongoose.model(USER_LOGIN, userSchema)
 
 const historySchema = new mongoose.Schema({
     email: {
