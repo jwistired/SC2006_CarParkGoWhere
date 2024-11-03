@@ -408,11 +408,67 @@ nav {
 } */
 
 .parking-lot {
+  justify-content: center;
   margin: 4px 15px;
   background-color: #f9f9f9;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+.collapsible {
+  justify-content: center;
+}
+
+/*Styles for sidebar*/
+.collapsible-btn {
+  height: 90px;
+  width: 350px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 10px 0px 10px;
+  padding: 0px 8px;
+}
+
+/* Hide content by default */
+.collapsible-content {
+  display: none;
+}
+
+/* Show content when active */
+.collapsible-content.active {
+  display: flex;
+  width: 350px;
+  margin: auto;
+  padding: 0px;
+  border-radius: 5px;
+}
+
+.collapsible-content p {
+  margin: 0; /* Remove margin from paragraphs */
+  padding: 10px 10px; /* Optional: Remove padding as well if needed */
+  font-size: 16px;
+  text-align: left;
+}
+
+.info-item {
+  display: flex;
+  align-items: center; /* Vertically center the icon and text */
+  margin-bottom: 10px; /* Add some space between items */
+}
+
+.info-icon {
+  width: 30px; /* Set the width of the icon */
+  height: 30px; /* Set the height of the icon */
+  margin: 0px 5px 0px 20px; /* Space between the icon and text */
+}
+
+.select-carpark {
+  margin-right: 25px;
+  background-color: #2196F3;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
 }
 
 /*Map Related Styles*/
@@ -520,35 +576,4 @@ nav {
 /* Optional: higher z-index for popups */
 .leaflet-popup {
   z-index: 1500; /* Make sure popups are above markers */
-}
-
-
-/*Styles for sidebar*/
-.collapsible-btn {
-  height: 90px;
-  font-size: 16px;
-  font-weight: bold;
-  margin: 8px 10px 0px 10px;
-  padding: 0px 8px;
-
-}
-
-/* Hide content by default */
-.collapsible-content {
-  display: none;
-}
-
-/* Show content when active */
-.collapsible-content.active {
-  display: block;
-  margin: 0px 10px;
-  padding: 0;
-  border-radius: 5px;
-}
-
-.collapsible-content p {
-  margin: 0; /* Remove margin from paragraphs */
-  padding: 8px 20px; /* Optional: Remove padding as well if needed */
-  font-size: 16px;
-  text-align: left;
 }
