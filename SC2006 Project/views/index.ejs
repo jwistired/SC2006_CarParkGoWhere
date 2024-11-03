@@ -34,7 +34,7 @@
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" id="filter-distance" value="true">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -45,7 +45,7 @@
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" id="filter-price" value="true">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -56,7 +56,7 @@
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" id="filter-lots" value="true">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -277,6 +277,15 @@
         let selectedCarparkId = null; 
 
         function populateCarparkSidebar(carparks, markers) {
+
+            const checkDistance = document.getElementById('filter-distance').checked;
+            const checkPrice = document.getElementById('filter-price').checked;
+            const checkLots = document.getElementById('filter-lots').checked;
+
+            if (checkDistance) carparks = filterByDistance(carparks);
+            if (checkPrice) carparks = filterByPrice(carparks);
+            if (checkLots) carparks = filterByLots(carparks);
+
             const sidebar = document.getElementById('parking-lots');
             sidebar.innerHTML = '';  // Clear existing content
             
@@ -296,6 +305,7 @@
             });
 
             if (carparks.length > 0) {
+
                 for (let i = 0; i < carparks.length; i++) {
                     const carpark = carparks[i].split(',').map(coord => coord.trim());
                     const carparkNumber = carpark[0];
