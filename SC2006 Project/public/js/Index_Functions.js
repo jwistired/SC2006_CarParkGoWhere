@@ -28,12 +28,18 @@ function filterByPrice(carparks) {
 }
 
 function filterByLots(carparks) {
-    // Calculate the sum of available parking lots for each carpark
-    const sumAvailableLotsA = a[6].reduce((sum, lot) => sum + (lot.available || 0), 0);
-    const sumAvailableLotsB = b[6].reduce((sum, lot) => sum + (lot.available || 0), 0);
+    return carparks.sort((a, b) => {        
+        // Calculate the sum of available parking lots for each carpark
+        const sumAvailableLotsA = Array.isArray(a[6])
+            ? a[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;  // Assign 0 if a[6] is not an array
+        const sumAvailableLotsB = Array.isArray(b[6])
+            ? b[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;  // Assign 0 if b[6] is not an array
 
-    // Sort in descending order of available lots (largest first)
-    return sumAvailableLotsB - sumAvailableLotsA;
+        // Sort in descending order of available lots (largest first)
+        return sumAvailableLotsB - sumAvailableLotsA;
+    });
 }
 
 //Sidebar Related Functions
