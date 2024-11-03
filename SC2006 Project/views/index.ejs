@@ -88,6 +88,7 @@
             <div id="parking-lots">
                 <!-- Parking lot info will be dynamically added here -->
             </div>
+            <button class="exit-button" onclick="closesideBar()">Close</button>
         </div>
 
         <!-- settings sidebar -->
@@ -973,12 +974,19 @@
             });
         }
 
-        // Attach event listener to the search button or input field
+        //event listeners
+
+        // Event listener to the search button or input field
         document.getElementById('search').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 searchLocation();
             }
         });
+
+        //Event listener for changes in filters
+        document.getElementById('filter-distance').addEventListener('change', updateSidebar(carparks, markers));
+        document.getElementById('filter-price').addEventListener('change', updateSidebar(carparks, markers));
+        document.getElementById('filter-lots').addEventListener('change', updateSidebar(carparks, markers));
     </script>
     <script type='text/javascript' src="/js/Index_Functions.js"></script>
 </body>

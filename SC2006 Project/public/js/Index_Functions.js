@@ -30,6 +30,12 @@ function filterByPrice(carparks) {
 function filterByLots(carparks) {
     return carparks.sort((a, b) => parseInt(b.split(',')[6]) - parseInt(a.split(',')[6]));
 }
+//refresh sidebar on change
+function updateSidebar(carparks, markers) {
+    const sidebar = document.getElementById('parking-lots');
+    sidebar.innerHTML = '';
+    populateCarparkSideBar(carparks, markers);    
+}
 
 
 //Sidebar Related Functions

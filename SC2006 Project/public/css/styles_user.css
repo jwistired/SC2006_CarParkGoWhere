@@ -573,36 +573,6 @@ input:checked + .slider:before {
   padding-left: 30px;
 }
 
-/* .sidebar {
-  flex: 1; 
-  background-color: rgba(255, 255, 255, 0.9); 
-  margin-top: 30px;
-  overflow-y: auto;
-  background-color: white;
-  padding: 20px;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  overflow-y: auto;
-  height: 95%; 
-  position: fixed;
-  animation-duration: 5s;
-  display: none;
-}
-
-#sidebar {
-  flex: 1;
-  background-color: rgba(255, 255, 255, 0.9); 
-  margin-top: 30px;
-  overflow-y: auto;
-  background-color: white;
-  padding: 20px;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  overflow-y: auto;
-  height: 95%; 
-  position: fixed;
-  animation-duration: 5s;
-} */
 
 .exit-button {
   background-color: #6a1b9a;
@@ -611,22 +581,8 @@ input:checked + .slider:before {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin: 10px;
 }
-
-/* .history-sidebar{
-  display: grid;
-  grid-template-columns: 4;
-  grid-template-rows: auto auto auto auto auto auto;
-
-}
-
-.parking-lot, .parking-history {
-  margin-bottom: 15px;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-} */
 
 
 /*Map Related Styles*/
