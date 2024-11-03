@@ -59,6 +59,37 @@ const historySchema = new mongoose.Schema({
 })
 const userHistory = mongoose.model(USER_HISTORY, historySchema);
 // get user from mongoDB through email
+}, { collection: USER_LOGIN});  // Explicit collection name
+const userLogin = mongoose.model(USER_LOGIN, userSchema)
+
+const historySchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true
+    },
+    car_park_no: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    x_cord: {
+        type: Number,
+        require: true
+    },
+    y_cord: {
+        type: Number,
+        require: true
+    },
+    time: { 
+        type: Date, 
+        default: Date.now
+    }
+})
+const userHistory = mongoose.model(USER_HISTORY, historySchema);
+// get user from mongoDB through email
 const getByEmail = async (email) => {
     try {
         return await userLogin.findOne({ email: email })
@@ -88,10 +119,10 @@ const getHistory = async (email) => {
     }
 }
 
+
 const updateHistory = async (email, newHistory) => {
     try {
         // Get user history sorted by time in ascending order (oldest first)
-        console.log("New History Object:", newHistory);
         const history = await userHistory.find({ email: email }).sort({ time: 1 });
 
         if (history.length >= 3) {

@@ -9,12 +9,9 @@ router.get('/', (req, res) => {
 
 //Validate registration
 router.post('/',passport.authenticate('local-login', {
-    //successRedirect: '/',
+    successRedirect: '/',
     failureRedirect: 'login',
     failureFlash: true
-}), (req,res) => {
-    console.log(req.body) // Log the body to see form data
-    res.redirect('/')
-})
+}))
 
 module.exports = router
