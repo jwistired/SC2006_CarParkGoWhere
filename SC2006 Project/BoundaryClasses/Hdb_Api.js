@@ -147,12 +147,12 @@ const getCarparkLotsDetails = async (carparkNumber) => {
 
           console.log(`Available Lots for Carpark ${carparkNumber}:`);
           availableLotsInfo.forEach(info => {
-              console.log(`   Lot Type: ${info.lot_type}, Available: ${info.available}`);
+              console.log(`   Lot Type ${info.lot_type}: ${info.available}`);
           });
 
           // Return only the total available lots
-          const totalAvailableLots = availableLotsInfo.reduce((total, info) => total + info.available, 0);
-          return totalAvailableLots; // Return total available lots only
+          // const totalAvailableLots = availableLotsInfo.reduce((total, info) => total + info.available, 0);
+          return availableLotsInfo; // Return total available lots only
       }
   }
 

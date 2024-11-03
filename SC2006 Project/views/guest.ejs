@@ -281,10 +281,19 @@
             }
         }
 
-        function populateCarparkSidebar(carparks, markers) {
+        async function populateCarparkSidebar(carparks, markers) {
+
+            const checkDistance = document.getElementById('filter-distance').checked;
+            const checkPrice = document.getElementById('filter-price').checked;
+            const checkLots = document.getElementById('filter-lots').checked;
+
+            if (checkDistance) carparks = filterByDistance(carparks);
+            if (checkPrice) carparks = filterByPrice(carparks);
+            if (checkLots) carparks = filterByLots(carparks);
+
             const sidebar = document.getElementById('parking-lots');
             sidebar.innerHTML = '';  // Clear existing content
-            
+
             // Define default and active icons as instances of L.icon
             const defaultIcon = L.icon({
                 iconUrl: '/css/images/parkingicon.png', // Set your path here
@@ -302,22 +311,39 @@
 
             if (carparks.length > 0) {
                 for (let i = 0; i < carparks.length; i++) {
-                    const carpark = carparks[i].split(',').map(coord => coord.trim());
+
+                    const carpark = carparks[i]//.split(',').map(coord => coord.trim());
                     const carparkNumber = carpark[0];
                     const carparkName = carpark[3];
                     const dist = carpark[4];
                     const price = carpark[5];
                     const parkinglots = carpark[6];
-                    
+                    let formattedParkingLots = '';
+
+                    try {
+                        formattedParkingLots = parkinglots
+                            .map(lot => {
+                                if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
+                                    return `Lot Type ${lot.lot_type}: ${lot.available}`;
+                                } else {
+                                    throw new Error('Invalid lot data');
+                                }
+                            })
+                            .join('<br>');
+                    } catch (error) {
+                        console.error("Error formatting parking lots:", error.message);
+                        formattedParkingLots = 'Info not available';
+                    }
+
                     // Create collapsible element
                     const collapsible = document.createElement('div');
                     collapsible.className = 'collapsible';
                     collapsible.innerHTML = `
-                        <button class="collapsible-btn ${i === 0 ? 'active' : ''}" style="${i === 0 ? 'background-color: green;' : ''}">Carpark ${carparkNumber}: ${carparkName}</button>
+                        <button class="collapsible-btn ${i === 0 ? 'active' : ''}" id="" style="${i === 0 ? 'background-color: green;' : ''}">Carpark ${carparkNumber}: ${carparkName}</button>
                         <div class="collapsible-content ${i === 0 ? 'active' : ''}" style="${i === 0 ? 'display: block; background-color: #c2ffcd;' : 'display: none;'}">
                             <div class="info-item">
                                 <img src="/css/images/distance.png" alt="Distance Icon" class="info-icon">
-                                <p>Distance from destination: <strong>${parseFloat(dist).toFixed(2)}km</strong></p>
+                                <p style="padding-top: 20px;">Distance from destination: <strong>${parseFloat(dist).toFixed(2)}km</strong></p>
                             </div>
                             <div class="info-item">
                                 <img src="/css/images/price.png" alt="Price Icon" class="info-icon">
@@ -325,7 +351,7 @@
                             </div>
                             <div class="info-item" style="padding-bottom: 15px;">
                                 <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                                <p>Available Parking Lots: <strong>${parkinglots.substring(1)}</strong></p>
+                                <p>Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
                                 <button class="select-carpark" data-carpark-id="Carpark-${carparkNumber}">Select</button>
                             </div>
                         </div>`;
@@ -433,7 +459,7 @@
             // const bounds = L.latLngBounds([searchLatLng,carparkLatLng]);
             map.setView(carparkLatLng, 16);
             // map.fitBounds(bounds);
-            getRouteDestToCarPark(searchLatLng,carparkLatLng);
+            getRouteDestToCarPark(userLatLng,carparkLatLng);
             
             // Toggle the current button to "selected" state
             button.style.backgroundColor = 'grey';
@@ -565,10 +591,18 @@
                         carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
                         coords[4] = carparkDistDetails_HDB;
                         const isCentral = central.some(c => c.code === carparkNumber);
-                        coords[5] = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
+                        let pricing = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
                         coords[6] = carparkLotsDetails_HDB; // Store available lots in coords[6]
 
-                        nearbyCarparksHDB[i] = coords.join(',');
+                        nearbyCarparksHDB[i] = [
+                            carparkNumber,
+                            latitude,
+                            longitude,
+                            carparkName,
+                            carparkDistDetails_HDB,
+                            pricing,
+                            carparkLotsDetails_HDB
+                        ];
 
                         carparkMarker.bindPopup(
                             carparkMarker.getPopup().getContent() +
