@@ -8,17 +8,24 @@ function toggleFilterDropdown() {
 
 // Sorting functions for filter
 
+// Sorting functions for filter
+
 function filterByDistance(carparks) {
-    return carparks.sort((a, b) => parseFloat(a.split(',')[4]) - parseFloat(b.split(',')[4]));
-}
-
-function filterByPrice(carparks) {
-    return carparks.sort((a, b) => parseFloat(a.split(',')[5]) - parseFloat(b.split(',')[5]));
-}
-
-function filterByLots(carparks) {
-    return carparks.sort((a, b) => parseInt(b.split(',')[6]) - parseInt(a.split(',')[6]));
-}
+    return carparks.sort((a, b) => parseFloat(a[4]) - parseFloat(b[4]));
+ }
+ 
+ function filterByPrice(carparks) {
+     return carparks.sort((a, b) => parseFloat(a[5]) - parseFloat(b[5]));
+ }
+ 
+ function filterByLots(carparks) {
+     // Calculate the sum of available parking lots for each carpark
+     const sumAvailableLotsA = a[6].reduce((sum, lot) => sum + (lot.available || 0), 0);
+     const sumAvailableLotsB = b[6].reduce((sum, lot) => sum + (lot.available || 0), 0);
+ 
+     // Sort in descending order of available lots (largest first)
+     return sumAvailableLotsB - sumAvailableLotsA;
+ }
 
 //refresh sidebar on change
 function updateSidebar(carparks, markers) {
