@@ -267,6 +267,10 @@
 
                     try {
                         formattedParkingLots = parkinglots
+                            .sort((a, b) => {
+                                const lotTypeOrder = { 'C': 1, 'Y': 2, 'H': 3 };
+                                return (lotTypeOrder[a.lot_type] || 4) - (lotTypeOrder[b.lot_type] || 4);
+                            })
                             .map(lot => {
                                 if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
                                     return `Lot Type ${lot.lot_type}: ${lot.available}`;
@@ -296,7 +300,7 @@
                             </div>
                             <div class="info-item" style="padding-bottom: 15px;">
                                 <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                                <p>Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
+                                <p>Available Parking Lots:\n<br><strong>${formattedParkingLots}</strong></p>
                                 <button class="select-carpark" data-carpark-id="Carpark-${carparkNumber}">Select</button>
                             </div>
                         </div>`;
