@@ -98,7 +98,7 @@
             <img src="\css\images\icons\account_icon.png" class="user-profile-pic">
             <h1 class="profile-sider-username" id="welcomeText"></h1>
             <h1 class="profile-sider-username" id="name-display"><%= name %></h1>
-            <h2 class="profile-sider-username" id="email-display">Placeholder Email</h2>
+            <h2 class="profile-sider-username" id="email-display"><%= email %></h2>
 
             <div class="language-selector">
                 <label for="languageDropdown" class="selectLanguage">Select Language:</label>
@@ -133,6 +133,10 @@
         let bounds = L.latLngBounds(sw, ne);
         let map, userLatLng;
 
+        //Variable to store the search coordinates
+        let searchLat;
+        let searchLong;
+        
         // Fetch the token when the page loads
         let apiToken;
 
@@ -147,10 +151,6 @@
         } catch (error) {
             console.error('Error fetching token:', error);
         }}
-
-        // Access key for URA API
-        const uraAccessKey = '18ee826a-2210-4a40-972e-3a1e3c317ba0';
-        const token = 'd3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918';
 
         async function getAllCarparkCoor_HDB() {
             try {
@@ -203,57 +203,6 @@
             } catch (error) {
                 console.error('Error fetching distance:', error);
                 return null; // or handle the error as needed
-            }
-        }
-
-        // Function to fetch carpark price details
-        async function getCarparkPriceDetails_URA(ppCode) {
-            try {
-                const response = await fetch(`/api/ura/carpark-price/${ppCode}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                console.log('URA Carpark Price Details:', data); // Log the data instead of updating the DOM
-            } catch (error) {
-                console.error('Error fetching carpark price details:', error);
-            }
-        }
-
-        // Function to fetch carpark lots details
-        async function getCarparkLotsDetails_URA(carparkNo) {
-            try {
-                const response = await fetch(`/api/ura/carpark-lots/${carparkNo}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                console.log('URA Carpark Lots Details:', data); // Log the data instead of updating the DOM
-            } catch (error) {
-                console.error('Error fetching carpark lot details:', error);
-            }
-        }
-
-        // Function to fetch all URA carpark coordinates
-        async function getAllCarparkCoor_URA() {
-            try {
-                const response = await fetch('/api/ura/carpark-coordinates');
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                //console.log('URA Carpark coordinates:', data); // Log the data fetched
-                return data; // Ensure it returns the data correctly
-            } catch (error) {
-                console.error('Error fetching carpark coordinates:', error);
-                return []; // Return an empty array on error
-            }
-        }
-
-        // Function to find nearby carparks
-        async function findNearbyCarparks_URA(lat, lon, radius = 500) {
-            try {
-                const response = await fetch(`/api/ura/find-nearby-carparks?lat=${lat}&lon=${lon}&radius=${radius}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                return data; // Return the fetched data
-            } catch (error) {
-                console.error('Error finding nearby carparks:', error);
-                return []; // Return an empty array on error
             }
         }
 
@@ -421,10 +370,6 @@
                 console.error("Error formatting parking lots:", error.message);
                 formattedParkingLots = 'Info not available';
             }
-
-            // const formattedParkingLots = parkingLots
-            // .map(lot => `Lot Type ${lot.lot_type}: ${lot.available}`) // Create formatted strings
-            // .join('<br>'); // Join with line breaks for HTML
 
             // Create collapsible button and content
             historyEntry.innerHTML = `
@@ -875,6 +820,9 @@
                         const lng = parseFloat(firstResult.LONGITUDE);
                         searchLatLng = L.latLng(lat, lng);
 
+                        searchLat = lat;
+                        searchLong = lng;
+
                         console.log("Location found:", lat, lng);
 
                         // Remove old search marker if it exists
@@ -1076,19 +1024,22 @@
             });
         }
 
-        //event listeners
-
-        // Event listener to the search button or input field
-        document.getElementById('search').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                searchLocation();
+        //Event Listener
+    
+        //reload sidebar when distance-filter is checked
+        $(document).ready(function() {
+        $('#filter-distance').change(function() {
+            if (this.checked) {
+                console.log('Checkbox is checked');
+                $('#parking-lots').empty().load(location.href + ' #parking-lots');
+            } else {
+                console.log('Checkbox is unchecked');
+                $('#parking-lots').empty().load(location.href + ' #parking-lots')
             }
+            displayNearbyCarparks_HDB(searchLat, searchLong);
         });
+    });
 
-        //Event listener for changes in filters
-        document.getElementById('filter-distance').addEventListener('change', updateSidebar(carparks, markers));
-        document.getElementById('filter-price').addEventListener('change', updateSidebar(carparks, markers));
-        document.getElementById('filter-lots').addEventListener('change', updateSidebar(carparks, markers));
 
     </script>
     <script type='text/javascript' src="/js/Index_Functions.js"></script>

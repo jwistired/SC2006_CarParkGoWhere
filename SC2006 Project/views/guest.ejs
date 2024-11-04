@@ -139,10 +139,6 @@
             console.error('Error fetching token:', error);
         }}
 
-        // Access key for URA API
-        const uraAccessKey = '18ee826a-2210-4a40-972e-3a1e3c317ba0';
-        const token = 'd3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-4q231t+32a3c8C1GXxFa4up8aa-Wt3e7918';
-
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
             const R = 6371; // Radius of the Earth in km
             const dLat = deg2rad(lat2 - lat1);
@@ -210,57 +206,6 @@
             } catch (error) {
                 console.error('Error fetching distance:', error);
                 return null; // or handle the error as needed
-            }
-        }
-
-        // Function to fetch carpark price details
-        async function getCarparkPriceDetails_URA(ppCode) {
-            try {
-                const response = await fetch(`/api/ura/carpark-price/${ppCode}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                console.log('URA Carpark Price Details:', data); // Log the data instead of updating the DOM
-            } catch (error) {
-                console.error('Error fetching carpark price details:', error);
-            }
-        }
-
-        // Function to fetch carpark lots details
-        async function getCarparkLotsDetails_URA(carparkNo) {
-            try {
-                const response = await fetch(`/api/ura/carpark-lots/${carparkNo}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                console.log('URA Carpark Lots Details:', data); // Log the data instead of updating the DOM
-            } catch (error) {
-                console.error('Error fetching carpark lot details:', error);
-            }
-        }
-
-        // Function to fetch all URA carpark coordinates
-        async function getAllCarparkCoor_URA() {
-            try {
-                const response = await fetch('/api/ura/carpark-coordinates');
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                //console.log('URA Carpark coordinates:', data); // Log the data fetched
-                return data; // Ensure it returns the data correctly
-            } catch (error) {
-                console.error('Error fetching carpark coordinates:', error);
-                return []; // Return an empty array on error
-            }
-        }
-
-        // Function to find nearby carparks
-        async function findNearbyCarparks_URA(lat, lon, radius = 500) {
-            try {
-                const response = await fetch(`/api/ura/find-nearby-carparks?lat=${lat}&lon=${lon}&radius=${radius}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                return data; // Return the fetched data
-            } catch (error) {
-                console.error('Error finding nearby carparks:', error);
-                return []; // Return an empty array on error
             }
         }
 
