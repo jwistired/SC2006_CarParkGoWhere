@@ -6,17 +6,6 @@ function toggleFilterDropdown() {
     dropdown.style.flexDirection = 'column';
 }
 
-// Hide dropdown when clicking outside
-document.addEventListener('click', function (event) {
-    const dropdown = document.getElementById('filterDropdown');
-    if (!event.target.closest('.filter-button') 
-        && !event.target.closest('.filter-dropdown') 
-        && !event.target.closest('.switch') 
-        && !event.target.closest('.slider')) {
-        dropdown.style.display = 'none';
-    }
-});
-
 // Sorting functions for filter
 
 function filterByDistance(carparks) {
@@ -56,6 +45,7 @@ function closesideBar() {
     document.getElementById("sidebar").style.display = "none";
     document.getElementById("sidebar").style.animation = "slideOut";
 }
+
 
 // Profile sidebar functions
 
@@ -248,3 +238,23 @@ function setMarkerStyle(marker, isSelected) {
         }));
     }
 }
+
+// Event listener to the search button or input field
+document.getElementById('search').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        searchLocation();
+    }
+});
+
+// Event listener for filter box
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('filterDropdown');
+    if (!event.target.closest('.filter-button') 
+        && !event.target.closest('.filter-dropdown') 
+        && !event.target.closest('.switch') 
+        && !event.target.closest('.slider')) {
+        dropdown.style.display = 'none';
+    }
+});
+
+
