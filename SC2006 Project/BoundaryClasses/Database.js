@@ -82,6 +82,7 @@ const getByID = async (id) => {
 const getHistory = async (email) => {
     try {
         const history = await userHistory.find({ email: email })
+        console.log("PRINT USER HISTORY: ", history);
         return history;  // return the array of userHistory records; access through history[i]
     } catch (error) {
         console.error("Error fetching user history by email:", error)

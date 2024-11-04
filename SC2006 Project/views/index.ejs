@@ -250,6 +250,10 @@
 
                     try {
                         formattedParkingLots = parkinglots
+                            .sort((a, b) => {
+                                const lotTypeOrder = { 'C': 1, 'Y': 2, 'H': 3 };
+                                return (lotTypeOrder[a.lot_type] || 4) - (lotTypeOrder[b.lot_type] || 4);
+                            })
                             .map(lot => {
                                 if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
                                     return `Lot Type ${lot.lot_type}: ${lot.available}`;
@@ -279,7 +283,7 @@
                             </div>
                             <div class="info-item" style="padding-bottom: 15px;">
                                 <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                                <p>Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
+                                <p>Available Parking Lots:\n<br><strong>${formattedParkingLots}</strong></p>
                                 <button class="select-carpark" data-carpark-id="Carpark-${carparkNumber}">Select</button>
                             </div>
                         </div>`;
@@ -354,10 +358,13 @@
                 }
             }
 
-            console.log("HIST PARKING DETAILS: ", parkingLots);
             let formattedParkingLots='';
             try {
                 formattedParkingLots = parkingLots
+                    .sort((a, b) => {
+                        const lotTypeOrder = { 'C': 1, 'Y': 2, 'H': 3 };
+                        return (lotTypeOrder[a.lot_type] || 4) - (lotTypeOrder[b.lot_type] || 4);
+                    })
                     .map(lot => {
                         if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
                             return `Lot Type ${lot.lot_type}: ${lot.available}`;
@@ -385,7 +392,7 @@
                     </div>
                     <div class="info-item">
                         <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                        <p style="padding-bottom: 20px;">Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
+                        <p style="padding-bottom: 20px;">Available Parking Lots:\n<br><strong>${formattedParkingLots}</strong></p>
                     </div>
                     <div class="history-buttons">
                         <button class="select-history" data-carpark-id="Carpark-${carparkNumber}" style="width: 100px;">Select</button>
@@ -527,7 +534,7 @@
             try {
                 const response = await fetch(`/userHistory/${email}`); // Adjust the URL as necessary
                 const historyData = await response.json(); // Parse the JSON response
-                console.log("FETCHED USER HIST: ", historyData);
+                
                 // Process the history data (you may want to call another function to display it)
                 populateCarparkDataFromDB(historyData);
             } catch (error) {
