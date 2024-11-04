@@ -18,12 +18,14 @@ function filterByPrice(carparks) {
 function filterByLots(carparks) {
     return carparks.sort((a, b) => {        
         // Calculate the sum of available parking lots for each carpark
-        const sumAvailableLotsA = Array.isArray(a[6])
-            ? a[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
-            : 0;  // Assign 0 if a[6] is not an array
-        const sumAvailableLotsB = Array.isArray(b[6])
-            ? b[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
-            : 0;  // Assign 0 if b[6] is not an array
+        const sumAvailableLotsA = Array.isArray(a[6]) ? 
+            a[6].filter(lot => lot.lot_type === 'C') // Only consider "C" lots
+                .reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0; 
+        const sumAvailableLotsB = Array.isArray(b[6]) ? 
+            b[6].filter(lot => lot.lot_type === 'C') // Only consider "C" lots
+                .reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;
 
         // Sort in descending order of available lots (largest first)
         return sumAvailableLotsB - sumAvailableLotsA;

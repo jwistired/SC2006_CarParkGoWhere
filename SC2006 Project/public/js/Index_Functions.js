@@ -6,17 +6,6 @@ function toggleFilterDropdown() {
     dropdown.style.flexDirection = 'column';
 }
 
-// Hide dropdown when clicking outside
-document.addEventListener('click', function (event) {
-    const dropdown = document.getElementById('filterDropdown');
-    if (!event.target.closest('.filter-button') 
-        && !event.target.closest('.filter-dropdown') 
-        && !event.target.closest('.switch') 
-        && !event.target.closest('.slider')) {
-        dropdown.style.display = 'none';
-    }
-});
-
 // Sorting functions for filter
 
 function filterByDistance(carparks) {
@@ -30,12 +19,14 @@ function filterByPrice(carparks) {
 function filterByLots(carparks) {
     return carparks.sort((a, b) => {        
         // Calculate the sum of available parking lots for each carpark
-        const sumAvailableLotsA = Array.isArray(a[6])
-            ? a[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
-            : 0;  // Assign 0 if a[6] is not an array
-        const sumAvailableLotsB = Array.isArray(b[6])
-            ? b[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
-            : 0;  // Assign 0 if b[6] is not an array
+        const sumAvailableLotsA = Array.isArray(a[6]) ? 
+            a[6].filter(lot => lot.lot_type === 'C') // Only consider "C" lots
+                .reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0; 
+        const sumAvailableLotsB = Array.isArray(b[6]) ? 
+            b[6].filter(lot => lot.lot_type === 'C') // Only consider "C" lots
+                .reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;
 
         // Sort in descending order of available lots (largest first)
         return sumAvailableLotsB - sumAvailableLotsA;
@@ -56,6 +47,7 @@ function closesideBar() {
     document.getElementById("sidebar").style.display = "none";
     document.getElementById("sidebar").style.animation = "slideOut";
 }
+
 
 // Profile sidebar functions
 
@@ -248,3 +240,23 @@ function setMarkerStyle(marker, isSelected) {
         }));
     }
 }
+
+// Event listener to the search button or input field
+document.getElementById('search').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        searchLocation();
+    }
+});
+
+// Event listener for filter box
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('filterDropdown');
+    if (!event.target.closest('.filter-button') 
+        && !event.target.closest('.filter-dropdown') 
+        && !event.target.closest('.switch') 
+        && !event.target.closest('.slider')) {
+        dropdown.style.display = 'none';
+    }
+});
+
+
