@@ -214,10 +214,20 @@
             const checkDistance = document.getElementById('filter-distance').checked;
             const checkPrice = document.getElementById('filter-price').checked;
             const checkLots = document.getElementById('filter-lots').checked;
-    
+            
             if (checkDistance) carparks = filterByDistance(carparks);
             if (checkPrice) carparks = filterByPrice(carparks);
             if (checkLots) carparks = filterByLots(carparks);
+
+            if( checkDistance || checkPrice || checkLots){
+                var newMarkers=  [];
+                for (let i = 0; i < carparks.length; i++) {
+                    let tempcarpark = carparks[i];
+                    var carparkMarker = L.marker([tempcarpark[1], tempcarpark[2]]);
+                    newMarkers.push(carparkMarker);
+                }
+                markers = newMarkers;
+            }
 
             const sidebar = document.getElementById('parking-lots');
             sidebar.innerHTML = '';  // Clear existing content
@@ -240,7 +250,7 @@
             if (carparks.length > 0) {
                 for (let i = 0; i < carparks.length; i++) {
 
-                    const carpark = carparks[i]//.split(',').map(coord => coord.trim());
+                    const carpark = carparks[i]
                     const carparkNumber = carpark[0];
                     const carparkName = carpark[3];
                     const dist = carpark[4];
@@ -803,7 +813,6 @@
             } else {
                 console.log('No nearby HDB carparks found.');
             }
-
             populateCarparkSidebar(nearbyCarparksHDB, currentCarparks);
         }
 
