@@ -1031,22 +1031,47 @@
             });
         }
 
-        //Event Listener
-    
-        //reload sidebar when distance-filter is checked
+        // Event listener for distance filter
         $(document).ready(function() {
-        $('#filter-distance').change(function() {
-            if (this.checked) {
-                console.log('Checkbox is checked');
-                $('#parking-lots').empty().load(location.href + ' #parking-lots');
-            } else {
-                console.log('Checkbox is unchecked');
-                $('#parking-lots').empty().load(location.href + ' #parking-lots')
-            }
-            displayNearbyCarparks_HDB(searchLat, searchLong);
+            $('#filter-distance').change(function() {
+                if (this.checked) {
+                    console.log('Checkbox is checked');
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                } else {
+                    console.log('Checkbox is unchecked');
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
+                }
+                displayNearbyCarparks_HDB(searchLat, searchLong);
+            });
         });
-    });
 
+        // Event listener for distance filter
+        $(document).ready(function() {
+            $('#filter-price').change(function() {
+                if (this.checked) {
+                    console.log('Checkbox is checked');
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                } else {
+                    console.log('Checkbox is unchecked');
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
+                }
+                displayNearbyCarparks_HDB(searchLat, searchLong);
+            });
+        });
+
+        // Event listener for distance filter
+        $(document).ready(function() {
+            $('#filter-lots').change(function() {
+                if (this.checked) {
+                    console.log('Checkbox is checked');
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                } else {
+                    console.log('Checkbox is unchecked');
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
+                }
+                displayNearbyCarparks_HDB(searchLat, searchLong);
+            });
+        });
 
     </script>
     <script type='text/javascript' src="/js/Index_Functions.js"></script>
