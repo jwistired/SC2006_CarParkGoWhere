@@ -128,7 +128,7 @@
         // Fetch the token when the page loads
         let apiToken;
 
-        // Global variables to store search lat and search long
+        // Store search lat and search long
         let searchLat, searchLong;
 
         async function fetchApiToken() {
@@ -149,6 +149,8 @@
         let currentMarker = null;
 
 
+
+        //DO NOT MOVE THESE CODES: THEY WILL NOT FUNCTION IF NOT IN MAIN CODE
         // Call fetchApiToken when the page loads
         window.onload = function() {
         fetchApiToken();
@@ -187,22 +189,6 @@
             }
         });
 
-
-        //DO NOT MOVE THESE CODES: THEY WILL NOT FUNCTION IF NOT IN MAIN CODE
-        // Event listener for distance filter
-        $(document).ready(function() {
-            $('#filter-distance').change(function() {
-                if (this.checked) {
-                    console.log('Checkbox is checked');
-                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
-                } else {
-                    console.log('Checkbox is unchecked');
-                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
-                }
-                displayNearbyCarparks_HDB(searchLat, searchLong);
-            });
-        });
-
         // Event listener for distance filter
         $(document).ready(function() {
             $('#filter-price').change(function() {
@@ -217,7 +203,7 @@
             });
         });
 
-        // Event listener for distance filter
+        // Event listener for Lots filter
         $(document).ready(function() {
             $('#filter-lots').change(function() {
                 if (this.checked) {
@@ -230,6 +216,7 @@
                 displayNearbyCarparks_HDB(searchLat, searchLong);
             });
         });
+        //DO NOT MOVE THESE CODES: THEY WILL NOT FUNCTION IF NOT IN MAIN CODE
 
     </script>
     <script src="\js\Guest_Functions.js"></script>
