@@ -22,6 +22,7 @@ const ResetPassword = require('./BoundaryClasses/ResetPassword.js')
 const { checkAuthenticated, checkNotAuthenticated } = require('./BoundaryClasses/Authenticator.js')
 const initialisePassport = require("./passport-config")
 const Database = require('./BoundaryClasses/Database.js')
+const searchManager = require('./Control_Classes/SearchManager.js')
 
 const getToken = require('./getOneMapToken.js'); //get onemap token 
 
@@ -29,14 +30,6 @@ const token = "d3@ebNc-V5628AaS2+7FkzD1x7ab002WFehG1Hfb52fXaYj4+6c3a2-EJB3ea723-
 
 //HDB API
 const carparkFunctions = require('./BoundaryClasses/Hdb_Api.js'); 
-
-//URA API
-const {
-    getCarparkPriceDetails_URA,
-    getCarparkLotsDetails_URA,
-    findNearbyCarparks_URA,
-    getAllCarparkCoor_URA
-} = require('./BoundaryClasses/UraApi.js'); 
 
 //get distance information
 const getDistanceInformation = require('./BoundaryClasses/getDistanceInformation');
@@ -85,6 +78,8 @@ app.use(methodOverride('_method'));
 
 // Serve static files (CSS, images, etc.) from the "public" directory (optional)
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static('Control_Classes'));
 
 // gets page to service user as response
 app.use('/',Index)
