@@ -138,12 +138,12 @@ function changeLanguage() {
 // Hide sidebar initially
 document.getElementById('sidebar').classList.add('sidebar-hidden');
 
+// Open and close Parking sidebar
 // Event to open sidebar when searchlocation is triggered
 function opensideBar() {
     document.getElementById('sidebar').classList.remove('sidebar-hidden');
-    // Any additional actions upon search trigger
 }
 
-function deg2rad(deg) {
-    return deg * (Math.PI / 180);
+function closesideBar() {
+    document.getElementById('sidebar').classList.add('sidebar-hidden');
 }

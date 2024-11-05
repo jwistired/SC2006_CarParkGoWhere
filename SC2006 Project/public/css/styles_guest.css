@@ -403,9 +403,15 @@ nav {
   display: none;
 }
 
-/* .parkinglotsHeader {
-  margin-top: 140px;
-} */
+.exit-button {
+  background-color: #6a1b9a;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
 
 .parking-lot {
   justify-content: center;

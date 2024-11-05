@@ -15,16 +15,6 @@ router.get('/name', (req, res) => {
     res.render('index.ejs', { name: userName });
 })
 
-// get email
-// router.get('/email', (req, res) => {
-//     if (req.user && req.user.email) {
-//         const userEmail = req.user.email;
-//         res.render('index.ejs', { email: userEmail });
-//     } else {
-//         res.status(400).send('Email not found');
-//     }
-// })
-
 // Update history endpoint
 router.post('/updateHistory', async (req, res) => {
     const {email, car_park_no, address, x_cord, y_cord } = req.body;
@@ -80,7 +70,7 @@ router.get('/userHistory/:email', async (req, res) => {
     }
 });
 
-
+//Route to logout
 router.delete('/logout', (req, res, next) => {
     req.logOut(function(err) {
         if (err) { 

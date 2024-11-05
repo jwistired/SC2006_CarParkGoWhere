@@ -234,39 +234,6 @@ const findNearbyCarparks_HDB = async (destinationCoords, radius = 500) => {
   return nearbyCarparks; // Return the filtered car parks
 };
 
-// find nearby carpark 
-/*
-(async () => {
-  const destinationCoords = '1.4368197, 103.7860668'; // Define destination coordinates
-  const nearbyCarparks = await findNearbyCarparks_HDB(destinationCoords, 500); // Find nearby car parks within 500m
-
-  console.log('Nearby Car Parks within 500m radius:\n', nearbyCarparks.join('\n')); // Log the result
-})();
-*/
-
-// Example usage
-// getHdbCarParkDetails('ACB'); // Get the car park details 
-// getCarparkCoor('ACB'); // Get HDB car park coordinates
-//fetchCarparkAvailability();
-
-// Get all car park numbers
-/*
-(async () => {
-  const carparkNumbers = await getAllCarparkNumbers(); // Call the function to get car park numbers
-  const carparkNumbersString = carparkNumbers.join(', '); // Join numbers with a comma and space
-  console.log('All Car Park Numbers:\n', carparkNumbersString); // Log the formatted string
-})(); */
-
-
-// get all car park coordinates
-/*
-(async () => {
-  const coordinates = await getAllCarparkCoor_HDB(); // Call the function to get coordinates
-  const coordinatesString = coordinates.join('\n'); // Join coordinates with a newline character
-  console.log('All Car Park Coordinates:\n', coordinatesString); // Log the formatted string
-})(); 
-*/
-// Export all functions
 module.exports = {
   getHdbCarParkDetails,
   getCarparkCoor,

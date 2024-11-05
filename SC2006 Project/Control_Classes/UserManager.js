@@ -1,3 +1,4 @@
+// Dependencies: Control_Classes/SearchManager.js, Control_Classes/RouteManager.js, Control_Classes/HistoryManager.js
 async function populateCarparkSidebar(carparks, markers) {
 
     const checkDistance = document.getElementById('filter-distance').checked;
@@ -122,46 +123,7 @@ async function populateCarparkSidebar(carparks, markers) {
     }
 }
 
-
-// Function to update all select buttons based on selectedCarparkId
-function synchronizeButtons() {
-    // Update select buttons in parking-lots sidebar
-    const parkingLotButtons = document.querySelectorAll('.select-carpark');
-    const historyButtons = document.querySelectorAll('.select-history');
-
-    parkingLotButtons.forEach(button => {
-        if (button.dataset.carparkId === selectedCarparkId) {
-            button.style.backgroundColor = 'grey';
-            button.textContent = 'Selected';
-        } else {
-            button.style.backgroundColor = '#2196F3';
-            button.textContent = 'Select';
-        }
-    });
-
-    historyButtons.forEach(button => {
-        if (button.dataset.carparkId === selectedCarparkId) {
-            button.style.backgroundColor = 'grey';
-            button.textContent = 'Selected';
-        } else {
-            button.style.backgroundColor = '#2196F3';
-            button.textContent = 'Select';
-        }
-    });
-
-    // Check if the selected carpark exists in the parking-lot sidebar
-    const carparkExistsInSidebar = Array.from(parkingLotButtons).some(button => button.dataset.carparkId === selectedCarparkId);
-
-    if (!carparkExistsInSidebar && selectedCarparkId) {
-        // Clear parking-lot sidebar and show only the selected carpark from history
-        const selectedHistoryButton = Array.from(historyButtons).find(button => button.dataset.carparkId === selectedCarparkId);
-        if (selectedHistoryButton) {
-            const carparkInfo = getCarparkInfoFromHistory(selectedHistoryButton);
-            populateCarparkSidebar([carparkInfo], markers);
-        }
-    }
-}
-
+// Function to select a carpark from the sidebar
 function selectCarpark(carpark, markers) {
            
     // Get the button and collapsible content associated with the clicked carpark
@@ -223,83 +185,6 @@ function selectCarpark(carpark, markers) {
     // Update the last selected button and collapsible
     lastSelectedButton = button;
     lastSelectedCollapsible = collapsibleContent;
-}
-
-
-async function displayNearbyCarparks_HDB(lat, lon) {
-    // Remove the previous circle
-    if (circle) {
-        map.removeLayer(circle);
-        circle = null;
-    }
-
-    // Remove the previous carpark markers
-    currentCarparks.forEach(marker => {
-        map.removeLayer(marker);
-    });
-    currentCarparks = []; // Reset the array
-
-    // Create a new circle at the destination
-    circle = L.circle([lat, lon], 500).addTo(map); // Circle radius is set to 500 meters
-
-    console.log('Fetching HDB carpark coordinates...');
-    // Fetch nearby carparks from HDB
-    const nearbyCarparksHDB = await findNearbyCarparks_HDB(lat, lon); // Ensure this function fetches data correctly
-    
-    if (nearbyCarparksHDB.length > 0) {
-        for (let i = 0; i < nearbyCarparksHDB.length; i++) {
-            const coords = nearbyCarparksHDB[i].split(',').map(coord => coord.trim());
-            const carparkNumber = coords[0];
-            const latitude = parseFloat(coords[1]);
-            const longitude = parseFloat(coords[2]);
-            const carparkName = coords[3];
-
-            if (!isNaN(latitude) && !isNaN(longitude)) {
-                
-                const carparkMarker = L.marker([latitude, longitude]).addTo(map)
-                    .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${latitude}, ${longitude}`);
-
-                // Initial marker style
-                setMarkerStyle(carparkMarker, false);
-
-                let carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber, carparkName);
-                let availableLots = "N/A"; // Default value if details not found
-                let carparkDistDetails_HDB = await getDistanceInformation(latitude, longitude, userLatLng.lat, userLatLng.lng);
-                carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
-                coords[4] = carparkDistDetails_HDB;
-                const isCentral = central.some(c => c.code === carparkNumber);
-                let pricing = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
-                coords[6] = carparkLotsDetails_HDB; // Store available lots in coords[6]
-
-                nearbyCarparksHDB[i] = [
-                    carparkNumber,
-                    latitude,
-                    longitude,
-                    carparkName,
-                    carparkDistDetails_HDB,
-                    pricing,
-                    carparkLotsDetails_HDB
-                ];
-                
-                carparkMarker.bindPopup(
-                    carparkMarker.getPopup().getContent() +
-                    `<br><strong>Details:</strong> ${JSON.stringify(carparkLotsDetails_HDB)}` +
-                    `<br><strong>Distance:</strong> ${carparkDistDetails_HDB} meters` +
-                    `<br><strong>Pricing:</strong> ${coords[5]}` +
-                    `<br><strong>Available Lots:</strong> ${availableLots}`
-                );
-                
-                // Store each carpark marker in the array
-                currentCarparks.push(carparkMarker);
-                
-            }
-        }
-        console.log("HDB Carpark Coordinates with Distance, Pricing, and Availability:", nearbyCarparksHDB);
-    } else {
-        console.log('No nearby HDB carparks found.');
-    }
-
-    populateCarparkSidebar(nearbyCarparksHDB, currentCarparks);
 }
 
 // Function overrides searchLocation() in SearchManager.js

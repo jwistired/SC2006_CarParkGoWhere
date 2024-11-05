@@ -79,7 +79,6 @@ button:hover {
 }
 
 .search-input { 
-  margin-top: 18px;
   height: 30px;
   width: calc(65vw - 70px);
   box-sizing: border-box;
@@ -315,7 +314,6 @@ input:checked + .slider:before {
 
 /* profile and Setting bar related Styles*/
 .profile-sidebar{
-  top: (100%-30px);
   display: none;
   column-count: 1;
   column-gap: 15px;
@@ -327,7 +325,7 @@ input:checked + .slider:before {
   width: 360px;
   background-color: white;
   z-index: 1000;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 /* Profile Settings Header Text*/
@@ -439,7 +437,7 @@ input:checked + .slider:before {
 .content {
   display: flex;
   position: relative;
-  top: 50px; 
+  top: 90px; 
   bottom: 0;
   left: 0;
   right: 0;
@@ -459,7 +457,7 @@ input:checked + .slider:before {
   width: 400px; /* Optional maximum width */
   height: 100vh; 
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
-  margin-top: 60px;
+  margin-top: 20px;
   overflow-y: auto; /* Allow scrolling */
   background-color: white;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -476,7 +474,7 @@ input:checked + .slider:before {
   width: 400px; /* Optional maximum width */
   height: 100vh; 
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
-  margin-top: 60px;
+  margin-top: 20px;
   overflow-y: auto; /* Allow scrolling */
   background-color: white;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -598,7 +596,7 @@ input:checked + .slider:before {
 /* Map Container */
 #mapdiv {
   margin-top: 20px;
-  height: 100vh; /* Full height minus header */
+  height: calc(100vh - 50px); /* Full height minus header */
   width: 100%; /* Full width */
   position: absolute; /* Position absolute to cover the entire viewport */
   top: 40;
@@ -608,7 +606,7 @@ input:checked + .slider:before {
 
 .map-container {
   flex-grow: 1;
-  margin-top: 40px ;
+  margin-top: 0px ;
   margin-left: 200px;
   position: relative;
   z-index: 0; /* Lower z-index for the map */
@@ -616,7 +614,7 @@ input:checked + .slider:before {
 
 /* Map container */
 #map {
-  height: 100%; /* Make sure the map takes the full viewport height */
+  height:  calc(100vh - 40px); /* Make sure the map takes the full viewport height */
   width: 100%; /* Adjust width based on sidebar */
   position: absolute;
   left: 200px; /* Adjust to account for sidebar */
