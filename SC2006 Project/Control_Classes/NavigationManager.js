@@ -1,3 +1,7 @@
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+}
+
 async function displayNearbyCarparks_HDB(lat, lon) {
     // Remove the previous circle
     if (circle) {
