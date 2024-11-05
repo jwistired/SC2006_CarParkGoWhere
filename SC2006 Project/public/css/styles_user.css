@@ -292,6 +292,7 @@ input:checked + .slider:before {
   align-items: center;
   text-decoration: none;
   color: white;
+  margin-left: 10px;
   margin-right: 50px; /* Center the login/register icon */
 }
 
@@ -340,7 +341,6 @@ input:checked + .slider:before {
 .close-icon {
   padding-top: 10px;
   padding-right:280px;
-  align-self: left;
   cursor: pointer;
   width:40px;
   height: 40px;
@@ -650,24 +650,3 @@ input:checked + .slider:before {
     pointer-events: auto;
   }
 
-/* Animations */
-
-@keyframes slideIn {
-  from {
-      width: 0;
-  }
-
-  to {
-      width: 200px;
-  }
-}
-
-@keyframes slideOut {
-
-  from {
-      width: 200px;
-  }
-  to {
-      width: 0;
-  }
-}
