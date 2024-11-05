@@ -110,7 +110,7 @@
                 </select>
             </div>
             <div class="user-hist">
-                <button class="user-history-btn" onclick="openhistBar()">View History</button>
+                <button class="user-history-btn" onclick="openhistBar(); fetchUserHistory(email);">View History</button>
             </div>
         </div>
 
@@ -184,8 +184,6 @@
             showUserLocation();
             // displayParkingLots(parkingLots);
         });
-
-        
 
         let central = [
             { code: "ACB", name: "Block 270, 271 Albert Centre" },
