@@ -7,11 +7,6 @@ class User {
         this.email = email;
         this.password = password;
     }
-
-    static async hashPassword(password) {
-        const bcrypt = require('bcrypt');
-        return await bcrypt.hash(password, 10);
-    }
 }
 
 module.exports = User;

@@ -1,4 +1,6 @@
 require('dotenv').config();  // Load environment variables from .env file
+const userSchema = require('../models/User.js')
+const historySchema = require('../models/CarPark.js')
 const mongoose = require('mongoose');
 
 const LOCAL_CONNECTION = "mongodb://JingWoon:nAsb4BXZmUKq@augentum.party:27017/CarParkGoWhere"
@@ -14,50 +16,7 @@ mongoose.connect(LOCAL_CONNECTION)
         console.error("Failed to connect to MongoDB", err);
     });
 
-// Define schema and model
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    }
-}, { collection: USER_LOGIN});  // Explicit collection name
 const userLogin = mongoose.model(USER_LOGIN, userSchema)
-
-const historySchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true
-    },
-    car_park_no: {
-        type: String,
-        required: true
-    },
-    address: {
-        type: String,
-        required: true
-    },
-    x_cord: {
-        type: Number,
-        require: true
-    },
-    y_cord: {
-        type: Number,
-        require: true
-    },
-    time: { 
-        type: Date, 
-        default: Date.now
-    }
-})
-
 const userHistory = mongoose.model(USER_HISTORY, historySchema);
 // get user from mongoDB through email
 const getByEmail = async (email) => {

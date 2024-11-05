@@ -14,7 +14,7 @@ let transporter = nodemailer.createTransport({
 })
 
 router.get('/', (req, res) => {
-    res.render('forgetPasswordTest.ejs', { error: req.flash('error') })
+    res.render('forgetPassword.ejs', { error: req.flash('error') })
 })
 
 router.post('/', (req, res, next) => {
