@@ -35,12 +35,6 @@ async function getRoute(startLatLng, endLatLng) {
                     circle = null;
                 }
 
-                // Remove the previous carpark markers
-                currentCarparks.forEach(marker => {
-                    map.removeLayer(marker);
-                });
-                currentCarparks = []; // Reset the array
-
                 // Draw the new route on the map
                 currentRoute = L.polyline(routeCoordinates, { color: 'blue', opacity: 0.6, weight: 8 }).addTo(map);
                 circle = L.circle([endLatLng.lat, endLatLng.lng], 500).addTo(map);

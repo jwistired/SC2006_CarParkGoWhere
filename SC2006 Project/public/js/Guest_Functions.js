@@ -139,7 +139,6 @@ function changeLanguage() {
 document.getElementById('sidebar').classList.add('sidebar-hidden');
 
 // Open and close Parking sidebar
-// Event to open sidebar when searchlocation is triggered
 function opensideBar() {
     document.getElementById('sidebar').classList.remove('sidebar-hidden');
 }

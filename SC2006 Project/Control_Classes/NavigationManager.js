@@ -1,4 +1,3 @@
-
 //Set central carparks codes and prices
 let central = [
     { code: "ACB", name: "Block 270, 271 Albert Centre" },
@@ -24,6 +23,16 @@ async function displayNearbyCarparks_HDB(lat, lon) {
     if (circle) {
         map.removeLayer(circle);
         circle = null;
+    }
+
+    // Remove the current marker if it exists
+    if (currentMarker) {
+        map.removeLayer(currentMarker);
+    }
+
+    // If there is an existing route, remove it
+    if (currentRoute) {
+        map.removeLayer(currentRoute);
     }
 
     // Remove the previous carpark markers
@@ -91,8 +100,8 @@ async function displayNearbyCarparks_HDB(lat, lon) {
     } else {
         console.log('No nearby HDB carparks found.');
     }
-
     populateCarparkSidebar(nearbyCarparksHDB, currentCarparks);
+    getRoute(userLatLng, searchLatLng);
 }
 
 // Marker color change function
