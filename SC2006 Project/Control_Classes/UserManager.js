@@ -302,7 +302,7 @@ async function displayNearbyCarparks_HDB(lat, lon) {
     populateCarparkSidebar(nearbyCarparksHDB, currentCarparks);
 }
 
-// Update the searchLocation function to use displayNearbyCarParks
+// Update the Location function to use displayNearbyCarParks
 function searchLocation() {
     const searchQuery = document.getElementById('search').value;
 
@@ -361,3 +361,43 @@ function searchLocation() {
         alert("Please enter a location to search for.");
     }
 }
+
+function showSuggestions() {
+    const searchQuery = document.getElementById('search').value.trim();
+
+    if (searchQuery !== "") {
+        const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
+
+        $.get(url, function (data) {
+            // Clear previous suggestions
+            let autocompleteList = document.getElementById("autocomplete-list");
+            autocompleteList.innerHTML = "";
+
+            if (data.results.length > 0) {
+                // Create and display suggestions
+                data.results.forEach(result => {
+                    let suggestionItem = document.createElement("div");
+                    suggestionItem.innerHTML = result.SEARCHVAL;
+                    suggestionItem.classList.add("autocomplete-suggestion");
+
+                    // Add click event to use the clicked suggestion
+                    suggestionItem.addEventListener("click", function () {
+                        document.getElementById('search').value = result.SEARCHVAL;
+                        autocompleteList.innerHTML = ""; // Clear the suggestions
+                        searchLocation(); // Trigger the search function
+                        opensideBar();
+                        fetchUserHistory(email);
+                        openhistBar();
+                    });
+
+                    // Append the suggestion to the list
+                    autocompleteList.appendChild(suggestionItem);
+                });
+            }
+        }).fail(function () {
+            console.error("Error fetching autocomplete suggestions from OneMap API.");
+        });
+    } else {
+        // Clear suggestions if no input
+        document.getElementById("autocomplete-list").innerHTML = "";
+}}

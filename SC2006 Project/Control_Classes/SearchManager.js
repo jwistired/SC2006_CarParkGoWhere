@@ -194,9 +194,7 @@ function showSuggestions() {
                         document.getElementById('search').value = result.SEARCHVAL;
                         autocompleteList.innerHTML = ""; // Clear the suggestions
                         searchLocation(); // Trigger the search function
-                        fetchUserHistory(email);
                         opensideBar();
-                        openhistBar();
                     });
 
                     // Append the suggestion to the list
