@@ -577,3 +577,4 @@ nav {
 .leaflet-popup {
   z-index: 1500; /* Make sure popups are above markers */
 }
+
