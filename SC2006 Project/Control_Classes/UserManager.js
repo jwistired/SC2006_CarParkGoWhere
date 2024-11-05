@@ -302,7 +302,7 @@ async function displayNearbyCarparks_HDB(lat, lon) {
     populateCarparkSidebar(nearbyCarparksHDB, currentCarparks);
 }
 
-// Update the Location function to use displayNearbyCarParks
+// Function overrides searchLocation() in SearchManager.js
 function searchLocation() {
     const searchQuery = document.getElementById('search').value;
 
@@ -362,6 +362,7 @@ function searchLocation() {
     }
 }
 
+//Function overrides showSuggestions() in SearchManager.js
 function showSuggestions() {
     const searchQuery = document.getElementById('search').value.trim();
 

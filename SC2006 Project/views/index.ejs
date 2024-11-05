@@ -34,7 +34,7 @@
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
-                            <input type="checkbox" id="filter-distance" value="true">
+                            <input type="checkbox" id="filter-distance">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -45,7 +45,7 @@
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
-                            <input type="checkbox" id="filter-price" value="true">
+                            <input type="checkbox" id="filter-price">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -56,7 +56,7 @@
                 <div class="filter-item">
                     <div class="filter-slider">
                         <label class="switch">
-                            <input type="checkbox" id="filter-lots" value="true">
+                            <input type="checkbox" id="filter-lots">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -128,15 +128,56 @@
     </div>
 
     <script>
+        //Global variables
         let sw = L.latLng(1.144, 103.535);
         let ne = L.latLng(1.494, 104.502);
         let bounds = L.latLngBounds(sw, ne);
         let map, userLatLng;
 
+        // Variables to keep track of the currently selected button and collapsible
+        let lastSelectedButton = null;
+        let lastSelectedCollapsible = null;
+        let currentMarker = null;
+
+        // Variable to keep track of the currently selected carpark ID
+        let selectedCarparkId = null; 
+        let historyRecord = [];
+
         //Variable to store the search coordinates
         let searchLat;
         let searchLong;
-        
+
+        //store searchMarker
+        let searchMarker = null;
+        let searchLatLng = null;
+
+        //Store email of user
+        let email= '<%=email%>';
+
+        // Declare a variable to store the current route
+        let currentRoute;
+        let circle = null;            // To store the circle around the destination
+        let currentCarparks = [];     // To store the current carpark markers
+
+        let central = [
+            { code: "ACB", name: "Block 270, 271 Albert Centre" },
+            { code: "BBB", name: "Block 232 Bras Basah Complex" },
+            { code: "BRB1", name: "Block 665 Tekka Centre" },
+            { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
+            { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
+            { code: "HLM", name: "Block 531A Upper Cross Street" },
+            { code: "KAB", name: "Block 334 Kreta Ayer Road" },
+            { code: "KAM", name: "Block 335 Kreta Ayer Road" },
+            { code: "KAS", name: "Block 333 Kreta Ayer Road" },
+            { code: "PRM", name: "Block 33 Park Crescent" },
+            { code: "SLS", name: "Block 4 Sago Lane" },
+            { code: "SR1", name: "Block 10 Selegie Road" },
+            { code: "SR2", name: "Block 8, 9 Selegie Road" },
+            { code: "TPM", name: "Tanjong Pagar Plaza" },
+            { code: "UCS", name: "Block 34 Upper Cross Street" },
+            { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
+        ];   
+
         // Fetch the token when the page loads
         let apiToken;
 
@@ -151,17 +192,7 @@
         } catch (error) {
             console.error('Error fetching token:', error);
         }}
-
-
-        // Variable to keep track of the currently selected carpark ID
-        let selectedCarparkId = null; 
-
-        let historyRecord = [];
-
-        // Variables to keep track of the currently selected button and collapsible
-        let lastSelectedButton = null;
-        let lastSelectedCollapsible = null;
-        let currentMarker = null;
+     
 
         // Call fetchApiToken when the page loads
         window.onload = function() {
@@ -185,37 +216,9 @@
             // displayParkingLots(parkingLots);
         });
 
-        let central = [
-            { code: "ACB", name: "Block 270, 271 Albert Centre" },
-            { code: "BBB", name: "Block 232 Bras Basah Complex" },
-            { code: "BRB1", name: "Block 665 Tekka Centre" },
-            { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
-            { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
-            { code: "HLM", name: "Block 531A Upper Cross Street" },
-            { code: "KAB", name: "Block 334 Kreta Ayer Road" },
-            { code: "KAM", name: "Block 335 Kreta Ayer Road" },
-            { code: "KAS", name: "Block 333 Kreta Ayer Road" },
-            { code: "PRM", name: "Block 33 Park Crescent" },
-            { code: "SLS", name: "Block 4 Sago Lane" },
-            { code: "SR1", name: "Block 10 Selegie Road" },
-            { code: "SR2", name: "Block 8, 9 Selegie Road" },
-            { code: "TPM", name: "Tanjong Pagar Plaza" },
-            { code: "UCS", name: "Block 34 Upper Cross Street" },
-            { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
-        ];
-
-        //store searchMarker
-        let searchMarker = null;
-        let searchLatLng = null;
-        let email= '<%=email%>';
-
-        // Declare a variable to store the current route
-        let currentRoute;
-        let circle = null;            // To store the circle around the destination
-        let currentCarparks = [];     // To store the current carpark markers
-
         //DO NOT MOVE THESE CODES: THEY WILL NOT FUNCTION IF NOT IN MAIN CODE
         
+        // Function to populate carpark data from database in history sidebar
         async function populateCarparkDataFromDB(carparks) {
             if (carparks.length > 0) {
                 for (let i = 0; i < carparks.length; i++) {
@@ -254,12 +257,11 @@
             }
         }
         
-        
+        // Function to display parking history
         function displayParkingHistory() {
             const history = [
                 { id: 5, title: 'Car Park 5', price: 0.55, distance: 400, availability: 23 }
             ];
-
             history.forEach(lot => {
                 const historyDiv = document.createElement('div');
                 historyDiv.classList.add('parking-history');
@@ -274,7 +276,7 @@
             });
         }
 
-
+        // Function to fetch user history from the database
         async function fetchUserHistory(email) {
                 try {
                     const response = await fetch(`/userHistory/${email}`); // Adjust the URL as necessary
@@ -340,103 +342,106 @@
         }
 
         async function populateHistSidebar(carparkInfo, markers) {
-        const historySidebar = document.getElementById('parking-history');
+            const historySidebar = document.getElementById('parking-history');
 
-        // Create collapsible element for the history item
-        const historyEntry = document.createElement('div');
-        historyEntry.className = 'history-entry';
+            // Create collapsible element for the history item
+            const historyEntry = document.createElement('div');
+            historyEntry.className = 'history-entry';
 
-        // Log carparkInfo to ensure it has the correct structure
-        console.log("Carpark Info:", carparkInfo);
-        const [carparkNumber, lat, long, carparkName, distance, price, parkingLots] = carparkInfo;
-        
-        // Check for duplicates in the history sidebar
-        const existingEntries = historySidebar.querySelectorAll('.history-entry');
-        for (const entry of existingEntries) {
-            const entryCarparkId = entry.querySelector('.select-history').dataset.carparkId;
-            if (entryCarparkId === `Carpark-${carparkNumber}`) {
-                return; // Exit if the carpark is already in history
+            // Log carparkInfo to ensure it has the correct structure
+            console.log("Carpark Info:", carparkInfo);
+            const [carparkNumber, lat, long, carparkName, distance, price, parkingLots] = carparkInfo;
+            
+            // Check for duplicates in the history sidebar
+            const existingEntries = historySidebar.querySelectorAll('.history-entry');
+            for (const entry of existingEntries) {
+                const entryCarparkId = entry.querySelector('.select-history').dataset.carparkId;
+                if (entryCarparkId === `Carpark-${carparkNumber}`) {
+                    return; // Exit if the carpark is already in history
+                }
             }
+
+            console.log("HIST PARKING DETAILS: ", parkingLots);
+            let formattedParkingLots='';
+            try {
+                formattedParkingLots = parkingLots
+                    .map(lot => {
+                        if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
+                            return `Lot Type ${lot.lot_type}: ${lot.available}`;
+                        } else {
+                            throw new Error('Invalid lot data');
+                        }
+                    })
+                    .join('<br>');
+            } catch (error) {
+                console.error("Error formatting parking lots:", error.message);
+                formattedParkingLots = 'Info not available';
+            }
+
+            // Create collapsible button and content
+            historyEntry.innerHTML = `
+                <button class="collapsible-btn">Carpark ${carparkNumber}: ${carparkName}</button>
+                <div class="collapsible-content" style="display: none;">
+                    <div class="info-item">
+                        <img src="/css/images/distance.png" alt="Distance Icon" class="info-icon">
+                        <p style="padding-top: 20px;">Distance: <strong>${parseFloat(distance).toFixed(2)}km</strong></p>
+                    </div>
+                    <div class="info-item">
+                        <img src="/css/images/price.png" alt="Price Icon" class="info-icon">
+                        <p>Price: <strong>${price}</strong></p>
+                    </div>
+                    <div class="info-item">
+                        <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
+                        <p style="padding-bottom: 20px;">Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
+                    </div>
+                    <div class="history-buttons">
+                        <button class="select-history" data-carpark-id="Carpark-${carparkNumber}" style="width: 100px;">Select</button>
+                        <button class="remove-history" onclick="removeFromHistory(this)" style="width: 100px;">Remove</button>
+                    </div>
+                </div>
+            `;
+
+            // Update history to database
+            const newHistoryEntry = {email: '<%=email%>',
+                                    car_park_no: carparkNumber, 
+                                    address: carparkName, 
+                                    x_cord: lat, 
+                                    y_cord: long};
+
+            const newHistoryID = await updateHistToDB(newHistoryEntry);
+            
+            // Set the ID as a data attribute on the historyEntry
+            historyEntry.dataset.historyId = newHistoryID; // Store the history ID in the entry
+
+            // Append the new entry to the history sidebar
+            historySidebar.appendChild(historyEntry);
+
+            // Toggle collapsible content visibility
+            historyEntry.querySelector('.collapsible-btn').addEventListener('click', () => {
+                const content = historyEntry.querySelector('.collapsible-content');
+                const button = historyEntry.querySelector('.collapsible-btn');
+
+                // Check if the content is currently active (visible)
+                const isActive = content.style.display === 'block';
+
+                // Toggle visibility
+                content.style.display = isActive ? 'none' : 'block';
+            });
+
+            // Add event listener for the "Select" button in history sidebar
+            const selectHistoryButton = historyEntry.querySelector('.select-history');
+            selectHistoryButton.addEventListener('click', function() {
+                const carparkNum = carparkNumber; // Get the carpark number
+                selectCarpark(carparkInfo, markers); // Call selectCarpark function
+                selectedCarparkId = `Carpark-${carparkNumber}`;
+                synchronizeButtons();
+            });
+
+            historyRecord.push(newHistoryID);
         }
 
-        console.log("HIST PARKING DETAILS: ", parkingLots);
-        let formattedParkingLots='';
-        try {
-            formattedParkingLots = parkingLots
-                .map(lot => {
-                    if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
-                        return `Lot Type ${lot.lot_type}: ${lot.available}`;
-                    } else {
-                        throw new Error('Invalid lot data');
-                    }
-                })
-                .join('<br>');
-        } catch (error) {
-            console.error("Error formatting parking lots:", error.message);
-            formattedParkingLots = 'Info not available';
-        }
+        //Event listeners
 
-        // Create collapsible button and content
-        historyEntry.innerHTML = `
-            <button class="collapsible-btn">Carpark ${carparkNumber}: ${carparkName}</button>
-            <div class="collapsible-content" style="display: none;">
-                <div class="info-item">
-                    <img src="/css/images/distance.png" alt="Distance Icon" class="info-icon">
-                    <p style="padding-top: 20px;">Distance: <strong>${parseFloat(distance).toFixed(2)}km</strong></p>
-                </div>
-                <div class="info-item">
-                    <img src="/css/images/price.png" alt="Price Icon" class="info-icon">
-                    <p>Price: <strong>${price}</strong></p>
-                </div>
-                <div class="info-item">
-                    <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                    <p style="padding-bottom: 20px;">Available Parking Lots:\n<strong>${formattedParkingLots}</strong></p>
-                </div>
-                <div class="history-buttons">
-                    <button class="select-history" data-carpark-id="Carpark-${carparkNumber}" style="width: 100px;">Select</button>
-                    <button class="remove-history" onclick="removeFromHistory(this)" style="width: 100px;">Remove</button>
-                </div>
-            </div>
-        `;
-
-        // Update history to database
-        const newHistoryEntry = {email: '<%=email%>',
-                                car_park_no: carparkNumber, 
-                                address: carparkName, 
-                                x_cord: lat, 
-                                y_cord: long};
-
-        const newHistoryID = await updateHistToDB(newHistoryEntry);
-        
-        // Set the ID as a data attribute on the historyEntry
-        historyEntry.dataset.historyId = newHistoryID; // Store the history ID in the entry
-
-        // Append the new entry to the history sidebar
-        historySidebar.appendChild(historyEntry);
-
-        // Toggle collapsible content visibility
-        historyEntry.querySelector('.collapsible-btn').addEventListener('click', () => {
-            const content = historyEntry.querySelector('.collapsible-content');
-            const button = historyEntry.querySelector('.collapsible-btn');
-
-            // Check if the content is currently active (visible)
-            const isActive = content.style.display === 'block';
-
-            // Toggle visibility
-            content.style.display = isActive ? 'none' : 'block';
-        });
-
-        // Add event listener for the "Select" button in history sidebar
-        const selectHistoryButton = historyEntry.querySelector('.select-history');
-        selectHistoryButton.addEventListener('click', function() {
-            const carparkNum = carparkNumber; // Get the carpark number
-            selectCarpark(carparkInfo, markers); // Call selectCarpark function
-            selectedCarparkId = `Carpark-${carparkNumber}`;
-            synchronizeButtons();
-        });
-
-        historyRecord.push(newHistoryID);
-    }
         // Event listener for distance filter
         $(document).ready(function() {
             $('#filter-distance').change(function() {
@@ -451,7 +456,7 @@
             });
         });
 
-        // Event listener for distance filter
+        // Event listener for price filter
         $(document).ready(function() {
             $('#filter-price').change(function() {
                 if (this.checked) {
@@ -465,7 +470,7 @@
             });
         });
 
-        // Event listener for distance filter
+        // Event listener for lots filter
         $(document).ready(function() {
             $('#filter-lots').change(function() {
                 if (this.checked) {
