@@ -143,26 +143,4 @@ const removeHistory = async (historyId) => {
     }
 };
 
-
-// Test insertion function
-async function testInsert() {
-    try {
-        const testUser = new userLogin({
-            name: 'Test User',
-            email: 'testuser@example.com',
-            password: 'testpassword'
-        });
-        
-        await testUser.save();
-        console.log("Test user inserted");
-    } catch (err) {
-        console.error("Failed to insert test user", err);
-    } finally {
-        mongoose.connection.close(); // Close the connection after insertion
-    }
-}
-
-
-//testInsert();
-
 module.exports = {userLogin, getByEmail, getByID, getHistory, updateHistory, removeHistory}

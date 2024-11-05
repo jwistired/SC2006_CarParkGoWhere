@@ -34,12 +34,14 @@ function filterByLots(carparks) {
 //Sidebar Related Functions
 
 // Open and close Parking sidebar
+// Event to open sidebar when searchlocation is triggered
 function opensideBar() {
-    document.getElementById("sidebar").style.width = "200px";
-    document.getElementById("sidebar").style.display = "flex";
-    document.getElementById("sidebar").style.animation = "slideIn";
+    document.getElementById('sidebar').classList.remove('sidebar-hidden');
 }
 
+function closesideBar() {
+    document.getElementById('sidebar').classList.add('sidebar-hidden');
+}
 
 // Profile sidebar functions
 
@@ -201,20 +203,6 @@ document.addEventListener('click', function (event) {
         && !event.target.closest('.slider')) {
         dropdown.style.display = 'none';
     }
-});
-
-// Event listener for distance filter
-$(document).ready(function() {
-    $('#filter-distance').change(function() {
-        if (this.checked) {
-            console.log('Checkbox is checked');
-            $('#parking-lots').empty().load(location.href + ' #parking-lots');
-        } else {
-            console.log('Checkbox is unchecked');
-            $('#parking-lots').empty().load(location.href + ' #parking-lots')
-        }
-        displayNearbyCarparks_HDB(searchLat, searchLong);
-    });
 });
 
 

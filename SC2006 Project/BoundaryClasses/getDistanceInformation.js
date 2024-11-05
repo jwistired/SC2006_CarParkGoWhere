@@ -26,6 +26,7 @@ function deg2rad(deg) {
 }
 
 module.exports = getDistanceInformation;
+
 /*
 // Example usage:
 const lat1 = 1.4368197;
