@@ -143,3 +143,7 @@ function opensideBar() {
     document.getElementById('sidebar').classList.remove('sidebar-hidden');
     // Any additional actions upon search trigger
 }
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+}

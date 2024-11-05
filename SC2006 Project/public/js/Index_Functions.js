@@ -19,14 +19,12 @@ function filterByPrice(carparks) {
 function filterByLots(carparks) {
     return carparks.sort((a, b) => {        
         // Calculate the sum of available parking lots for each carpark
-        const sumAvailableLotsA = Array.isArray(a[6]) ? 
-            a[6].filter(lot => lot.lot_type === 'C') // Only consider "C" lots
-                .reduce((sum, lot) => sum + (lot.available || 0), 0)
-            : 0; 
-        const sumAvailableLotsB = Array.isArray(b[6]) ? 
-            b[6].filter(lot => lot.lot_type === 'C') // Only consider "C" lots
-                .reduce((sum, lot) => sum + (lot.available || 0), 0)
-            : 0;
+        const sumAvailableLotsA = Array.isArray(a[6])
+            ? a[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;  // Assign 0 if a[6] is not an array
+        const sumAvailableLotsB = Array.isArray(b[6])
+            ? b[6].reduce((sum, lot) => sum + (lot.available || 0), 0)
+            : 0;  // Assign 0 if b[6] is not an array
 
         // Sort in descending order of available lots (largest first)
         return sumAvailableLotsB - sumAvailableLotsA;
@@ -257,6 +255,20 @@ document.addEventListener('click', function (event) {
         && !event.target.closest('.slider')) {
         dropdown.style.display = 'none';
     }
+});
+
+// Event listener for distance filter
+$(document).ready(function() {
+    $('#filter-distance').change(function() {
+        if (this.checked) {
+            console.log('Checkbox is checked');
+            $('#parking-lots').empty().load(location.href + ' #parking-lots');
+        } else {
+            console.log('Checkbox is unchecked');
+            $('#parking-lots').empty().load(location.href + ' #parking-lots')
+        }
+        displayNearbyCarparks_HDB(searchLat, searchLong);
+    });
 });
 
 
