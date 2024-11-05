@@ -279,6 +279,7 @@ function synchronizeButtons() {
     }
 }
 
+// Function to select a carpark from the sidebar
 function selectCarpark(carpark) {
            
     // Get the button and collapsible content associated with the clicked carpark
@@ -339,101 +340,6 @@ function selectCarpark(carpark) {
     // Update the last selected button and collapsible
     lastSelectedButton = button;
     lastSelectedCollapsible = collapsibleContent;
-}
-
-async function displayNearbyCarparks_HDB(lat, lon) {
-    const central = [
-        { code: "ACB", name: "Block 270, 271 Albert Centre" },
-        { code: "BBB", name: "Block 232 Bras Basah Complex" },
-        { code: "BRB1", name: "Block 665 Tekka Centre" },
-        { code: "CY", name: "Block 269, 269A, 269B Cheng Yan Court" },
-        { code: "DUXM", name: "Block 1 The Pinnacle @ Duxton" },
-        { code: "HLM", name: "Block 531A Upper Cross Street" },
-        { code: "KAB", name: "Block 334 Kreta Ayer Road" },
-        { code: "KAM", name: "Block 335 Kreta Ayer Road" },
-        { code: "KAS", name: "Block 333 Kreta Ayer Road" },
-        { code: "PRM", name: "Block 33 Park Crescent" },
-        { code: "SLS", name: "Block 4 Sago Lane" },
-        { code: "SR1", name: "Block 10 Selegie Road" },
-        { code: "SR2", name: "Block 8, 9 Selegie Road" },
-        { code: "TPM", name: "Tanjong Pagar Plaza" },
-        { code: "UCS", name: "Block 34 Upper Cross Street" },
-        { code: "WCB", name: "Block 261, 262, 264 Waterloo Centre" }
-    ];
-
-    // Remove the previous circle
-    if (circle) {
-        map.removeLayer(circle);
-        circle = null;
-    }
-
-    // Remove the previous carpark markers
-    currentCarparks.forEach(marker => {
-        map.removeLayer(marker);
-    });
-    currentCarparks = []; // Reset the array
-
-    // Create a new circle at the destination
-    circle = L.circle([lat, lon], 500).addTo(map); // Circle radius is set to 500 meters
-
-    console.log('Fetching HDB carpark coordinates...');
-    // Fetch nearby carparks from HDB
-    const nearbyCarparksHDB = await findNearbyCarparks_HDB(lat, lon); // Ensure this function fetches data correctly
-    
-    if (nearbyCarparksHDB.length > 0) {
-        for (let i = 0; i < nearbyCarparksHDB.length; i++) {
-            const coords = nearbyCarparksHDB[i].split(',').map(coord => coord.trim());
-            const carparkNumber = coords[0];
-            const latitude = parseFloat(coords[1]);
-            const longitude = parseFloat(coords[2]);
-            const carparkName = coords[3];
-
-            if (!isNaN(latitude) && !isNaN(longitude)) {
-                
-                const carparkMarker = L.marker([latitude, longitude]).addTo(map)
-                    .bindPopup(`<strong>Car Park</strong><br>Coordinates: ${latitude}, ${longitude}`);
-
-                // Initial marker style
-                setMarkerStyle(carparkMarker, false);
-
-                let carparkLotsDetails_HDB = await getCarparkLotsDetails_HDB(carparkNumber, carparkName);
-                let availableLots = "N/A"; // Default value if details not found
-                let carparkDistDetails_HDB = await getDistanceInformation(latitude, longitude, userLatLng.lat, userLatLng.lng);
-                carparkDistDetails_HDB = parseFloat(carparkDistDetails_HDB);
-                coords[4] = carparkDistDetails_HDB;
-                const isCentral = central.some(c => c.code === carparkNumber);
-                let pricing = isCentral ? "$1.20 per half-hour" : "$0.60 per half-hour";
-                coords[6] = carparkLotsDetails_HDB; // Store available lots in coords[6]
-
-                nearbyCarparksHDB[i] = [
-                    carparkNumber,
-                    latitude,
-                    longitude,
-                    carparkName,
-                    carparkDistDetails_HDB,
-                    pricing,
-                    carparkLotsDetails_HDB
-                ];
-
-                carparkMarker.bindPopup(
-                    carparkMarker.getPopup().getContent() +
-                    `<br><strong>Details:</strong> ${JSON.stringify(carparkLotsDetails_HDB)}` +
-                    `<br><strong>Distance:</strong> ${carparkDistDetails_HDB} meters` +
-                    `<br><strong>Pricing:</strong> ${coords[5]}` +
-                    `<br><strong>Available Lots:</strong> ${availableLots}`
-                );
-                
-                // Store each carpark marker in the array
-                currentCarparks.push(carparkMarker);
-                
-            }
-        }
-        console.log("HDB Carpark Coordinates with Distance, Pricing, and Availability:", nearbyCarparksHDB);
-    } else {
-        console.log('No nearby HDB carparks found.');
-    }
-
-    populateCarparkSidebar(nearbyCarparksHDB);
 }
 
 // Get user's location
