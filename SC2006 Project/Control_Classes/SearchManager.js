@@ -72,6 +72,7 @@ function deg2rad(deg) {
 
 //Search
 function searchLocation() {
+    document.getElementById("autocomplete-list").innerHTML = "";
     const searchQuery = document.getElementById('search').value;
 
     if (searchQuery.trim() !== "") {
