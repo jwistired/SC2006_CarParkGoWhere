@@ -20,7 +20,7 @@
 
         <!-- Search bar with search icon -->
         <div class="search-bar">
-            <form autocomplete="off" onsubmit="event.preventDefault(); searchLocation();">
+            <form autocomplete="off" onsubmit="event.preventDefault(); searchLocation(); opensideBar(); document.getElementById('autocomplete-list').innerHTML = '';">
                 <input class="search-input" type="search" id="search" placeholder="Search for parking lots" oninput="showSuggestions()" autocomplete="off">
                 <!-- Autocomplete suggestion list -->
                 <div id="autocomplete-list" class="autocomplete-items"></div>

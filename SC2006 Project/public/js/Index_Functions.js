@@ -191,6 +191,9 @@ function setMarkerStyle(marker, isSelected) {
 document.getElementById('search').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         searchLocation();
+        opensideBar();
+        fetchUserHistory(email);
+        openhistBar();
     }
 });
 
@@ -205,11 +208,11 @@ document.addEventListener('click', function (event) {
     }
 });
 
-$('#searchicon').on('click', function () {
-    searchLocation();
-    opensideBar();
-    openhistBar();
-});
+// $('#searchicon').on('click', function () {
+//     searchLocation();
+//     opensideBar();
+//     openhistBar();
+// });
 
 
 
