@@ -140,7 +140,7 @@ function closesideBar() {
     document.getElementById('sidebar').classList.add('sidebar-hidden');
 }
 
-$('#searchicon').on('click', function () {
-    searchLocation();
-    opensideBar();
-});
+// $('#searchicon').on('click', function () {
+//     searchLocation();
+//     opensideBar();
+// });

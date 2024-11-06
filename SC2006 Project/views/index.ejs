@@ -18,7 +18,7 @@
 
         <!-- Search bar with search icon -->
         <div class="search-bar">
-            <form autocomplete="off" onsubmit="event.preventDefault(); searchLocation();">
+            <form autocomplete="off" onsubmit="event.preventDefault(); searchLocation(); opensideBar(); fetchUserHistory(email); openhistBar(); document.getElementById('autocomplete-list').innerHTML = '';">
                 <input class="search-input" type="search" id="search" placeholder="Search for parking lots" oninput="showSuggestions()" autocomplete="off">
                 <div id="autocomplete-list" class="autocomplete-items"></div> <!-- Autocomplete suggestion list -->
                 <button type="submit" class="search-icon-btn" id="searchicon">
@@ -228,11 +228,12 @@
             });
         });
 
-        document.getElementById('searchicon').addEventListener('click', function () {
-            searchLocation();
-            opensideBar();
-            openhistBar();
-        });
+        // document.getElementById('searchicon').addEventListener('click', function () {
+        //     searchLocation();
+        //     opensideBar();
+        //     fetchUserHistory(email);
+        //     openhistBar();
+        // });
 
     </script>
     <script type='text/javascript' src="/MapInterface.js"></script>
