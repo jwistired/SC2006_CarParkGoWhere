@@ -167,3 +167,5 @@ function showSuggestions() {
         // Clear suggestions if no input
         document.getElementById("autocomplete-list").innerHTML = "";
 }}
+
+
