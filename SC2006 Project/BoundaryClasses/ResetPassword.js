@@ -6,9 +6,10 @@ const { getByEmail } = require('./Database');
 const { checkNotAuthenticated } = require('./Authenticator.js');
 const passwordCriteria = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,20}$/;
 
+const OTP_VALIDITY_PERIOD = 5 * 60 * 1000; // 5 minutes in milliseconds
+
 // Middleware to check if OTP was sent and has not expired
 function checkOtpSent(req, res, next) {
-    const OTP_VALIDITY_PERIOD = 0.1 * 60 * 1000; // 5 minutes in milliseconds
     const otpGeneratedAt = req.session.OTPGeneratedAt;
 
     if (req.session.otpSent && otpGeneratedAt) {
@@ -30,7 +31,7 @@ function checkOtpSent(req, res, next) {
     res.redirect('/forgetPassword'); // Redirect if OTP was not sent
 }
 
-// Route for resetting password
+// Route for resetting password (GET request)
 router.get('/', checkOtpSent, (req, res) => {
     res.render('resetPassword.ejs', { email: req.session.email });
 });
@@ -39,12 +40,20 @@ router.get('/successResetPassword', checkNotAuthenticated, (req, res) => {
     res.render('successResetPassword.ejs');
 });
 
+// Route for handling password reset (POST request)
 router.post('/', async (req, res, next) => {
-    var userOTP = req.body.OTP;
-    var confirmPassword = req.body.confirmPassword;
-    var password = req.body.password;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    
+    const { OTP: userOTP, confirmPassword, password } = req.body;
+    const otpGeneratedAt = req.session.OTPGeneratedAt;
+
+    // Check if OTP is expired
+    if (Date.now() - otpGeneratedAt > OTP_VALIDITY_PERIOD) {
+        req.session.otpSent = false;
+        req.session.generatedOTP = null;
+        req.session.OTPGeneratedAt = null;
+        req.flash('error', 'Your OTP has expired. Please request a new one.');
+        return res.redirect('/forgetPassword');
+    }
+
     // Check if OTP is correct
     if (userOTP === req.session.generatedOTP) {
         // Password validation
@@ -59,10 +68,10 @@ router.post('/', async (req, res, next) => {
             return res.redirect('/resetPassword');
         }
 
-        // Initiate user by checking email 
+        // Update user's password in MongoDB
         const user = await getByEmail(req.session.email);
-        user.password = hashedPassword;
-        await user.save(); // Save updated password in MongoDB
+        user.password = await bcrypt.hash(password, 10);
+        await user.save();
         console.log('Password hashed and saved');
 
         // Clear session data and redirect to success page
