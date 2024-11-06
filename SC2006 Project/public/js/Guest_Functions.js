@@ -32,13 +32,6 @@ function filterByLots(carparks) {
     });
 }
 
-//refresh sidebar on change
-function updateSidebar(carparks, markers) {
-    const sidebar = document.getElementById('parking-lots');
-    sidebar.innerHTML = '';
-    populateCarparkSideBar(carparks, markers);    
-}
-
 // Hide dropdown when clicking outside
 document.addEventListener('click', function (event) {
     const dropdown = document.getElementById('filterDropdown');
@@ -146,3 +139,8 @@ function opensideBar() {
 function closesideBar() {
     document.getElementById('sidebar').classList.add('sidebar-hidden');
 }
+
+$('#searchicon').on('click', function () {
+    searchLocation();
+    opensideBar();
+});

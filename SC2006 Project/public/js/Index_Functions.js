@@ -205,4 +205,14 @@ document.addEventListener('click', function (event) {
     }
 });
 
+$('#searchicon').on('click', function () {
+    searchLocation();
+    opensideBar();
+    openhistBar();
+});
+
+
+
+
+
 
