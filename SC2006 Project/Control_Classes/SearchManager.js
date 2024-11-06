@@ -65,6 +65,11 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     return R * c; // Distance in km
 }
 
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+}
+
+
 //Search
 function searchLocation() {
     const searchQuery = document.getElementById('search').value;
