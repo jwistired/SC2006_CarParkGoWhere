@@ -66,7 +66,6 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 }
 
 //Search
-
 function searchLocation() {
     const searchQuery = document.getElementById('search').value;
 
@@ -112,7 +111,7 @@ function searchLocation() {
                 // Call routing function if user's location is available
                 if (userLatLng) {
                     displayNearbyCarparks_HDB(lat, lng);
-                    getRoute(userLatLng, searchLatLng);
+                    // getRoute(userLatLng, searchLatLng);
                 } else {
                     console.error("User location is not available.");
                 }

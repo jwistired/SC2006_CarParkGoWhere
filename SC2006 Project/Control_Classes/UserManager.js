@@ -1,17 +1,10 @@
 // Dependencies: Control_Classes/SearchManager.js, Control_Classes/RouteManager.js, Control_Classes/HistoryManager.js
-async function populateCarparkSidebar(carparks, markers) {
+async function populateCarparkSidebar(carparks) {
 
     const checkDistance = document.getElementById('filter-distance').checked;
     const checkPrice = document.getElementById('filter-price').checked;
     const checkLots = document.getElementById('filter-lots').checked;
 
-    if (checkDistance) carparks = filterByDistance(carparks);
-    if (checkPrice) carparks = filterByPrice(carparks);
-    if (checkLots) carparks = filterByLots(carparks);
-
-    const sidebar = document.getElementById('parking-lots');
-    sidebar.innerHTML = '';  // Clear existing content
-    
     // Define default and active icons as instances of L.icon
     const defaultIcon = L.icon({
         iconUrl: '/css/images/parkingicon.png', // Set your path here
@@ -27,10 +20,36 @@ async function populateCarparkSidebar(carparks, markers) {
         popupAnchor: [1, -34],
     });
 
+    if (checkDistance) carparks = filterByDistance(carparks);
+    if (checkPrice) carparks = filterByPrice(carparks);
+    if (checkLots) carparks = filterByLots(carparks);
+
+    if( checkDistance || checkPrice || checkLots){
+        // Remove existing markers from the map
+        currentCarparks.forEach(marker => map.removeLayer(marker));  
+        if (currentMarker) {
+            map.removeLayer(currentMarker);
+        }
+
+        // Create new markers after filtering
+        currentCarparks = carparks.map(carpark => 
+            L.marker([carpark[1], carpark[2]])
+        );
+
+        // Add new markers to the map
+        currentCarparks.forEach((marker, i) => {
+            marker.setIcon(i === 0 ? activeIcon : defaultIcon); // Set active icon for the first item
+            marker.addTo(map);
+        });
+    }
+
+    const sidebar = document.getElementById('parking-lots');
+    sidebar.innerHTML = '';  // Clear existing content
+
     if (carparks.length > 0) {
         for (let i = 0; i < carparks.length; i++) {
 
-            const carpark = carparks[i]//.split(',').map(coord => coord.trim());
+            const carpark = carparks[i]
             const carparkNumber = carpark[0];
             const carparkName = carpark[3];
             const dist = carpark[4];
@@ -40,6 +59,10 @@ async function populateCarparkSidebar(carparks, markers) {
 
             try {
                 formattedParkingLots = parkinglots
+                    .sort((a, b) => {
+                        const lotTypeOrder = { 'C': 1, 'Y': 2, 'H': 3 };
+                        return (lotTypeOrder[a.lot_type] || 4) - (lotTypeOrder[b.lot_type] || 4);
+                    })
                     .map(lot => {
                         if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
                             return `Lot Type ${lot.lot_type}: ${lot.available}`;
@@ -69,7 +92,7 @@ async function populateCarparkSidebar(carparks, markers) {
                     </div>
                     <div class="info-item" style="padding-bottom: 15px;">
                         <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                        <p>Available Parking Lots:<br><strong>${formattedParkingLots}</strong></p>
+                        <p>Available Parking Lots:\n<br><strong>${formattedParkingLots}</strong></p>
                         <button class="select-carpark" data-carpark-id="Carpark-${carparkNumber}">Select</button>
                     </div>
                 </div>`;
@@ -98,7 +121,7 @@ async function populateCarparkSidebar(carparks, markers) {
                 }
 
                 // Set marker icons based on open state of collapsibles
-                markers.forEach((marker, markerIndex) => {
+                currentCarparks.forEach((marker, markerIndex) => {
                     const collapsibleContent = sidebar.querySelectorAll('.collapsible-content')[markerIndex];
                     const isContentActive = collapsibleContent.classList.contains('active');
                     marker.setIcon(isContentActive ? activeIcon : defaultIcon);
@@ -108,7 +131,7 @@ async function populateCarparkSidebar(carparks, markers) {
             // Add event listener for the select button
             const selectButton = collapsible.querySelector('.select-carpark');
             selectButton.addEventListener('click', () => {
-                selectCarpark(carpark, markers);
+                selectCarpark(carpark, currentCarparks);
                 selectedCarparkId = `Carpark-${carparkNumber}`;
                 synchronizeButtons();
             });
@@ -116,8 +139,8 @@ async function populateCarparkSidebar(carparks, markers) {
             sidebar.appendChild(collapsible);
 
             // Set marker to activeIcon if it’s the first carpark
-            if (markers[i]) {
-                markers[i].setIcon(i === 0 ? activeIcon : defaultIcon);
+            if (currentCarparks[i]) {
+                currentCarparks[i].setIcon(i === 0 ? activeIcon : defaultIcon);
             }
         }
     }
@@ -185,70 +208,6 @@ function selectCarpark(carpark, markers) {
     // Update the last selected button and collapsible
     lastSelectedButton = button;
     lastSelectedCollapsible = collapsibleContent;
-}
-
-// Function overrides searchLocation() in SearchManager.js
-function searchLocation() {
-    const searchQuery = document.getElementById('search').value;
-
-    if (searchQuery.trim() !== "") {
-        const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${searchQuery}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
-
-        $.get(url, function (data) {
-            console.log("Data received from OneMap API:", data);
-
-            if (data.results && data.results.length > 0) {
-                const firstResult = data.results[0];
-                const lat = parseFloat(firstResult.LATITUDE);
-                const lng = parseFloat(firstResult.LONGITUDE);
-                searchLatLng = L.latLng(lat, lng);
-
-                searchLat = lat;
-                searchLong = lng;
-
-                console.log("Location found:", lat, lng);
-
-                // Remove old search marker if it exists
-                if (searchMarker) {
-                    map.removeLayer(searchMarker);
-                }
-                
-                // Remove the current marker if it exists
-                if (currentMarker) {
-                    map.removeLayer(currentMarker);
-                }
-
-                if (circle) {
-                    map.removeLayer(circle);
-                    circle = null;
-                }
-
-                // Add marker for the searched location
-                searchMarker = L.marker([lat, lng]).addTo(map)
-                    .bindPopup(`Search Result: ${firstResult.SEARCHVAL}`)
-                    .openPopup();
-
-                // Center the map to the search result location
-                map.setView([lat, lng], 16);
-
-                // Call routing function if user's location is available
-                if (userLatLng) {
-                    displayNearbyCarparks_HDB(lat, lng);
-                } else {
-                    console.error("User location is not available.");
-                }
-
-            } else {
-                alert("No results found.");
-                console.warn("No results returned from OneMap API.");
-            }
-        }).fail(function (error) {
-            alert("Error fetching data from OneMap API.");
-            console.error("Error fetching data from OneMap API:", error);
-        });
-    } else {
-        alert("Please enter a location to search for.");
-    }
 }
 
 //Function overrides showSuggestions() in SearchManager.js
