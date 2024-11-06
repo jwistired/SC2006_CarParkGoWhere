@@ -284,7 +284,7 @@ async function populateCarparkDataFromDB(carparks) {
             console.log("PRICE: ", price);
             console.log("LOTS: ", parkingLots);
 
-            // Push the results for the current carpark into the results array
+            
             populateHistSidebar([carparkNumber, latitude, longitude, carparkName, distance, price, parkingLots], [carparkMarker]);
             
         }
@@ -429,7 +429,8 @@ async function populateHistSidebar(carparkInfo, markers) {
     historyEntry.dataset.historyId = newHistoryID; // Store the history ID in the entry
 
     // Append the new entry to the history sidebar
-    historySidebar.appendChild(historyEntry);
+    // historySidebar.appendChild(historyEntry);
+    historySidebar.insertBefore(historyEntry, historySidebar.firstChild);
 
     // Toggle collapsible content visibility
     historyEntry.querySelector('.collapsible-btn').addEventListener('click', () => {
