@@ -140,6 +140,23 @@ function closesideBar() {
     document.getElementById('sidebar').classList.add('sidebar-hidden');
 }
 
+// Function to check if one of the options is selected
+function OneFilterSelected(event) {
+    var checkboxes = [
+        $("#filter-distance"),
+        $("#filter-price"),
+        $("#filter-lots")
+    ];
+
+    if (event) {
+        for (var i = 0; i < checkboxes.length; i++) {
+           if (checkboxes[i].attr("id") !== event.id) {
+               checkboxes[i].prop("checked", false);
+           }
+        }
+    }
+}
+
 // $('#searchicon').on('click', function () {
 //     searchLocation();
 //     opensideBar();

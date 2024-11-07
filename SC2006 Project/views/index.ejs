@@ -192,6 +192,7 @@
                 if (this.checked) {
                     console.log('Checkbox is checked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                    OneFilterSelected(this);
                 } else {
                     console.log('Checkbox is unchecked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots')
@@ -206,9 +207,10 @@
                 if (this.checked) {
                     console.log('Checkbox is checked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                    OneFilterSelected(this);
                 } else {
                     console.log('Checkbox is unchecked');
-                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
                 }
                 displayNearbyCarparks_HDB(searchLat, searchLong);
             });
@@ -220,20 +222,15 @@
                 if (this.checked) {
                     console.log('Checkbox is checked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                    OneFilterSelected(this);
                 } else {
                     console.log('Checkbox is unchecked');
-                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
                 }
                 displayNearbyCarparks_HDB(searchLat, searchLong);
             });
         });
 
-        // document.getElementById('searchicon').addEventListener('click', function () {
-        //     searchLocation();
-        //     opensideBar();
-        //     fetchUserHistory(email);
-        //     openhistBar();
-        // });
 
     </script>
     <script type='text/javascript' src="/MapInterface.js"></script>
