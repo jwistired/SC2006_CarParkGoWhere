@@ -100,7 +100,7 @@ async function displayNearbyCarparks_HDB(lat, lon) {
     } else {
         console.log('No nearby HDB carparks found.');
     }
-    populateCarparkSidebar(nearbyCarparksHDB, currentCarparks);
+    populateCarparkSidebar(nearbyCarparksHDB);
     getRoute(userLatLng, searchLatLng);
 }
 
@@ -118,151 +118,6 @@ function setMarkerStyle(marker, isSelected) {
             iconSize: [55, 55],
             iconAnchor: [12, 41]
         }));
-    }
-}
-
-async function populateCarparkSidebar(carparks) {
-
-    const checkDistance = document.getElementById('filter-distance').checked;
-    const checkPrice = document.getElementById('filter-price').checked;
-    const checkLots = document.getElementById('filter-lots').checked;
-
-    // Define default and active icons as instances of L.icon
-    const defaultIcon = L.icon({
-        iconUrl: '/css/images/parkingicon.png', // Set your path here
-        iconSize: [40, 40], // Size of the icon
-        iconAnchor: [12, 41], // Point of the icon which will correspond to marker's location
-        popupAnchor: [1, -34], // Point from which the popup should open relative to the iconAnchor
-    });
-
-    const activeIcon = L.icon({
-        iconUrl: '/css/images/parkingicon-selected.png', // Set your path here
-        iconSize: [60, 60],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-    });
-
-    if (checkDistance) carparks = filterByDistance(carparks);
-    if (checkPrice) carparks = filterByPrice(carparks);
-    if (checkLots) carparks = filterByLots(carparks);
-
-    if( checkDistance || checkPrice || checkLots){
-        // Remove existing markers from the map
-        currentCarparks.forEach(marker => map.removeLayer(marker));  
-        if (currentMarker) {
-            map.removeLayer(currentMarker);
-        }
-
-        // Create new markers after filtering
-        currentCarparks = carparks.map(carpark => 
-            L.marker([carpark[1], carpark[2]])
-        );
-
-        // Add new markers to the map
-        currentCarparks.forEach((marker, i) => {
-            marker.setIcon(i === 0 ? activeIcon : defaultIcon); // Set active icon for the first item
-            marker.addTo(map);
-        });
-    }
-
-    const sidebar = document.getElementById('parking-lots');
-    sidebar.innerHTML = '';  // Clear existing content
-
-    if (carparks.length > 0) {
-        for (let i = 0; i < carparks.length; i++) {
-
-            const carpark = carparks[i]
-            const carparkNumber = carpark[0];
-            const carparkName = carpark[3];
-            const dist = carpark[4];
-            const price = carpark[5];
-            const parkinglots = carpark[6];
-            let formattedParkingLots = '';
-
-            try {
-                formattedParkingLots = parkinglots
-                    .sort((a, b) => {
-                        const lotTypeOrder = { 'C': 1, 'Y': 2, 'H': 3 };
-                        return (lotTypeOrder[a.lot_type] || 4) - (lotTypeOrder[b.lot_type] || 4);
-                    })
-                    .map(lot => {
-                        if (lot && lot.lot_type && typeof lot.available !== 'undefined') {
-                            return `Lot Type ${lot.lot_type}: ${lot.available}`;
-                        } else {
-                            throw new Error('Invalid lot data');
-                        }
-                    })
-                    .join('<br>');
-            } catch (error) {
-                console.error("Error formatting parking lots:", error.message);
-                formattedParkingLots = 'Info not available';
-            }
-
-            // Create collapsible element
-            const collapsible = document.createElement('div');
-            collapsible.className = 'collapsible';
-            collapsible.innerHTML = `
-                <button class="collapsible-btn ${i === 0 ? 'active' : ''}" id="" style="${i === 0 ? 'background-color: green;' : ''}">Carpark ${carparkNumber}: ${carparkName}</button>
-                <div class="collapsible-content ${i === 0 ? 'active' : ''}" style="${i === 0 ? 'display: block; background-color: #c2ffcd;' : 'display: none;'}">
-                    <div class="info-item">
-                        <img src="/css/images/distance.png" alt="Distance Icon" class="info-icon">
-                        <p style="padding-top: 20px;">Distance from destination: <strong>${parseFloat(dist).toFixed(2)}km</strong></p>
-                    </div>
-                    <div class="info-item">
-                        <img src="/css/images/price.png" alt="Price Icon" class="info-icon">
-                        <p>Price: <strong>${price}</strong></p>
-                    </div>
-                    <div class="info-item" style="padding-bottom: 15px;">
-                        <img src="/css/images/parkingLots.png" alt="Parkinglot Icon" class="info-icon">
-                        <p>Available Parking Lots:\n<br><strong>${formattedParkingLots}</strong></p>
-                        <button class="select-carpark" data-carpark-id="Carpark-${carparkNumber}">Select</button>
-                    </div>
-                </div>`;
-
-            // Toggle content visibility and style
-            collapsible.querySelector('.collapsible-btn').addEventListener('click', () => {
-                const content = collapsible.querySelector('.collapsible-content');
-                const button = collapsible.querySelector('.collapsible-btn');
-                
-                // Check if the content is currently active (visible)
-                const isActive = content.classList.contains('active');
-
-                // Toggle visibility
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    button.classList.remove('active'); // Remove active class
-                    content.classList.remove('active'); // Remove active class from content
-                    button.style.backgroundColor = ''; // Reset button color
-                    content.style.backgroundColor = ''; // Reset content color
-                } else {
-                    content.style.display = 'block';
-                    button.classList.add('active'); // Add active class
-                    content.classList.add('active'); // Add active class to content
-                    button.style.backgroundColor = 'green'; // Change button color to green
-                    content.style.backgroundColor = '#c2ffcd'; // Change content color to green
-                }
-
-                // Set marker icons based on open state of collapsibles
-                currentCarparks.forEach((marker, markerIndex) => {
-                    const collapsibleContent = sidebar.querySelectorAll('.collapsible-content')[markerIndex];
-                    const isContentActive = collapsibleContent.classList.contains('active');
-                    marker.setIcon(isContentActive ? activeIcon : defaultIcon);
-                });
-            });
-
-            // Add event listener for the select button
-            const selectButton = collapsible.querySelector('.select-carpark');
-            selectButton.addEventListener('click', () => {
-                selectCarpark(carpark, currentCarparks);
-            });
-
-            sidebar.appendChild(collapsible);
-
-            // Set marker to activeIcon if it’s the first carpark
-            if (currentCarparks[i]) {
-                currentCarparks[i].setIcon(i === 0 ? activeIcon : defaultIcon);
-            }
-        }
     }
 }
 
@@ -300,7 +155,7 @@ function synchronizeButtons() {
         const selectedHistoryButton = Array.from(historyButtons).find(button => button.dataset.carparkId === selectedCarparkId);
         if (selectedHistoryButton) {
             const carparkInfo = getCarparkInfoFromHistory(selectedHistoryButton);
-            populateCarparkSidebar([carparkInfo], markers);
+            populateCarparkSidebar([carparkInfo]);
         }
     }
 }

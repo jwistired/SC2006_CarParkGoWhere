@@ -191,6 +191,9 @@ function setMarkerStyle(marker, isSelected) {
 document.getElementById('search').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         searchLocation();
+        opensideBar();
+        fetchUserHistory(email);
+        openhistBar();
     }
 });
 
@@ -204,5 +207,32 @@ document.addEventListener('click', function (event) {
         dropdown.style.display = 'none';
     }
 });
+
+// $('#searchicon').on('click', function () {
+//     searchLocation();
+//     opensideBar();
+//     openhistBar();
+// });
+
+// Function to check if one of the options is selected
+function OneFilterSelected(event) {
+    var checkboxes = [
+        $("#filter-distance"),
+        $("#filter-price"),
+        $("#filter-lots")
+    ];
+
+    if (event) {
+        for (var i = 0; i < checkboxes.length; i++) {
+           if (checkboxes[i].attr("id") !== event.id) {
+               checkboxes[i].prop("checked", false);
+           }
+        }
+    }
+}
+
+
+
+
 
 
