@@ -18,10 +18,10 @@
 
         <!-- Search bar with search icon -->
         <div class="search-bar">
-            <form autocomplete="off" onsubmit="event.preventDefault(); searchLocation();">
+            <form autocomplete="off" onsubmit="event.preventDefault(); searchLocation(); opensideBar(); fetchUserHistory(email); openhistBar(); document.getElementById('autocomplete-list').innerHTML = '';">
                 <input class="search-input" type="search" id="search" placeholder="Search for parking lots" oninput="showSuggestions()" autocomplete="off">
                 <div id="autocomplete-list" class="autocomplete-items"></div> <!-- Autocomplete suggestion list -->
-                <button type="submit" class="search-icon-btn">
+                <button type="submit" class="search-icon-btn" id="searchicon">
                     <img src="\css\images\icons\search.png" alt="Search">
                 </button>
             </form>
@@ -130,6 +130,7 @@
 
     <script>
         //Global variables
+        let documentVar = document;
         let sw = L.latLng(1.144, 103.535);
         let ne = L.latLng(1.494, 104.502);
         let bounds = L.latLngBounds(sw, ne);
@@ -191,6 +192,7 @@
                 if (this.checked) {
                     console.log('Checkbox is checked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                    OneFilterSelected(this);
                 } else {
                     console.log('Checkbox is unchecked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots')
@@ -205,9 +207,10 @@
                 if (this.checked) {
                     console.log('Checkbox is checked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                    OneFilterSelected(this);
                 } else {
                     console.log('Checkbox is unchecked');
-                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
                 }
                 displayNearbyCarparks_HDB(searchLat, searchLong);
             });
@@ -219,17 +222,18 @@
                 if (this.checked) {
                     console.log('Checkbox is checked');
                     $('#parking-lots').empty().load(location.href + ' #parking-lots');
+                    OneFilterSelected(this);
                 } else {
                     console.log('Checkbox is unchecked');
-                    $('#parking-lots').empty().load(location.href + ' #parking-lots')
+                    $('#parking-lots').empty().load(location.href + ' #parking-lots');
                 }
                 displayNearbyCarparks_HDB(searchLat, searchLong);
             });
         });
 
+
     </script>
     <script type='text/javascript' src="/MapInterface.js"></script>
-    <script type='text/javascript' src="/getDistanceInformation.js"></script>
     <script type='text/javascript' src="/js/Index_Functions.js"></script>
     <script type='text/javascript' src="/NavigationManager.js"></script>
     <script type='text/javascript' src="/SearchManager.js"></script>

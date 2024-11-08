@@ -3,6 +3,8 @@ const express = require('express')
 const router = express.Router()
 const nodemailer = require('nodemailer')
 const otp = require('otp-generator')
+const {getByEmail} = require('./Database.js')
+
 var generatedOTP
 // Standardise email for onemaps and OTP sending
 let transporter = nodemailer.createTransport({
@@ -18,22 +20,22 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res, next) => {
-    //check if email exists within our users array
-    passport.authenticate('local-forget-password', {
-        failureRedirect: '/forgetPassword',
-        failureFlash: true
-    })(req, res, next)
-    }, (req, res) => {
-    console.log("Authentication successful, sending OTP...");
+    //if user does not exist in mongodb database
+    console.log(req.body.email)
+    if (getByEmail(req.body.email) == null) {
+        return res.render('forgetPassword', { messages: { error: "No user with matching email" } });
+    }
+    console.log("Email found, sending OTP... ")
     generatedOTP = otp.generate(6,{digits: true, alphabets:false, upperCase:false, specialChars:false})
     console.log(generatedOTP)
     req.session.OTPGeneratedAt = Date.now()
     req.session.email = req.body.email
     req.session.generatedOTP = generatedOTP
+    req.session.otpSent = true;
     // create message for sending
     const message = {
         from: "CarparkGoWhere <carparkgowhere@gmail.com>",
-        to: req.user.email,
+        to: req.body.email,
         subject: "CarparkGoWhere reset password",
         text: `Your OTP is: ${generatedOTP}. Token will expire in 5 minute`
     };
