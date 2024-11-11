@@ -12,7 +12,13 @@ function filterByDistance(carparks) {
 }
  
 function filterByPrice(carparks) {
-     return carparks.sort((a, b) => parseFloat(a[5]) - parseFloat(b[5]));
+    return carparks.sort((a, b) => {
+        // Extract numeric values from the price strings
+        const priceA = parseFloat(a[5].replace(/[^0-9.]/g, ''));
+        const priceB = parseFloat(b[5].replace(/[^0-9.]/g, ''));
+        
+        return priceA - priceB;
+    });
 }
  
 function filterByLots(carparks) {
