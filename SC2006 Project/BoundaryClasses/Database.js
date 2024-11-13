@@ -3,7 +3,7 @@ const userSchema = require('../models/User.js')
 const historySchema = require('../models/CarPark.js')
 const mongoose = require('mongoose');
 
-const LOCAL_CONNECTION = "mongodb://JingWoon:nAsb4BXZmUKq@augentum.party:27017/CarParkGoWhere"
+const LOCAL_CONNECTION = '' //Insert your local connection string here
 const USER_LOGIN = "userData"
 const USER_HISTORY = "userHistory"
 
