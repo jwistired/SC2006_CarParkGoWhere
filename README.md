@@ -9,7 +9,7 @@ With high vehicle ownership numbers in Singapore, we face a significant parking 
 With CarParkGoWhere, we aim to reduce the hassle of having to drive around and search for a free parking space near your destination.
 
 # Table of Contents
-- [[#CarParkGoWhere]]
+- [#CarParkGoWhere]]
 - [[#Setup Instructions]]
 	- [[#Front-end]]
 	- [[#Backend]]
@@ -29,7 +29,7 @@ With CarParkGoWhere, we aim to reduce the hassle of having to drive around and s
 1. Install node.js
 2. Install the required modules
 ```
-	npm install bcrypt buffer-crc32 connect-mongo cookie-parser debug ejs express express-flash express-session method-override mongodb mongoose nodemailer otp-generator passport passport-local proj4 uid2 dotenv nodemon
+npm install bcrypt buffer-crc32 connect-mongo cookie-parser debug ejs express express-flash express-session method-override mongodb mongoose nodemailer otp-generator passport passport-local proj4 uid2 dotenv nodemon
 	
 ```
 
