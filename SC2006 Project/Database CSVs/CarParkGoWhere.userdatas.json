@@ -1,0 +1,108 @@
+[{
+  "_id": {
+    "$oid": "672a113ea1ebcce583c43f9b"
+  },
+  "name": "damien",
+  "email": "damienleehw@gmail.com",
+  "password": "$2b$10$zpbOzx5Ml9dMgbcNWuX34uxbkDSYTjPqDDOnjPi0KnNuj8uJ0btRu",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6725613fcd6d8a75ba268005"
+  },
+  "name": "jumana",
+  "email": "jumanajhaseen@gmail.com",
+  "password": "$2b$10$flTl.HLftrxg4dKEufRZ/.L8C9oSoUTy0rZBnOwbmWF69xvPpKVhW",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6725f757eef8238861da2792"
+  },
+  "name": "test",
+  "email": "seow@gmail.com",
+  "password": "$2b$10$FR7bqPLVoUnHKq1wDRiqiuJqkP2Wr/Rdc5u0LcRZw2VX1h5bcqZrC",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67270f12507988a0426025c4"
+  },
+  "name": "jj",
+  "email": "jingjieong@yahoo.com.sg",
+  "password": "$2b$10$GJBCysq9T6EpeMjCuIEe9eowW2LeBjGea/TTgCgRrbqUlhbix5.n6",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67270f6b04320b55bc873f81"
+  },
+  "name": "hr",
+  "email": "hr@gmail.com",
+  "password": "$2b$10$KhQ0lQz6ZxkduSPMMov3J.LABdKREiz.g/OO.e5X1us/lfhQZ7cYe",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6727168df9808b658645dd41"
+  },
+  "name": "yfcheng",
+  "email": "ariesyf20@gmail.com",
+  "password": "$2b$10$3R0fzq9LASaocthPlH0Si.HdRvldx6/lEMsYk0sWrHqk6dV/wjn9W",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6728ccbc45742e5eec600f0c"
+  },
+  "name": "Damien",
+  "email": "damienleehw@gmail.com",
+  "password": "$2b$10$2qzvuoHwhNDuB2e3YvmCpu0r9sZ.bY6Q3rG53h0OYt39m7koTlei2",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672a30b19c3fa73297ae5545"
+  },
+  "name": "test",
+  "email": "test23@gmail.com",
+  "password": "$2b$10$KLVbxhd53GwiwJLNa1E1MO5f8x.Tp0.5SzHbFhITpAOGy4LFC0Fv.",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b3adc79d627732a301a5e"
+  },
+  "name": "Haoren",
+  "email": "haoren@hotmail.co.uk",
+  "password": "$2b$10$CESvJ5lwMipZMb5BHf0Hgu.SXsTPxoyKNzRhmG1ARVyvcYdZ/2pwK",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b7671a9608974844eaebe"
+  },
+  "name": "OJJ",
+  "email": "random@gmail.com",
+  "password": "$2b$10$7h2ZHCvQwKiDGCDUbC/b1OT0sSlwx8RxjW7b142eyXnf6Zodb9cMC",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672e31614259ca0b71d67724"
+  },
+  "name": "lee",
+  "email": "lee689067@gmail.com",
+  "password": "$2b$10$mvf0m3BzBRsweyQGlLWKPuW0Qr0f/jr.gGD6g2Fvv8qJZ4Ev7nqC2",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6732c5ff645582685e0eacea"
+  },
+  "name": "Test",
+  "email": "sc2006project46@gmail.com",
+  "password": "$2b$10$JPa5QQlfhwTVgMtAjLveEOTg/SE0/09bt4TAIFU2yvStPtz1oCVdG",
+  "__v": 0
+}]

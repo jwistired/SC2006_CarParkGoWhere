@@ -1,0 +1,378 @@
+[{
+  "_id": {
+    "$oid": "672a2306116fd831e07283f8"
+  },
+  "email": "<%=email%>",
+  "car_park_no": "SK10",
+  "address": "BLK 241A COMPASSVALE WALK",
+  "x_cord": 1.3902640175240084,
+  "y_cord": 103.89823603716263,
+  "time": {
+    "$date": "2024-11-05T13:52:06.400Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672a2306116fd831e07283ff"
+  },
+  "email": "<%=email%>",
+  "car_park_no": "SK51",
+  "address": "BLK 325 SENGKANG EAST WAY",
+  "x_cord": 1.3936125125577126,
+  "y_cord": 103.8914760567716,
+  "time": {
+    "$date": "2024-11-05T13:52:06.540Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672a2306116fd831e0728405"
+  },
+  "email": "<%=email%>",
+  "car_park_no": "BBB",
+  "address": "BLK 231 BRAS BASAH BASEMENT CAR PARK",
+  "x_cord": 1.2965800277256123,
+  "y_cord": 103.85366320640063,
+  "time": {
+    "$date": "2024-11-05T13:52:06.619Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b33d179d627732a3019e9"
+  },
+  "email": "hr@gmail.com",
+  "car_park_no": "SK90",
+  "address": "BLK 332 ANCHORVALE LINK",
+  "x_cord": 1.394852436314145,
+  "y_cord": 103.89235786844618,
+  "time": {
+    "$date": "2024-11-06T09:16:01.158Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b3feb79d627732a301ab1"
+  },
+  "email": "hr@gmail.com",
+  "car_park_no": "SK90",
+  "address": "BLK 332 ANCHORVALE LINK",
+  "x_cord": 1.394852436314145,
+  "y_cord": 103.89235786844618,
+  "time": {
+    "$date": "2024-11-06T10:07:39.899Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b425379d627732a301af3"
+  },
+  "email": "hr@gmail.com",
+  "car_park_no": "CK10",
+  "address": "BLK 227A CHOA CHU KANG CENTRAL",
+  "x_cord": 1.3805047532205248,
+  "y_cord": 103.74543486598357,
+  "time": {
+    "$date": "2024-11-06T10:17:55.039Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b934701d55a84ab46c711"
+  },
+  "email": "jumanajhaseen@gmail.com",
+  "car_park_no": "BTM2",
+  "address": "BLK 8C BOON TIONG ROAD",
+  "x_cord": 1.2869630821940397,
+  "y_cord": 103.82964101237162,
+  "time": {
+    "$date": "2024-11-06T16:03:19.483Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b934701d55a84ab46c718"
+  },
+  "email": "jumanajhaseen@gmail.com",
+  "car_park_no": "TAM1",
+  "address": "BLK 507 TAMPINES CENTRAL 1",
+  "x_cord": 1.3551798764166978,
+  "y_cord": 103.94595187637948,
+  "time": {
+    "$date": "2024-11-06T16:03:19.603Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672b934701d55a84ab46c71e"
+  },
+  "email": "jumanajhaseen@gmail.com",
+  "car_park_no": "ACB",
+  "address": "BLK 270/271 ALBERT CENTRE BASEMENT CAR PARK",
+  "x_cord": 1.3010632720874935,
+  "y_cord": 103.85411804993093,
+  "time": {
+    "$date": "2024-11-06T16:03:19.709Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672e1df92296d45d5489c975"
+  },
+  "email": "jingjieong@yahoo.com.sg",
+  "car_park_no": "TM31",
+  "address": "BLK 716A TAMPINES STREET 71",
+  "x_cord": 1.3587518558468101,
+  "y_cord": 103.93665544860963,
+  "time": {
+    "$date": "2024-11-08T14:19:37.871Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672e1df92296d45d5489c97c"
+  },
+  "email": "jingjieong@yahoo.com.sg",
+  "car_park_no": "B99M",
+  "address": "BLK 807 CHAI CHEE ROAD",
+  "x_cord": 1.327488075073332,
+  "y_cord": 103.9227613439326,
+  "time": {
+    "$date": "2024-11-08T14:19:37.952Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672e1dfa2296d45d5489c983"
+  },
+  "email": "jingjieong@yahoo.com.sg",
+  "car_park_no": "A28",
+  "address": "BLK 103/105/107 ANG MO KIO STREET 11",
+  "x_cord": 1.3716499282813732,
+  "y_cord": 103.83746428814882,
+  "time": {
+    "$date": "2024-11-08T14:19:38.037Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672e1ecb2296d45d5489c9b2"
+  },
+  "email": "jingjieong@yahoo.com.sg",
+  "car_park_no": "PL34",
+  "address": "BLK 603 PUNGGOL ROAD",
+  "x_cord": 1.403862280610026,
+  "y_cord": 103.90798247324135,
+  "time": {
+    "$date": "2024-11-08T14:23:07.646Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672e31e94259ca0b71d677d5"
+  },
+  "email": "lee689067@gmail.com",
+  "car_park_no": "JM10",
+  "address": "BLK 648 JURONG WEST STREET 61",
+  "x_cord": 1.3389486784923126,
+  "y_cord": 103.69728745900903,
+  "time": {
+    "$date": "2024-11-08T15:44:41.162Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672e31eb4259ca0b71d677d9"
+  },
+  "email": "lee689067@gmail.com",
+  "car_park_no": "JM12",
+  "address": "BLK 624A JURONG WEST STREET 61",
+  "x_cord": 1.3411209710444365,
+  "y_cord": 103.69843639350871,
+  "time": {
+    "$date": "2024-11-08T15:44:43.454Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731be73a14db709ecb133fe"
+  },
+  "email": "seow@gmail.com",
+  "car_park_no": "SK17",
+  "address": "BLK 248A COMPASSVALE ROAD",
+  "x_cord": 1.392821390774375,
+  "y_cord": 103.89870681748125,
+  "time": {
+    "$date": "2024-11-11T08:21:07.030Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731be7e31e8879fbc2cb37e"
+  },
+  "email": "damienleehw@gmail.com",
+  "car_park_no": "JM15",
+  "address": "BLK 617A JURONG WEST STREET 65",
+  "x_cord": 1.3408888288394545,
+  "y_cord": 103.70008243365508,
+  "time": {
+    "$date": "2024-11-11T08:21:18.481Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731be7e31e8879fbc2cb384"
+  },
+  "email": "damienleehw@gmail.com",
+  "car_park_no": "JM10",
+  "address": "BLK 648 JURONG WEST STREET 61",
+  "x_cord": 1.3389486784923126,
+  "y_cord": 103.69728745900903,
+  "time": {
+    "$date": "2024-11-11T08:21:18.555Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731be8fa14db709ecb134db"
+  },
+  "email": "seow@gmail.com",
+  "car_park_no": "SK48",
+  "address": "BLK 321 ANCHORVALE DRIVE",
+  "x_cord": 1.3902040655569778,
+  "y_cord": 103.89150780180583,
+  "time": {
+    "$date": "2024-11-11T08:21:35.113Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731be8fa14db709ecb134e3"
+  },
+  "email": "seow@gmail.com",
+  "car_park_no": "SK29",
+  "address": "BLK 204 COMPASSVALE DRIVE",
+  "x_cord": 1.388022573253227,
+  "y_cord": 103.89538993670813,
+  "time": {
+    "$date": "2024-11-11T08:21:35.313Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731bec131e8879fbc2cb397"
+  },
+  "email": "damienleehw@gmail.com",
+  "car_park_no": "TPM",
+  "address": "BLK 1/6 TANJONG PAGAR MSCP",
+  "x_cord": 1.2754814002517156,
+  "y_cord": 103.84229740226216,
+  "time": {
+    "$date": "2024-11-11T08:22:25.684Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731f732b78f2e5b2061c02c"
+  },
+  "email": "ariesyf20@gmail.com",
+  "car_park_no": "PM43",
+  "address": "BLK 757A PASIR RIS STREET 71",
+  "x_cord": 1.377236378857081,
+  "y_cord": 103.9331362544653,
+  "time": {
+    "$date": "2024-11-11T12:23:14.309Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731f732b78f2e5b2061c033"
+  },
+  "email": "ariesyf20@gmail.com",
+  "car_park_no": "PM44",
+  "address": "BLK 762A PASIR RIS STREET 71",
+  "x_cord": 1.3759656182674487,
+  "y_cord": 103.93329952863986,
+  "time": {
+    "$date": "2024-11-11T12:23:14.369Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6731f732b78f2e5b2061c039"
+  },
+  "email": "ariesyf20@gmail.com",
+  "car_park_no": "BKE9",
+  "address": "BLK 668 CHANDER ROAD",
+  "x_cord": 1.307337212647671,
+  "y_cord": 103.85146379729147,
+  "time": {
+    "$date": "2024-11-11T12:23:14.422Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6732c66f645582685e0ead0c"
+  },
+  "email": "haoren@hotmail.co.uk",
+  "car_park_no": "AM14",
+  "address": "BLK 227 ANG MO KIO STREET 23",
+  "x_cord": 1.368741094555009,
+  "y_cord": 103.84030110265232,
+  "time": {
+    "$date": "2024-11-12T03:07:27.594Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6732c670645582685e0ead18"
+  },
+  "email": "haoren@hotmail.co.uk",
+  "car_park_no": "Y27",
+  "address": "BLK 821/830 YISHUN STREET 81",
+  "x_cord": 1.4142097093252843,
+  "y_cord": 103.83362348353374,
+  "time": {
+    "$date": "2024-11-12T03:07:28.186Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6732c6bc645582685e0eadfd"
+  },
+  "email": "haoren@hotmail.co.uk",
+  "car_park_no": "EPL",
+  "address": "BLK 1/7 EVERTON PARK",
+  "x_cord": 1.2771635534654588,
+  "y_cord": 103.83991265403958,
+  "time": {
+    "$date": "2024-11-12T03:08:44.792Z"
+  },
+  "__v": 0
+}]
