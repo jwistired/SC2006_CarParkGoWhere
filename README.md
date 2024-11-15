@@ -62,7 +62,7 @@ And you are done for frontend.
 
 # Demo of App
 
-![Watch the video](https://raw.githubusercontent.com/jwistired/SC2006_CarParGoWhere/main/Demo.mp4)
+![Watch the video]([https://raw.githubusercontent.com/jwistired/SC2006_CarParGoWhere/blob/main/Demo.mp4](https://github.com/jwistired/SC2006_CarParkGoWhere/blob/main/Demo.mp4))
 
 
 # App Design
