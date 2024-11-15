@@ -15,7 +15,7 @@ With CarParkGoWhere, we are aiming to reduce the hassle of having to drive aroun
 	- [Front-end](#front-end)
 	- [Backend](#backend)
 	- [Setting up the code to point to the database](#setting-up-the-code-to-point-to-the-database)
--![Demo](#https://github.com/user-attachments/assets/19643ed7-9179-4459-9736-540be9d0d82c)
+- [Demo](#Demo-of-App)
 - [App Design](#app-design)
 	- [Overview](#overview)
 	- [Front End](#front-end-1)
@@ -59,6 +59,11 @@ And you are done for frontend.
 	const LOCAL_CONNECTION = 'mongodb://localhost:27017/CarParkGoWhere' //Insert your local connection string here
 	```
 4. Save and restart the server.
+
+# Demo of App
+
+![Watch the video](https://raw.githubusercontent.com/jwistired/SC2006_CarParGoWhere/main/Demo.mp4)
+
 
 # App Design
 ### Overview
