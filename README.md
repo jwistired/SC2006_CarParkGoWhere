@@ -62,8 +62,8 @@ And you are done for frontend.
 
 # Demo of App
 
-![Watch the video](https://www.youtube.com/watch?v=dw_eXy47JqE)
-
+[<img src="https://i.ytimg.com/vi/dw_eXy47JqE/maxresdefault.jpg" width="50%">](https://www.youtube.com/watch?v=dw_eXy47JqE)
+#### Click the above to watch
 
 # App Design
 ### Overview
