@@ -62,7 +62,7 @@ And you are done for frontend.
 
 # Demo of App
 
-![Watch the video](Demo.mp4)
+![Watch the video](https://www.youtube.com/watch?v=dw_eXy47JqE)
 
 
 # App Design
